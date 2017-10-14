@@ -13,12 +13,9 @@ fun main(args: Array<String>) {
 	// test a longer array
 	val arr = randomArray(length = 70000)
 
-	File("./src/arr/sort")
-			.listFiles()
+	File("./src/arr/sort").listFiles()
 			.filter { it.name != Thread.currentThread().stackTrace[1].fileName }
-			.forEach {
-				it.name.removeExtension().testPerformance(arr)
-			}
+			.forEach { it.name.removeExtension().testPerformance(arr) }
 }
 
 fun String.testPerformance(arr: IntArray) {
@@ -51,8 +48,7 @@ fun String.testPerformance(arr: IntArray) {
 fun String.padSpaces(): String {
 	val sb = StringBuilder()
 	sb.append(this[0])
-	asSequence()
-			.withIndex()
+	asSequence().withIndex()
 			.filterIndexed { i, _ -> i > 0 }
 			.forEach {
 				it.value.let {
@@ -108,7 +104,6 @@ fun IntArray.swap(i1: Int, i2: Int) {
 }
 
 fun randomArray(min: Int = 0, max: Int = 100, length: Int = 10) = IntArray(length) { (min..max).random() }
-
 
 /**
  * sort an array with smaller size and print out results
