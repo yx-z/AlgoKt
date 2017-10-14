@@ -1,7 +1,7 @@
 package arr.sort
 
-fun IntArray.countSort(max: Int = 100) {
-	val ans = IntArray(size)
+fun IntArray.countingSort(max: Int = max()!!) {
+	val sorted = IntArray(size)
 	val count = IntArray(max + 1)
 	forEach { count[it]++ }
 
@@ -11,13 +11,12 @@ fun IntArray.countSort(max: Int = 100) {
 
 	indices.reversed().forEach {
 		count[this[it]]--
-		ans[count[this[it]]] = this[it]
+		sorted[count[this[it]]] = this[it]
 	}
 
-	System.arraycopy(ans, 0, this, 0, size)
+	System.arraycopy(sorted, 0, this, 0, size)
 }
 
 fun main(args: Array<String>) {
-	val m = 100
-	println(testCorrectness(min = 0, max = m) { countSort(m) })
+	println(testCorrectness { countingSort() })
 }
