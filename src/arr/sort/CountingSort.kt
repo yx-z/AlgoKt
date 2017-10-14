@@ -1,8 +1,8 @@
 package arr.sort
 
-fun IntArray.countingSort(max: Int = max()!!) {
+fun IntArray.countingSort() {
 	val sorted = IntArray(size)
-	val count = IntArray(max + 1)
+	val count = IntArray(max()!! + 1)
 	forEach { count[it]++ }
 
 	count.indices

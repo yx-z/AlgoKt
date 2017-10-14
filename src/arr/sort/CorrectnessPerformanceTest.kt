@@ -14,7 +14,12 @@ fun main(args: Array<String>) {
 	val arr = randomArray(length = 10000)
 
 	File("./src/arr/sort").listFiles()
-			.filter { it.name != Thread.currentThread().stackTrace[1].fileName }
+			.filter {
+				// exclude this util file and some *weird* sorting algorithms
+				it.name != "CorrectnessPerformanceTest.kt" &&
+						it.name != "BogoSort.kt" &&
+						it.name != "SleepSort.kt"
+			}
 			.forEach { it.name.removeExtension().testPerformance(arr) }
 }
 
@@ -40,8 +45,6 @@ fun String.testPerformance(arr: IntArray) {
 		}
 
 		{ method.invoke(null, this) }.printTime()
-
-		println()
 	}
 }
 
