@@ -9,3 +9,7 @@ fun IntArray.bubbleSort() {
 		}
 	}
 }
+
+fun main(args: Array<String>) {
+	println(testCorrectness { bubbleSort() })
+}

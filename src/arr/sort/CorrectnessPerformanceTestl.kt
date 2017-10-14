@@ -10,35 +10,24 @@ import java.util.*
  */
 
 fun main(args: Array<String>) {
-	// test array initialization
-	val min = 0
-	val max = 100
-	val length = 10 // for correctness tes // 70000 // for performance test
-	val arr = IntArray(length) { (min..max).random() }
-
-	val testCorrectNess = true
-	if (testCorrectNess) {
-		"Shuffled".printAsTitle()
-		arr.printArray()
-		println()
-	}
-
+	// test a longer array
+	val arr = randomArray(length = 70000)
 
 	File("./src/arr/sort")
 			.listFiles()
-			.filterNot { it.name == "Main.kt" }
+			.filter { it.name != Thread.currentThread().stackTrace[1].fileName }
 			.forEach {
-				it.name.removeExtension().runSort(arr, testCorrectNess)
+				it.name.removeExtension().testPerformance(arr)
 			}
 }
 
-fun String.runSort(arr: IntArray, printArray: Boolean = true) {
+fun String.testPerformance(arr: IntArray) {
 	arr.copyOf().run {
-		val sortName = this@runSort.padSpaces()
+		val sortName = this@testPerformance.padSpaces()
 
 		val cls: Class<*>
 		try {
-			cls = Class.forName("arr.sort.${this@runSort.toKtClass()}")
+			cls = Class.forName("arr.sort.${this@testPerformance.toKtClass()}")
 		} catch (e: ClassNotFoundException) {
 			return
 		}
@@ -53,12 +42,8 @@ fun String.runSort(arr: IntArray, printArray: Boolean = true) {
 			return
 		}
 
-		val sort = { method.invoke(null, this) }
-		sort.printTime()
+		{ method.invoke(null, this) }.printTime()
 
-		if (printArray) {
-			printArray()
-		}
 		println()
 	}
 }
@@ -121,3 +106,32 @@ fun IntArray.swap(i1: Int, i2: Int) {
 	this[i1] = this[i2]
 	this[i2] = tmp
 }
+
+fun randomArray(min: Int = 0, max: Int = 100, length: Int = 10) = IntArray(length) { (min..max).random() }
+
+
+/**
+ * sort an array with smaller size and print out results
+ */
+fun testCorrectness(min: Int = 0, max: Int = 100, length: Int = 10, sort: IntArray.() -> Unit): Boolean {
+	val arr = randomArray(min, max, length)
+	arr.printArray()
+
+	val spaces = " " * (arr.size * 2 - 1)
+	println("$spaces|")
+	println("${spaces}v")
+
+	arr.copyOf().run {
+		sort()
+		printArray()
+		return isNonDecreasing() && isAnagram(arr)
+	}
+}
+
+fun IntArray.isNonDecreasing() = withIndex()
+		.filterIndexed { idx, _ -> idx > 0 }
+		.all { (idx, i) -> i >= this[idx - 1] }
+
+fun IntArray.isAnagram(ori: IntArray) = this.all { ori.contains(it) } &&
+		ori.all { this.contains(it) } &&
+		this.size == ori.size
