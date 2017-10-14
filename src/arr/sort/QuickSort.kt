@@ -1,5 +1,5 @@
-package arr.sort
+package arr.sorte
 
 fun IntArray.quickSort() {
-	TODO()
+	// TODO()
 }

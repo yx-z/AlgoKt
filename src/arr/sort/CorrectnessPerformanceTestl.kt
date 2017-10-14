@@ -11,7 +11,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// test a longer array
-	val arr = randomArray(length = 70000)
+	val arr = randomArray(length = 10000)
 
 	File("./src/arr/sort").listFiles()
 			.filter { it.name != Thread.currentThread().stackTrace[1].fileName }
