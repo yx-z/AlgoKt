@@ -18,32 +18,32 @@ fun main(args: Array<String>) {
 	root.right!!.left = TreeNode(3)
 	root.right!!.right = TreeNode(6)
 
-	inOrderRecursive(root)
+	root.inOrderRecursive()
 	println()
 	println("======")
 
 	inOrderIterative(root)
 	println("======")
 
-	postOrderIterative2Stacks(root)
+	root.postOrderIterative2Stacks()
 	println("======")
 
-	postOrderIterative1Stack(root)
+	root.postOrderIterative1Stack()
 	println("======")
 
-	levelOrder(root)
+	root.levelOrder()
 	println("======")
 }
 
 // In-Order Recursive Traversal
-fun inOrderRecursive(root: TreeNode?) {
-	if (root === null) {
+fun TreeNode?.inOrderRecursive() {
+	if (this === null) {
 		return
 	}
 
-	inOrderRecursive(root.left)
-	print(root.data)
-	inOrderRecursive(root.right)
+	this.left.inOrderRecursive()
+	print(this.data)
+	this.right.inOrderRecursive()
 }
 
 // In-Order Iterative Traversal
@@ -75,8 +75,8 @@ fun inOrderIterative(root: TreeNode) {
 }
 
 // Post-Order Iterative Traversal w/ 2 Stacks
-fun postOrderIterative2Stacks(root: TreeNode) {
-	var node = root
+fun TreeNode.postOrderIterative2Stacks() {
+	var node = this
 
 	val s1 = Stack<TreeNode>()
 	s1.push(node)
@@ -103,8 +103,8 @@ fun postOrderIterative2Stacks(root: TreeNode) {
 }
 
 // Post-Order Iterative w/ 1 Stack
-fun postOrderIterative1Stack(root: TreeNode) {
-	var node: TreeNode? = root
+fun TreeNode.postOrderIterative1Stack() {
+	var node: TreeNode? = this
 	val stack = Stack<TreeNode>()
 
 	while (node !== null || stack.isNotEmpty()) {
@@ -131,9 +131,9 @@ fun postOrderIterative1Stack(root: TreeNode) {
 }
 
 // Level-Order Traversal (Always Iterative)
-fun levelOrder(root: TreeNode) {
+fun TreeNode.levelOrder() {
 	val queue: Queue<TreeNode> = LinkedList<TreeNode>()
-	queue.add(root)
+	queue.add(this)
 
 	while (queue.isNotEmpty()) {
 		val curr = queue.remove()

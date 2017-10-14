@@ -15,24 +15,24 @@ fun main(args: Array<String>) {
 	root.right!!.right = TreeNode(6)
 
 	// should return 3 (a subtree consisting of 5 -> {3, 6})
-	println(largestBSTSize(root))
+	println(root.largestBSTSize())
 }
 
 // given a Binary Tree find the size of the largest Binary Search Tree among all its subtrees
-fun largestBSTSize(root: TreeNode): Int = largestBST(root).size
+fun TreeNode.largestBSTSize(): Int = largestBST().size
 
-fun largestBST(root: TreeNode?): Ret {
-	if (root === null) {
+fun TreeNode?.largestBST(): Ret {
+	if (this === null) {
 		return Ret(true, 0)
 	}
 
-	val lBST = largestBST(root.left)
-	val rBST = largestBST(root.right)
+	val lBST = this.left.largestBST()
+	val rBST = this.right.largestBST()
 
 	var isValid = lBST.isValid && rBST.isValid
 
-	if ((root.left !== null && root.left!!.data > root.data) ||
-			(root.right !== null && root.right!!.data < root.data)) {
+	if ((this.left !== null && this.left!!.data > this.data) ||
+			(this.right !== null && this.right!!.data < this.data)) {
 		isValid = false
 	}
 

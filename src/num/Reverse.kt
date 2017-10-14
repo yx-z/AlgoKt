@@ -1,7 +1,7 @@
 package num
 
 fun main(args: Array<String>) {
-	// reverseIter a non-negative integer
+	// reverse a non-negative integer
 	val testInt = 23450
 	println(testInt.reverseIter())
 	println(testInt.reverseRecur())
