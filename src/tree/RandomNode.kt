@@ -11,15 +11,15 @@ fun main(args: Array<String>) {
 	//   1   4 7  20
 	//      /
 	//     3
-	val root = TreeNode(5)
-	root.left = TreeNode(2)
-	root.left!!.left = TreeNode(1)
-	root.left!!.right = TreeNode(4)
-	root.left!!.right!!.left = TreeNode(3)
+	val root = BinaryTreeNode(5)
+	root.left = BinaryTreeNode(2)
+	root.left!!.left = BinaryTreeNode(1)
+	root.left!!.right = BinaryTreeNode(4)
+	root.left!!.right!!.left = BinaryTreeNode(3)
 
-	root.right = TreeNode(10)
-	root.right!!.right = TreeNode(20)
-	root.right!!.left = TreeNode(7)
+	root.right = BinaryTreeNode(10)
+	root.right!!.right = BinaryTreeNode(20)
+	root.right!!.left = BinaryTreeNode(7)
 
 	val times = 10
 	for (i in 1..times) {
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 	}
 }
 
-fun TreeNode.random(size: Int = 0): TreeNode {
+fun BinaryTreeNode.random(size: Int = 0): BinaryTreeNode {
 	// idx from 0 .. (size - 1), still #size nodes
 	val randIdx = if (size != 0) {
 		(Math.random() * size).toInt()
@@ -35,7 +35,7 @@ fun TreeNode.random(size: Int = 0): TreeNode {
 		(Math.random() * getSize()).toInt()
 	}
 
-	val queue: Queue<TreeNode> = LinkedList<TreeNode>()
+	val queue: Queue<BinaryTreeNode> = LinkedList<BinaryTreeNode>()
 	queue.add(this)
 	var idx = -1
 
@@ -60,7 +60,7 @@ fun TreeNode.random(size: Int = 0): TreeNode {
 	return this
 }
 
-fun TreeNode?.getSize(): Int {
+fun BinaryTreeNode?.getSize(): Int {
 	if (this == null) {
 		return 0
 	}

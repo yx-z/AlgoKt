@@ -1,13 +1,13 @@
 package tree
 
 fun main(args: Array<String>) {
-	val root = TreeNode(3)
-	root.left = TreeNode(5)
-	root.right = TreeNode(5)
+	val root = BinaryTreeNode(3)
+	root.left = BinaryTreeNode(5)
+	root.right = BinaryTreeNode(5)
 	println(root.isBST())
 }
 
-fun TreeNode?.isBST(): Boolean {
+fun BinaryTreeNode?.isBST(): Boolean {
 	if (this == null || (this.left == null && this.right == null)) {
 		return true
 	}

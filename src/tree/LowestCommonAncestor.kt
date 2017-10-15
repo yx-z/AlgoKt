@@ -2,17 +2,17 @@ package tree
 
 fun main(args: Array<String>) {
 	// 5 -> {2 -> {null, null}, 6 -> {null, 14}}
-	val root = TreeNode(5)
-	root.left = TreeNode(2)
-	root.right = TreeNode(6)
-	root.right!!.right = TreeNode(14
+	val root = BinaryTreeNode(5)
+	root.left = BinaryTreeNode(2)
+	root.right = BinaryTreeNode(6)
+	root.right!!.right = BinaryTreeNode(14
 	)
 	println(root.btLCA(root.left!!, root.right!!.right!!)!!.data)
 	println(root.bstLCARecur(root.left!!, root.right!!.right!!)!!.data)
 	println(root.bstLCAIter(root.left!!, root.right!!.right!!)!!.data)
 }
 
-fun TreeNode.btLCA(t1: TreeNode, t2: TreeNode): TreeNode? {
+fun BinaryTreeNode.btLCA(t1: BinaryTreeNode, t2: BinaryTreeNode): BinaryTreeNode? {
 	if (this == t1 || this == t2) {
 		return this
 	}
@@ -27,7 +27,7 @@ fun TreeNode.btLCA(t1: TreeNode, t2: TreeNode): TreeNode? {
 	return left ?: right
 }
 
-fun TreeNode.bstLCARecur(t1: TreeNode, t2: TreeNode): TreeNode? {
+fun BinaryTreeNode.bstLCARecur(t1: BinaryTreeNode, t2: BinaryTreeNode): BinaryTreeNode? {
 	if (this.data > t1.data && this.data > t2.data) {
 		return this.left?.bstLCARecur(t1, t2)
 	}
@@ -39,8 +39,8 @@ fun TreeNode.bstLCARecur(t1: TreeNode, t2: TreeNode): TreeNode? {
 	return this
 }
 
-fun TreeNode.bstLCAIter(t1: TreeNode, t2: TreeNode): TreeNode? {
-	var node: TreeNode? = this
+fun BinaryTreeNode.bstLCAIter(t1: BinaryTreeNode, t2: BinaryTreeNode): BinaryTreeNode? {
+	var node: BinaryTreeNode? = this
 	while (node != null) {
 		node = if (node.data < t1.data && node.data < t2.data) {
 			node.left

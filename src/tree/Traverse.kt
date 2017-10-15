@@ -11,12 +11,12 @@ fun main(args: Array<String>) {
 	//   2       5
 	//    \     / \
 	//     1   3   6
-	val root = TreeNode(3)
-	root.left = TreeNode(2)
-	root.right = TreeNode(5)
-	root.left!!.right = TreeNode(1)
-	root.right!!.left = TreeNode(3)
-	root.right!!.right = TreeNode(6)
+	val root = BinaryTreeNode(3)
+	root.left = BinaryTreeNode(2)
+	root.right = BinaryTreeNode(5)
+	root.left!!.right = BinaryTreeNode(1)
+	root.right!!.left = BinaryTreeNode(3)
+	root.right!!.right = BinaryTreeNode(6)
 
 	root.inOrderRecursive()
 	println()
@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
 }
 
 // In-Order Recursive Traversal
-fun TreeNode?.inOrderRecursive() {
+fun BinaryTreeNode?.inOrderRecursive() {
 	if (this === null) {
 		return
 	}
@@ -47,10 +47,10 @@ fun TreeNode?.inOrderRecursive() {
 }
 
 // In-Order Iterative Traversal
-fun inOrderIterative(root: TreeNode) {
-	var node: TreeNode? = root
+fun inOrderIterative(root: BinaryTreeNode) {
+	var node: BinaryTreeNode? = root
 
-	val stack = Stack<TreeNode>()
+	val stack = Stack<BinaryTreeNode>()
 	stack.push(node)
 
 	while (node!!.left !== null) {
@@ -75,13 +75,13 @@ fun inOrderIterative(root: TreeNode) {
 }
 
 // Post-Order Iterative Traversal w/ 2 Stacks
-fun TreeNode.postOrderIterative2Stacks() {
+fun BinaryTreeNode.postOrderIterative2Stacks() {
 	var node = this
 
-	val s1 = Stack<TreeNode>()
+	val s1 = Stack<BinaryTreeNode>()
 	s1.push(node)
 
-	val s2 = Stack<TreeNode>()
+	val s2 = Stack<BinaryTreeNode>()
 
 	while (s1.isNotEmpty()) {
 		node = s1.pop()
@@ -103,9 +103,9 @@ fun TreeNode.postOrderIterative2Stacks() {
 }
 
 // Post-Order Iterative w/ 1 Stack
-fun TreeNode.postOrderIterative1Stack() {
-	var node: TreeNode? = this
-	val stack = Stack<TreeNode>()
+fun BinaryTreeNode.postOrderIterative1Stack() {
+	var node: BinaryTreeNode? = this
+	val stack = Stack<BinaryTreeNode>()
 
 	while (node !== null || stack.isNotEmpty()) {
 		if (node !== null) {
@@ -131,8 +131,8 @@ fun TreeNode.postOrderIterative1Stack() {
 }
 
 // Level-Order Traversal (Always Iterative)
-fun TreeNode.levelOrder() {
-	val queue: Queue<TreeNode> = LinkedList<TreeNode>()
+fun BinaryTreeNode.levelOrder() {
+	val queue: Queue<BinaryTreeNode> = LinkedList<BinaryTreeNode>()
 	queue.add(this)
 
 	while (queue.isNotEmpty()) {
