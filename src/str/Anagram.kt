@@ -49,11 +49,5 @@ fun groupAnagram(arr: Array<String>): Array<String> {
 	return ans
 }
 
-fun String.sorted(): String = this
-		.chars()
-		.sorted()
-		.boxed()
-		.map { it -> it.toChar() }
-		.collect(Collectors.toList())
-		.toString()
+fun String.sorted(): String = asSequence().sorted().joinToString()
 
