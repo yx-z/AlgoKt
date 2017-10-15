@@ -1,4 +1,4 @@
-package tree.binary_tree
+package tree.bintree
 
 import java.util.*
 
@@ -11,15 +11,15 @@ fun main(args: Array<String>) {
 	//   1   4 7  20
 	//      /
 	//     3
-	val root = BinaryTreeNode(5)
-	root.left = BinaryTreeNode(2)
-	root.left!!.left = BinaryTreeNode(1)
-	root.left!!.right = BinaryTreeNode(4)
-	root.left!!.right!!.left = BinaryTreeNode(3)
+	val root = BinTreeNode(5)
+	root.left = BinTreeNode(2)
+	root.left!!.left = BinTreeNode(1)
+	root.left!!.right = BinTreeNode(4)
+	root.left!!.right!!.left = BinTreeNode(3)
 
-	root.right = BinaryTreeNode(10)
-	root.right!!.right = BinaryTreeNode(20)
-	root.right!!.left = BinaryTreeNode(7)
+	root.right = BinTreeNode(10)
+	root.right!!.right = BinTreeNode(20)
+	root.right!!.left = BinTreeNode(7)
 
 	val times = 10
 	for (i in 1..times) {
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 	}
 }
 
-fun BinaryTreeNode.random(size: Int = 0): BinaryTreeNode {
+fun BinTreeNode.random(size: Int = 0): BinTreeNode {
 	// idx from 0 .. (size - 1), still #size nodes
 	val randIdx = if (size != 0) {
 		(Math.random() * size).toInt()
@@ -35,7 +35,7 @@ fun BinaryTreeNode.random(size: Int = 0): BinaryTreeNode {
 		(Math.random() * getSize()).toInt()
 	}
 
-	val queue: Queue<BinaryTreeNode> = LinkedList<BinaryTreeNode>()
+	val queue: Queue<BinTreeNode> = LinkedList<BinTreeNode>()
 	queue.add(this)
 	var idx = -1
 
@@ -60,7 +60,7 @@ fun BinaryTreeNode.random(size: Int = 0): BinaryTreeNode {
 	return this
 }
 
-fun BinaryTreeNode?.getSize(): Int {
+fun BinTreeNode?.getSize(): Int {
 	if (this == null) {
 		return 0
 	}

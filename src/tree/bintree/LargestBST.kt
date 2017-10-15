@@ -1,4 +1,4 @@
-package tree.binary_tree
+package tree.bintree
 
 fun main(args: Array<String>) {
 	// sample tree
@@ -7,21 +7,21 @@ fun main(args: Array<String>) {
 	//   2       5
 	//    \     / \
 	//     1   3   6
-	val root = BinaryTreeNode(3)
-	root.left = BinaryTreeNode(2)
-	root.right = BinaryTreeNode(5)
-	root.left!!.right = BinaryTreeNode(1)
-	root.right!!.left = BinaryTreeNode(3)
-	root.right!!.right = BinaryTreeNode(6)
+	val root = BinTreeNode(3)
+	root.left = BinTreeNode(2)
+	root.right = BinTreeNode(5)
+	root.left!!.right = BinTreeNode(1)
+	root.right!!.left = BinTreeNode(3)
+	root.right!!.right = BinTreeNode(6)
 
 	// should return 3 (a subtree consisting of 5 -> {3, 6})
 	println(root.largestBSTSize())
 }
 
 // given a Binary Tree find the size of the largest Binary Search Tree among all its subtrees
-fun BinaryTreeNode.largestBSTSize(): Int = largestBST().size
+fun BinTreeNode.largestBSTSize(): Int = largestBST().size
 
-fun BinaryTreeNode?.largestBST(): Ret {
+fun BinTreeNode?.largestBST(): Ret {
 	if (this === null) {
 		return Ret(true, 0)
 	}

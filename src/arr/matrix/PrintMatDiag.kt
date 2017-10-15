@@ -1,8 +1,8 @@
-package arr
+package arr.matrix
 
 fun main(args: Array<String>) {
 	val matrix = arrayOf(
-			// 3 * 5 matrix
+			// 3 * 5 arr.matrix
 			arrayOf(1, 2, 3, 4, 5),
 			arrayOf(6, 7, 8, 9, 10),
 			arrayOf(11, 12, 13, 14, 15)

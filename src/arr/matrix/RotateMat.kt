@@ -3,7 +3,7 @@ package arr.matrix
 import java.util.*
 
 fun main(args: Array<String>) {
-	// given an n * n matrix
+	// given an n * n arr.matrix
 	// do a clockwise rotation
 
 	val test2 = arrayOf(

@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 	println(lenLISDPOpt(arr))
 }
 
-// sort the copied array and then solve by using LCS
+// arr.sort the copied array and then solve by using LCS
 fun lenLISByLCS(arr: Array<Int>): Int {
 	val copy = Arrays.copyOf(arr, arr.size)
 	Arrays.sort(copy)

@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 	// test a longer array
 	val arr = randomArray(length = 20000)
 
-	File("./src/arr/sort").listFiles()
+	File("./src/arr/arr.sort").listFiles()
 			.filter {
 				// exclude this util file and some *weird* sorting algorithms
 				it.name != "CorrectnessPerformanceTest.kt" &&
@@ -109,7 +109,7 @@ fun IntArray.swap(i1: Int, i2: Int) {
 fun randomArray(min: Int = 0, max: Int = 100, length: Int = 10) = IntArray(length) { (min..max).random() }
 
 /**
- * sort an array with smaller size and print out results
+ * arr.sort an array with smaller size and print out results
  */
 fun testCorrectness(min: Int = 0, max: Int = 100, length: Int = 10, sort: IntArray.() -> Unit): Boolean {
 	val arr = randomArray(min, max, length)
