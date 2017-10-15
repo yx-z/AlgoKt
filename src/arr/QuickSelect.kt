@@ -5,13 +5,13 @@ import arr.sort.swap
 // returns the k-th smallest element in the array
 fun main(args: Array<String>) {
 	val testArr = (1..5).toList().toIntArray()
-	println(testArr.findKthLargest(5))
+	println(testArr.kthSmallest(1))
 }
 
-fun IntArray.findKthLargest(k: Int): Int {
+fun IntArray.kthSmallest(k: Int): Int {
+	val index = k - 1
 	var start = 0
 	var end = this.size - 1
-	val index = this.size - k
 
 	while (start < end) {
 		val pivot = partion(start, end)
@@ -25,26 +25,26 @@ fun IntArray.findKthLargest(k: Int): Int {
 }
 
 private fun IntArray.partion(start: Int, end: Int): Int {
-	var start = start
-	var end = end
+	var left = start
+	var right = end
 
-	val pivot = start
+	val pivot = left
 
-	while (start <= end) {
-		while (start <= end && this[start] <= this[pivot]) {
-			start++
+	while (left <= right) {
+		while (left <= right && this[left] <= this[pivot]) {
+			left++
 		}
-		while (start <= end && this[end] > this[pivot]) {
-			end--
+		while (left <= right && this[right] > this[pivot]) {
+			right--
 		}
 
-		if (start > end) {
+		if (left > right) {
 			break
 		}
 
-		swap(start, end)
+		swap(left, right)
 	}
-	swap(end, pivot)
+	swap(right, pivot)
 
-	return end
+	return right
 }
