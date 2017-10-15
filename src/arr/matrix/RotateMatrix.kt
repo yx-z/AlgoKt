@@ -1,4 +1,4 @@
-package arr
+package arr.matrix
 
 import java.util.*
 

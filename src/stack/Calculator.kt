@@ -31,7 +31,7 @@ fun String.calc(): Double {
 
 			// is oper
 				else -> {
-					// push num and reset
+					// push math and reset
 					numStack.push(numBuilder.toString().toDouble())
 					numBuilder.setLength(0)
 

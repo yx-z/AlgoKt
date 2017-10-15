@@ -1,4 +1,4 @@
-package num
+package math
 
 fun main(args: Array<String>) {
 	// reverse a non-negative integer

@@ -1,4 +1,4 @@
-package num
+package math
 
 fun main(args: Array<String>) {
 	println(17.fact())

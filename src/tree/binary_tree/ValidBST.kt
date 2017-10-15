@@ -1,4 +1,4 @@
-package tree
+package tree.binary_tree
 
 fun main(args: Array<String>) {
 	val root = BinaryTreeNode(3)

@@ -1,6 +1,4 @@
-package num
-
-import com.sun.org.apache.xpath.internal.operations.Bool
+package math
 
 fun main(args: Array<String>) {
 	val LIMIT = 100000
