@@ -36,17 +36,21 @@ fun String.lSNoRepeat(): String {
 	var maxStart = 0
 	var maxEnd = 0
 	while (currEnd < length) {
-		while (currEnd < length && !set.contains(this[currEnd])) {
+		if (!set.contains(this[currEnd])) {
 			set.add(this[currEnd])
 			currEnd++
-		}
-		if (currEnd - currStart > maxEnd - maxStart) {
-			maxEnd = currEnd
-			maxStart = currStart
-		}
+		} else {
+			// find a repeated character
+			// remove start
+			// update info
+			if (currEnd - currStart > maxEnd - maxStart) {
+				maxEnd = currEnd
+				maxStart = currStart
+			}
 
-		set.remove(this[currStart])
-		currStart++
+			set.remove(this[currStart])
+			currStart++
+		}
 	}
 
 	return substring(maxStart, maxEnd)
