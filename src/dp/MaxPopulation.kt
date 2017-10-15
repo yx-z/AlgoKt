@@ -16,33 +16,32 @@ fun main(args: Array<String>) {
 }
 
 fun Array<Pair<Int, Int>>.getMostPopulationYear(): Int {
-	val minBirtYear = this.minBy { it.first }!!.first
+	val minBirthYear = this.minBy { it.first }!!.first
 	val maxDeathYear = this.maxBy { it.second }!!.second
-	val range = maxDeathYear - minBirtYear + 1
 
-	val year = IntArray(range)
+	val year = IntArray(maxDeathYear - minBirthYear + 1)
 	forEach { (birthYear, deathYear) ->
 		(birthYear..deathYear).forEach {
-			year[it - minBirtYear]++
+			year[it - minBirthYear]++
 		}
 	}
 
-	return year.withIndex().maxBy { it.value }!!.index + minBirtYear
+	return year.withIndex().maxBy { it.value }!!.index + minBirthYear
 }
 
 fun Array<Pair<Int, Int>>.getMostPopulationYearOptimize(): Int {
-	val minBirtYear = this.minBy { it.first }!!.first
+	val minBirthYear = this.minBy { it.first }!!.first
 	val maxDeathYear = this.maxBy { it.second }!!.second
-	val range = maxDeathYear - minBirtYear + 1
 
-	val year = IntArray(range)
+	val year = IntArray(maxDeathYear - minBirthYear + 1)
 	forEach { (birthYear, deathYear) ->
-		year[birthYear - minBirtYear]++
-		year[deathYear - minBirtYear]--
+		year[birthYear - minBirthYear]++
+		year[deathYear - minBirthYear]--
 	}
 
 	year.indices
 			.filter { it > 0 }
 			.forEach { year[it] += year[it - 1] }
-	return year.withIndex().maxBy { it.value }!!.index + minBirtYear
+	return year.withIndex().maxBy { it.value }!!.index + minBirthYear
 }
+
