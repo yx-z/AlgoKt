@@ -11,7 +11,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// test a longer array
-	val arr = randomArray(length = 10000)
+	val arr = randomArray(length = 20000)
 
 	File("./src/arr/sort").listFiles()
 			.filter {
