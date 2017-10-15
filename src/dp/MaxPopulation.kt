@@ -12,6 +12,7 @@ fun main(args: Array<String>) {
 			1990 to 1991
 	)
 	println(testArr.getMostPopulationYear())
+	println(testArr.getMostPopulationYearOptimize())
 }
 
 fun Array<Pair<Int, Int>>.getMostPopulationYear(): Int {
@@ -26,5 +27,22 @@ fun Array<Pair<Int, Int>>.getMostPopulationYear(): Int {
 		}
 	}
 
+	return year.withIndex().maxBy { it.value }!!.index + minBirtYear
+}
+
+fun Array<Pair<Int, Int>>.getMostPopulationYearOptimize(): Int {
+	val minBirtYear = this.minBy { it.first }!!.first
+	val maxDeathYear = this.maxBy { it.second }!!.second
+	val range = maxDeathYear - minBirtYear + 1
+
+	val year = IntArray(range)
+	forEach { (birthYear, deathYear) ->
+		year[birthYear - minBirtYear]++
+		year[deathYear - minBirtYear]--
+	}
+
+	year.indices
+			.filter { it > 0 }
+			.forEach { year[it] += year[it - 1] }
 	return year.withIndex().maxBy { it.value }!!.index + minBirtYear
 }
