@@ -13,12 +13,7 @@ fun String.decFreq(): String {
 	val list = ArrayList<Map.Entry<Char, Int>>()
 	map.forEach { list.add(it) }
 
-	val sb = StringBuilder()
-	list.sortedWith(compareBy({ -it.value }, { it.key }))
-			.forEach {
-				sb.append(it.key * it.value)
-			}
-	return sb.toString()
+	return list.sortedWith(compareBy({ -it.value }, { it.key })).joinToString("") { it.key * it.value }
 }
 
 operator fun Char.times(i: Int) = toString().repeat(i)
