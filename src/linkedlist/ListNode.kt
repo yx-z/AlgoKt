@@ -8,7 +8,7 @@ data class ListNode(var data: Int) {
 		sb
 				.append(data)
 				.append(" -> ")
-				.append(next?.toString()?:".")
+				.append(next?.toString() ?: ".")
 		return sb.toString()
 	}
 }

@@ -7,13 +7,7 @@ class BinTreeNode(var data: Int) {
 	override fun toString() = if (left == null && right == null) {
 		data.toString()
 	} else {
-		if (left != null && right != null) {
-			"$data -> [$left, $right]"
-		} else if (right == null) {
-			"$data -> [$left]"
-		} else {
-			"$data -> [, $right]"
-		}
+		"$data -> [${left ?: ""}, ${right ?: ""}]"
 	}
 }
 

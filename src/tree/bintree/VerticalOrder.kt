@@ -1,7 +1,6 @@
 package tree.bintree
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 // return the vertical order of a binary tree
 fun main(args: Array<String>) {
