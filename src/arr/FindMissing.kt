@@ -10,4 +10,4 @@ fun main(args: Array<String>) {
 
 fun IntArray.findMissingBySum() = size * (size + 1) / 2 - sum()
 
-fun IntArray.findMissingByXor() = (0 until size).fold(0) { acc, i -> acc xor this[i] } xor (0..size).fold(0) { acc, i -> acc xor i }
+fun IntArray.findMissingByXor() = (0 until size).fold(0) { acc, i -> acc xor this[i] } xor (0..size).reduce { acc, i -> acc xor i }
