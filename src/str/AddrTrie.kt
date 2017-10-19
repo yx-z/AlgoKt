@@ -75,10 +75,10 @@ fun main(args: Array<String>) {
 
 	println(testTrie)
 
-	println(testTrie["abcd"])
+	println(testTrie["abcd"]) // 501 s 6th st
 
 	println(testTrie.contains("bcd")) // true
-	println(testTrie[0])
+	println(testTrie[0]) // node 'a'
 
 	println(testTrie.contains("ab")) // false
 
