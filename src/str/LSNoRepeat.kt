@@ -25,9 +25,7 @@ fun String.lSNoRepeatBrute(): String {
 	return substring(maxStart, maxEnd)
 }
 
-fun String.noRepeat(): Boolean {
-	return toSet().size == length
-}
+fun String.noRepeat() = toSet().size == length
 
 fun String.lSNoRepeat(): String {
 	val set = HashSet<Char>()
