@@ -30,12 +30,13 @@ class AddrTrie {
 	fun insert(word: String, addr: String) {
 		var currChildren = root.children
 		word.withIndex().forEach { (i, c) ->
-			val currNode = if (currChildren[c.idx()] != null) {
-				currChildren[c.idx()]
+			val idx = c.idx()
+			val currNode = if (currChildren[idx] != null) {
+				currChildren[idx]
 			} else {
 				Node(c)
 			}
-			currChildren[c.idx()] = currNode
+			currChildren[idx] = currNode
 			currChildren = currNode!!.children
 
 			if (i == word.length - 1) {
@@ -49,17 +50,20 @@ class AddrTrie {
 	fun startWith(prefix: String) = search(prefix) != null
 
 	private fun search(word: String): Node? {
-		var currNode = root
 		var currMap = root.children
-		word.forEach {
-			if (currMap[it.idx()] == null) {
+		word.forEachIndexed { i, c ->
+			val currNode = currMap[c.idx()]
+			if (currNode == null) {
 				return null
 			}
-
-			currNode = currMap[it.idx()]!!
+			
+			if (i == word.length - 1) {
+				return currNode
+			}
+			
 			currMap = currNode.children
 		}
-		return currNode
+		return null
 	}
 
 	operator fun get(word: String) = search(word)?.address ?: ""
@@ -73,16 +77,11 @@ fun main(args: Array<String>) {
 	testTrie.insert("abc", "601 s white st")
 	testTrie.insert("bcd", "309 green st")
 
-	println(testTrie)
-
 	println(testTrie["abcd"]) // 501 s 6th st
-
-	println(testTrie.contains("bcd")) // true
 	println(testTrie[0]) // node 'a'
-
+	
+	println(testTrie.contains("bcd")) // true
 	println(testTrie.contains("ab")) // false
-
 	println(testTrie.startWith("ab")) // true
-
 	println(testTrie.contains("asfd")) // false
 }
