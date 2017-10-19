@@ -1,4 +1,4 @@
-package arr.matrix
+package arr.mat
 
 fun main(args: Array<String>) {
 	val matrix = arrayOf(
@@ -31,3 +31,4 @@ fun Array<Array<Int>>.printDiag() {
 		println()
 	}
 }
+
