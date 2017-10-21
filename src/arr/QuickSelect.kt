@@ -14,7 +14,7 @@ fun IntArray.kthSmallest(k: Int): Int {
 	var end = this.size - 1
 
 	while (start < end) {
-		val pivot = partion(start, end)
+		val pivot = partition(start, end)
 		when {
 			pivot < index -> start = pivot + 1
 			pivot > index -> end = pivot - 1
@@ -24,7 +24,7 @@ fun IntArray.kthSmallest(k: Int): Int {
 	return this[start]
 }
 
-private fun IntArray.partion(start: Int, end: Int): Int {
+private fun IntArray.partition(start: Int, end: Int): Int {
 	var left = start
 	var right = end
 
