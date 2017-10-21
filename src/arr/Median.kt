@@ -24,8 +24,11 @@ fun main(args: Array<String>) {
 	println(getMedianByComparing(test1, test2))
 }
 
-fun getMedianByMerging(a1: IntArray, a2: IntArray): Double {
-	val lenMerged = a1.size + a2.size
+// O((size1 + size2) / 2)
+fun getMedianByMerging(arr1: IntArray, arr2: IntArray): Double {
+	val size1 = arr1.size
+	val size2 = arr2.size
+	val lenMerged = size1 + size2
 	val midIdx = lenMerged / 2
 	var i1 = 0
 	var i2 = 0
@@ -37,10 +40,10 @@ fun getMedianByMerging(a1: IntArray, a2: IntArray): Double {
 		(0..midIdx).forEach {
 			prev = curr
 			curr = when {
-				i1 >= a1.size -> a2[i2++]
-				i2 >= a2.size -> a1[i1++]
-				a1[i1] < a2[i2] -> a1[i1++]
-				else -> a2[i2++]
+				i1 >= size1 -> arr2[i2++]
+				i2 >= size2 -> arr1[i1++]
+				arr1[i1] < arr2[i2] -> arr1[i1++]
+				else -> arr2[i2++]
 			}
 		}
 		return (curr + prev) / 2.0
@@ -49,10 +52,10 @@ fun getMedianByMerging(a1: IntArray, a2: IntArray): Double {
 	// odd length
 	(0..midIdx).forEach {
 		curr = when {
-			i1 >= a1.size -> a2[i2++]
-			i2 >= a1.size -> a1[i1++]
-			a1[i1] < a2[i2] -> a1[i1++]
-			else -> a2[i2++]
+			i1 >= arr1.size -> arr2[i2++]
+			i2 >= arr1.size -> arr1[i1++]
+			arr1[i1] < arr2[i2] -> arr1[i1++]
+			else -> arr2[i2++]
 		}
 	}
 	return curr.toDouble()
@@ -68,7 +71,7 @@ fun getMedianByComparing(arr1: IntArray, arr2: IntArray): Double {
 	}
 }
 
-// O(log(m + n))
+// O(log(size1 + size2))
 fun kth(arr1: IntArray, start1: Int, arr2: IntArray, start2: Int, k: Int): Int {
 	if (start1 >= arr1.size) {
 		return arr2[start2 + k - 1]
@@ -100,6 +103,7 @@ fun kth(arr1: IntArray, start1: Int, arr2: IntArray, start2: Int, k: Int): Int {
 	}
 }
 
+// O(size1 + size2)
 infix fun IntArray.merge(intArr: IntArray): IntArray {
 	val retArr = IntArray(size + intArr.size)
 	var i1 = size - 1
