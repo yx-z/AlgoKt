@@ -9,8 +9,8 @@ fun main(args: Array<String>) {
 	println(time { listPrime(LIMIT) })
 	println(time { listByIsPrime(LIMIT) })
 
-	println(4.thPrime()) // 4th prime = 7
-	println(Arrays.toString(4.thPrimes())) // first 4 primes = [2, 3, 5, 7]
+	println(5.thPrime()) // 5th prime = 11
+	println(Arrays.toString(5.thPrimes())) // first 5 primes = [2, 3, 5, 7, 11]
 }
 
 /**
@@ -81,15 +81,15 @@ fun Int.thPrime(): Int {
 	}
 
 	var count = 0
-	var num = 1
+	var num = 2
 	while (count < this) {
-		num++
 		while (!num.isPrime()) {
 			num++
 		}
 		count++
+		num++
 	}
-	return num
+	return num - 1
 }
 
 fun Int.thPrimes(): IntArray {
