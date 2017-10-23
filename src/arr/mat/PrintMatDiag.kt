@@ -3,9 +3,9 @@ package arr.mat
 fun main(args: Array<String>) {
 	val matrix = arrayOf(
 			// 3 * 5 arr.matrix
-			arrayOf(1, 2, 3, 4, 5),
-			arrayOf(6, 7, 8, 9, 10),
-			arrayOf(11, 12, 13, 14, 15)
+			intArrayOf(1, 2, 3, 4, 5),
+			intArrayOf(6, 7, 8, 9, 10),
+			intArrayOf(11, 12, 13, 14, 15)
 	)
 	// 1.  1
 	// 2.  6, 2
@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 	matrix.printDiag()
 }
 
-fun Array<Array<Int>>.printDiag() {
+fun Array<IntArray>.printDiag() {
 	val numRows = this.size
 	val numCols = this[0].size
 	val totalRows = numRows + numCols - 1

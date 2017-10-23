@@ -4,14 +4,14 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// test arrays
-	val sa1 = arrayOf(1, 4, 5, 6, 7)
-	val sa2 = arrayOf(2, 3, 5, 8)
+	val sa1 = intArrayOf(1, 4, 5, 6, 7)
+	val sa2 = intArrayOf(2, 3, 5, 8)
 
 	// 8, 1, 7, 2, 6, 3, 5, 4, 5
 	println(Arrays.toString(zigzagArr(sa1, sa2)))
 }
 
-fun zigzagArr(sorted1: Array<Int>, sorted2: Array<Int>): Array<Int> {
+fun zigzagArr(sorted1: IntArray, sorted2: IntArray): IntArray {
 	val s1 = sorted1.size
 	val s2 = sorted2.size
 
@@ -20,7 +20,7 @@ fun zigzagArr(sorted1: Array<Int>, sorted2: Array<Int>): Array<Int> {
 	var h1 = s1 - 1
 	var h2 = s2 - 1
 
-	val ans = Array(s1 + s2) { 0 }
+	val ans = IntArray(s1 + s2)
 	var idx = 0
 
 	var findLargest = true

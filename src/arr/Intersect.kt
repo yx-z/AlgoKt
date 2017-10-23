@@ -3,16 +3,16 @@ package arr
 import java.util.*
 
 fun main(args: Array<String>) {
-	val a1 = arrayOf(1, 2, 2, 3)
-	val a2 = arrayOf(1, 2, 2, 2, 3, 3)
+	val a1 = intArrayOf(1, 2, 2, 3)
+	val a2 = intArrayOf(1, 2, 2, 2, 3, 3)
 
 	println(Arrays.toString(a1.intersectNoDuplicate(a2)))
 	println(Arrays.toString(a1.intersectWithDuplicate(a2)))
 }
 
-fun Array<Int>.intersectNoDuplicate(arr: Array<Int>) = this.toSet().intersect(arr.toSet()).toIntArray()
+fun IntArray.intersectNoDuplicate(arr: IntArray) = this.toSet().intersect(arr.toSet()).toIntArray()
 
-fun Array<Int>.intersectWithDuplicate(arr: Array<Int>): Array<Int> {
+fun IntArray.intersectWithDuplicate(arr: IntArray): Array<Int> {
 	Arrays.sort(this)
 	Arrays.sort(arr)
 

@@ -4,7 +4,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// test array
-	val arr = arrayOf(1, 1, 1, 3, 3, 5, 6)
+	val arr = intArrayOf(1, 1, 1, 3, 3, 5, 6)
 
 	println(arr.containsDuplicateOneLiner())
 	println(arr.containsDuplicate())
@@ -13,9 +13,9 @@ fun main(args: Array<String>) {
 }
 
 // Duplicate Detection
-fun <T> Array<T>.containsDuplicateOneLiner() = setOf(this).size != this.size
+fun IntArray.containsDuplicateOneLiner() = setOf(this).size != this.size
 
-fun Array<Int>.containsDuplicate(): Boolean {
+fun IntArray.containsDuplicate(): Boolean {
 	for (i in 1 until this.size) {
 		if (this[i] == this[i - 1]) {
 			return true
@@ -25,7 +25,7 @@ fun Array<Int>.containsDuplicate(): Boolean {
 }
 
 // Duplicate Removal
-fun Array<Int>.removeDuplicate(): Int {
+fun IntArray.removeDuplicate(): Int {
 	var idx = 1
 	for (i in 1 until this.size) {
 		if (this[i] != this[i - 1]) {

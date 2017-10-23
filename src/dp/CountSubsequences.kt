@@ -2,11 +2,11 @@ package dp
 
 fun main(args: Array<String>) {
 	// "", "a", "b", "ab", "ba", "aa", "aba" -> 7
-	println("aba".countDistinctSubsequence())
+	println("aba".countSubsequences())
 }
 
 // return the number of distinct subsequences of that string
-fun String.countDistinctSubsequence(): Int {
+fun String.countSubsequences(): Int {
 	val dup = HashMap<Char, Int>()
 	val dp = IntArray(length + 1)
 	dp[0] = 1
