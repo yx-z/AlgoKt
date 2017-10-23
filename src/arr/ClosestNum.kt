@@ -4,9 +4,10 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// test array
-	val arr = arrayOf(1, 4, 8, 6, 3)
-	
-	// should return [(4, 3)]
+	val arr = arrayOf(1, 4, 8, 6, 3, 2)
+
+	// no ordering between or within the pairs
+	// should return [(4, 3), (3, 2), (1, 2)]
 	println(arr.closestPairs())
 }
 
@@ -18,7 +19,7 @@ fun Array<Int>.closestPairs(): List<Pair<Int, Int>> {
 	
 	for (i in 1 until this.size) {
 		val diff = this[i] - this[i - 1]
-		if (diff < min) {
+		if (diff <= min) {
 			if (diff < min) {
 				min = diff
 				ans.clear()
