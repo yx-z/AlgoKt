@@ -7,10 +7,10 @@ fun main(args: Array<String>) {
 	// mark 1 as island, 0 as ocean
 	// and given that islands are four-directionally connected
 	val testMap = arrayOf(
-			arrayOf(1, 1, 0, 0, 1),
-			arrayOf(1, 0, 0, 1, 0),
-			arrayOf(0, 1, 1, 1, 0),
-			arrayOf(1, 0, 0, 0, 1)
+			intArrayOf(1, 1, 0, 0, 1),
+			intArrayOf(1, 0, 0, 1, 0),
+			intArrayOf(0, 1, 1, 1, 0),
+			intArrayOf(1, 0, 0, 0, 1)
 	)
 	println(testMap.countIslands())
 	println(testMap.largestIslandArea())
@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 
 // find the number of the islands
 // e.x. should return 5 for `testMap`
-fun Array<Array<Int>>.countIslands(): Int {
+fun Array<IntArray>.countIslands(): Int {
 	val m = this.size
 	val n = this[0].size
 
@@ -41,7 +41,7 @@ fun Array<Array<Int>>.countIslands(): Int {
 
 // find the area of the largest island
 // ex. should return 4 for `testMap`
-fun Array<Array<Int>>.largestIslandArea(): Int {
+fun Array<IntArray>.largestIslandArea(): Int {
 	val m = this.size
 	val n = this[0].size
 
@@ -61,7 +61,7 @@ fun Array<Array<Int>>.largestIslandArea(): Int {
 	return maxArea
 }
 
-fun Array<Array<Int>>.dfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>) {
+fun Array<IntArray>.dfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>) {
 	if (this[row][col] == 0 || hasVisited[row][col]) {
 		return
 	}
@@ -84,7 +84,7 @@ fun Array<Array<Int>>.dfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>)
 	}
 }
 
-fun Array<Array<Int>>.bfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>) {
+fun Array<IntArray>.bfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>) {
 	if (this[row][col] == 0 || hasVisited[row][col]) {
 		return
 	}
@@ -114,7 +114,7 @@ fun Array<Array<Int>>.bfs(row: Int, col: Int, hasVisited: Array<Array<Boolean>>)
 	}
 }
 
-fun Array<Array<Int>>.dfsArea(row: Int, col: Int, hasVisited: Array<Array<Boolean>>, area: Int = 0): Int {
+fun Array<IntArray>.dfsArea(row: Int, col: Int, hasVisited: Array<Array<Boolean>>, area: Int = 0): Int {
 	if (this[row][col] == 0 || hasVisited[row][col]) {
 		return area
 	}
