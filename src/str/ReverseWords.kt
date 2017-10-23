@@ -1,7 +1,5 @@
 package str
 
-import java.util.*
-
 fun main(args: Array<String>) {
 	val testStr = "This is just a sample test sentence with a lot of words and spaces in it"
 	println(testStr.reverseWordsByBuilder())

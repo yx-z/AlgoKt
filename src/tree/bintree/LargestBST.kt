@@ -36,12 +36,11 @@ fun BinTreeNode?.largestBST(): Ret {
 		isValid = false
 	}
 
-	if (!isValid) {
-		return Ret(false, Math.max(lBST.size, rBST.size))
+	return if (isValid) {
+		Ret(true, lBST.size + rBST.size + 1, lBST.min, rBST.max)
+	} else {
+		Ret(false, Math.max(lBST.size, rBST.size))
 	}
-
-	return Ret(true, lBST.size + rBST.size + 1, lBST.min, rBST.max)
-
 }
 
 class Ret(var isValid: Boolean, var size: Int, var min: Int = 0, var max: Int = 0)

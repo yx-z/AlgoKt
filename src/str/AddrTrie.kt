@@ -45,18 +45,15 @@ class AddrTrie {
 		}
 	}
 
-	fun contains(word: String) = search(word)?.isEnd() ?: false
+	fun contains(word: String) = search(word)?.isEnd() == true
 
 	fun startWith(prefix: String) = search(prefix) != null
 
 	private fun search(word: String): Node? {
 		var currMap = root.children
 		word.forEachIndexed { i, c ->
-			val currNode = currMap[c.idx()]
-			if (currNode == null) {
-				return null
-			}
-			
+			val currNode = currMap[c.idx()] ?: return null
+
 			if (i == word.length - 1) {
 				return currNode
 			}

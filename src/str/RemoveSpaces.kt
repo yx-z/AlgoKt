@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 }
 
 // O(String.length)
-fun String.removeSpaces() = this.filter { it != ' ' }.map { it }.joinToString("")
+fun String.removeSpaces() = filter { it != ' ' }.map { it }.joinToString("")
 
 // O(#spaces)
 fun String.trim(): String {

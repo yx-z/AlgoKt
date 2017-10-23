@@ -12,6 +12,7 @@ fun main(args: Array<String>) {
 	println(root.bstLCAIter(root.left!!, root.right!!.right!!)!!.data)
 }
 
+// binary tree
 fun BinTreeNode.btLCA(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
 	if (this == t1 || this == t2) {
 		return this
@@ -27,6 +28,7 @@ fun BinTreeNode.btLCA(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
 	return left ?: right
 }
 
+// binary search tree
 fun BinTreeNode.bstLCARecur(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
 	if (this.data > t1.data && this.data > t2.data) {
 		return this.left?.bstLCARecur(t1, t2)
