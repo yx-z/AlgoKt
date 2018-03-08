@@ -7,6 +7,8 @@ fun main(args: Array<String>) {
 
 	println(lenLISByLCS(arr))
 	println(lenLISDP(arr))
+	println(lenLISDP2(arr))
+	println(lenLISDP3(arr))
 	println(lenLISDPOpt(arr))
 }
 
@@ -41,6 +43,45 @@ fun lenLISDP(arr: Array<Int>): Int {
 	}
 
 	return max
+}
+
+// another DP with O(N^2)
+fun lenLISDP2(arr: Array<Int>): Int {
+	val len = arr.size
+	val hold = IntArray(len)
+	var lenMax = 0
+	for (i in (len - 1) downTo 0) {
+		var max = 0
+		for (j in (i + 1) until len) {
+			if (arr[i] < arr[j]) {
+				max = maxOf(max, hold[j])
+			}
+		}
+		hold[i] = max + 1
+		lenMax = maxOf(hold[i], lenMax)
+	}
+	return lenMax
+}
+
+// yet another DP with O(N^2)
+fun lenLISDP3(arr: Array<Int>): Int {
+	val len = arr.size
+	val copy = IntArray(len + 1)
+	copy[0] = Int.MIN_VALUE
+	arr.forEachIndexed { i, v -> copy[i + 1] = v }
+	val hold = Array(len + 1) { IntArray(len + 1) }
+	for (col in len downTo 0) {
+		for (row in 0..col) {
+			if (col < len) {
+				hold[row][col] = if (copy[row] > copy[col]) {
+					hold[row][col + 1]
+				} else {
+					maxOf(hold[row][col + 1], 1 + hold[col][col + 1])
+				}
+			}
+		}
+	}
+	return hold[0][0]
 }
 
 // Optimized DP with O(N log N)
