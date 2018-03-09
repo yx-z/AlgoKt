@@ -11,8 +11,8 @@ operator fun String.get(range: IntRange) = substring(range)
 inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
 		Arrays.copyOfRange(this, range.first, range.last + 1) ?: arrayOfNulls(0)
 
-operator fun IntArray.get(range: IntRange) = Arrays.copyOfRange(this, range.first, range.last + 1)
-		?: intArrayOf()
+operator fun IntArray.get(range: IntRange) =
+		Arrays.copyOfRange(this, range.first, range.last + 1) ?: intArrayOf()
 
 class UtilTest {
 
