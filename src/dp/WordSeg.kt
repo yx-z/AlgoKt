@@ -1,14 +1,6 @@
 package dp
 
 // given a string and `isWord` method, determine if the string can be segmented into different words
-fun main(args: Array<String>) {
-	// variations of "this is just an example of a very long string"
-	val strs = arrayOf("thisisjustanexampleofaverylongstring", // true
-			"thisisjstanexamplofavrylngstr", // false
-			"thisisjustanexampleofaverylongstringana", // true
-			"tthisisjustanexampleofaverylongstring") // false
-	strs.forEach { println(it.canBeSegmented()) }
-}
 
 // simulation of `isWord`
 val dict = setOf("this", "is", "just", "an", "example", "of", "a", "very", "long", "string")
@@ -16,16 +8,28 @@ val dict = setOf("this", "is", "just", "an", "example", "of", "a", "very", "long
 fun String.isWord(start: Int, end: Int) = dict.contains(this.substring(start, end + 1))
 
 fun String.canBeSegmented(): Boolean {
-	val canBeSegmented = BooleanArray(length + 1)
-	canBeSegmented[length] = true
+	// dp[i] = this.subString(i) can be segmented
+	val dp = BooleanArray(length + 1)
+	// sentinel value
+	dp[length] = true
 
-	outer@ for (i in length - 1 downTo 0) {
-		for (j in i until length) {
-			if (isWord(i, j) && canBeSegmented[j + 1]) {
-				canBeSegmented[i] = true
-				continue@outer
-			}
-		}
+	for (i in length - 1 downTo 0) {
+		// iterate over the rest and set "breakpoint" there
+		// if we can divide the rest into a word && string after the breakpoint can be segmented
+		// then current suffix can also be segmented
+		dp[i] = (i until length).any { isWord(i, it) && dp[it + 1] }
 	}
-	return canBeSegmented[0]
+
+	// want the whole string
+	return dp[0]
+}
+
+// test cases
+fun main(args: Array<String>) {
+	// variations of "this is just an example of a very long string"
+	val strs = arrayOf("thisisjustanexampleofaverylongstring", // true
+			"thisisjstanexamplofavrylngstr", // false
+			"thisisjustanexampleofaverylongstringana", // true
+			"tthisisjustanexampleofaverylongstring") // false
+	strs.forEach { println(it.canBeSegmented()) }
 }

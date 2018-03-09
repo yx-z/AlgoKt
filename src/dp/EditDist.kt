@@ -1,11 +1,9 @@
-import java.lang.Math.min
-
 // Edit Distance between 2 Strings
 // count of add/remove/replace modifications to match 2 Strings
 fun main(args: Array<String>) {
 	// test strings
-	val s1 = "abdef"
-	val s2 = "acdef"
+	val s1 = "algorithm"
+	val s2 = "altruistic"
 
 	println(editDistRecursion(s1, s2))
 	println(editDistDP(s1, s2))
@@ -24,8 +22,8 @@ fun editDistRecursion(s1: String, s2: String): Int {
 		editDistRecursion(s1.substring(1), s2.substring(1))
 	} else {
 		1 + min(editDistRecursion(s1.substring(1), s2),
-				min(editDistRecursion(s1, s2.substring(1)),
-						editDistRecursion(s1.substring(1), s2.substring(1))))
+				editDistRecursion(s1, s2.substring(1)),
+				editDistRecursion(s1.substring(1), s2.substring(1)))
 	}
 }
 
@@ -41,6 +39,13 @@ fun editDistDP(s1: String, s2: String): Int {
 	val l1 = s1.length
 	val l2 = s2.length
 
+	// dp[i][j] = edit distance between s1.substring(i) and s2.substring(j)
+	// dp[i][j] = i, if j == 0, i.e. insert i characters
+	//          = j, if i == 0
+	//          = min(dp[i - 1][j], dp[j - 1][i]) + 1, if s1[i] != s2[j]
+	//          = min(dp[i - 1][j] + 1, dp[j - 1][i] + 1, dp[i - 1][j - 1]), if s1[i] == s2[j]
+	//          * this case can be optimized to just dp[i - 1][j - 1] in that if two characters are
+	//            the same, we can leave them unchanged
 	val dp = Array(l1 + 1) { Array(l2 + 1) { 0 } }
 
 	for (i in 0..l1) {
@@ -55,10 +60,14 @@ fun editDistDP(s1: String, s2: String): Int {
 			dp[i1][i2] = if (s1[i1 - 1] == s2[i2 - 1]) {
 				dp[i1 - 1][i2 - 1]
 			} else {
-				1 + min(dp[i1 - 1][i2], min(dp[i1][i2 - 1], dp[i1 - 1][i2 - 1]))
+				1 + min(dp[i1 - 1][i2], dp[i1][i2 - 1], dp[i1 - 1][i2 - 1])
 			}
 		}
 	}
 
 	return dp[l1][l2]
 }
+
+// util function
+fun min(vararg ints: Int) = ints.min() ?: 0
+

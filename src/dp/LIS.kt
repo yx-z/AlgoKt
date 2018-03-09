@@ -48,17 +48,15 @@ fun lenLISDP(arr: Array<Int>): Int {
 // another DP with O(N^2)
 fun lenLISDP2(arr: Array<Int>): Int {
 	val len = arr.size
-	val hold = IntArray(len)
+
+	// dp[i] = length of LIS that starts at arr[i]
+	// dp[i] = 0, if i > n
+	//         1 + max(dp[j]) where j > i && arr[j] > arr[i], o/w
+	val dp = IntArray(len)
 	var lenMax = 0
 	for (i in (len - 1) downTo 0) {
-		var max = 0
-		for (j in (i + 1) until len) {
-			if (arr[i] < arr[j]) {
-				max = maxOf(max, hold[j])
-			}
-		}
-		hold[i] = max + 1
-		lenMax = maxOf(hold[i], lenMax)
+		dp[i] = 1 + (dp.filterIndexed { j, _ -> j > i && arr[j] > arr[i] }.max() ?: 0)
+		lenMax = maxOf(dp[i], lenMax)
 	}
 	return lenMax
 }
