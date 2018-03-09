@@ -11,7 +11,8 @@ fun main(args: Array<String>) {
 			11, // true
 			9, // false
 			10) // true
-	ints.forEach { println(arr.subsetSum(it)) }
+//	ints.forEach { println(arr.subsetSum(it)) }
+	ints.forEach { println(arr.subsetSum2(it)) }
 }
 
 // O(size * n)
@@ -33,3 +34,12 @@ fun IntArray.subsetSum(n: Int): Boolean {
 	return dp[0][n]
 }
 
+
+// O(2^n)
+fun IntArray.subsetSum2(n: Int, idx: Int = 0): Boolean {
+	if (idx == size - 1) {
+		return this[idx] == n || n == 0
+	}
+
+	return subsetSum2(n, idx + 1) || subsetSum2(n - this[idx], idx + 1)
+}
