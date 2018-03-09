@@ -39,15 +39,17 @@ fun editDistDP(s1: String, s2: String): Int {
 	val l1 = s1.length
 	val l2 = s2.length
 
-	// dp[i][j] = edit distance between s1.substring(i) and s2.substring(j)
+	// dp[i][j] = edit distance between s1[1..i] and s2[1..j]
+	//            *here strings are one-indexed
 	// dp[i][j] = i, if j == 0, i.e. insert i characters
 	//          = j, if i == 0
 	//          = min(dp[i - 1][j], dp[j - 1][i]) + 1, if s1[i] != s2[j]
 	//          = min(dp[i - 1][j] + 1, dp[j - 1][i] + 1, dp[i - 1][j - 1]), if s1[i] == s2[j]
-	//          * this case can be optimized to just dp[i - 1][j - 1] in that if two characters are
+	//            *this case can be optimized to just dp[i - 1][j - 1] in that if two characters are
 	//            the same, we can leave them unchanged
 	val dp = Array(l1 + 1) { Array(l2 + 1) { 0 } }
 
+	// base case for emptys strings
 	for (i in 0..l1) {
 		dp[i][0] = i
 	}
@@ -67,7 +69,3 @@ fun editDistDP(s1: String, s2: String): Int {
 
 	return dp[l1][l2]
 }
-
-// util function
-fun min(vararg ints: Int) = ints.min() ?: 0
-
