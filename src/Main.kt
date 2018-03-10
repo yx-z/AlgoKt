@@ -1,11 +1,13 @@
 import org.junit.jupiter.api.Test
+import java.lang.NullPointerException
 import java.util.Arrays
 
-// util functions
-fun min(vararg ints: Int) = ints.min() ?: 0
+// vararg version of min/max
+fun min(vararg ints: Int) = ints.min() ?: throw NullPointerException("no minimum value")
 
-fun max(vararg ints: Int) = ints.max() ?: 0
+fun max(vararg ints: Int) = ints.max() ?: throw NullPointerException("no maximum value")
 
+// substring and subarray selection
 operator fun String.get(range: IntRange) = substring(range)
 
 inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
@@ -13,6 +15,31 @@ inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
 
 operator fun IntArray.get(range: IntRange) =
 		Arrays.copyOfRange(this, range.first, range.last + 1) ?: intArrayOf()
+
+// python like multidimensional array indexing
+operator fun Array<IntArray>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun <T> Array<Array<T>>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun Array<Array<IntArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
+operator fun <T> Array<Array<Array<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
+operator fun Array<IntArray>.set(i1: Int, i2: Int, v: Int) {
+	this[i1][i2] = v
+}
+
+operator fun <T> Array<Array<T>>.set(i1: Int, i2: Int, v: T) {
+	this[i1][i2] = v
+}
+
+operator fun Array<Array<IntArray>>.set(i1: Int, i2: Int, i3: Int, v: Int) {
+	this[i1][i2][i3] = v
+}
+
+operator fun <T> Array<Array<Array<T>>>.set(i1: Int, i2: Int, i3: Int, v: T) {
+	this[i1][i2][i3] = v
+}
 
 class UtilTest {
 
@@ -27,14 +54,21 @@ class UtilTest {
 	}
 
 	@Test
-	fun testStringGet() {
+	fun testStringSlicing() {
 		assert("abc"[1..2] == "bc")
 	}
 
 	@Test
-	fun testArrayGet() {
+	fun testArraySlicing() {
 		assert(arrayOf(1, 3, 4)[1..2].contentEquals(arrayOf(3, 4)))
 		assert(intArrayOf(1, 3, 2, 2, 9)[2..4].contentEquals(intArrayOf(2, 2, 9)))
+	}
+
+	@Test
+	fun testArrayIndexing() {
+		val arr = Array(3) { Array(5) { IntArray(4) { 2 } } }
+		arr[0, 0, 0] = 6
+		assert(arr[0, 0, 0] == 6)
 	}
 }
 
