@@ -14,29 +14,21 @@ fun main(args: Array<String>) {
 fun String.reverseWordsByBuilder() = split(" ")
 		.joinToString(" ") { StringBuilder(it).reverse() }
 
-fun String.reverseWords() = split(" ").joinToString(" ") { it.reverse() }
-
-fun String.reverse(): String {
-	val sb = StringBuilder()
-	((length - 1) downTo 0).forEach {
-		sb.append(this[it])
-	}
-	return sb.toString()
-}
+fun String.reverseWords() = split(" ").joinToString(" ") { it.reversed() }
 
 fun String.reverseWordsRaw(): String {
 	val sb = StringBuilder()
 	val word = StringBuilder()
 	forEach {
 		if (it == ' ') {
-			sb.append(word.toString().reverse())
+			sb.append(word.toString().reversed())
 			sb.append(' ')
 			word.setLength(0)
 		} else {
 			word.append(it)
 		}
 	}
-	return sb.append(word.toString().reverse()).toString()
+	return sb.append(word.toString().reversed()).toString()
 }
 
 fun CharArray.reverseWordsInPlace() {

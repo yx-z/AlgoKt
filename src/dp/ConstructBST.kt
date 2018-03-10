@@ -19,9 +19,9 @@ fun IntArray.cost(): Int {
 		for (i in j downTo 0) {
 			dp[i][j] = this[i..j].sum() + ((i..j).map {
 				when {
-					it - 1 >= 0 && it + 1 < size -> dp[i][it - 1] + dp[it + 1][j]
 					it - 1 < 0 -> dp[it + 1][j]
-					else -> dp[i][it - 1]
+					it + 1 >= size -> dp[i][it - 1]
+					else -> dp[i][it - 1] + dp[it + 1][j]
 				}
 			}.min() ?: 0)
 		}
