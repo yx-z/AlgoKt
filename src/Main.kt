@@ -2,12 +2,12 @@ import org.junit.jupiter.api.Test
 import java.lang.NullPointerException
 import java.util.Arrays
 
-// vararg version of min/max
+// multi-parameter version of min/max
 fun min(vararg ints: Int) = ints.min() ?: throw NullPointerException("no minimum value")
 
 fun max(vararg ints: Int) = ints.max() ?: throw NullPointerException("no maximum value")
 
-// substring and subarray selection
+// substring and subarray slicing
 operator fun String.get(range: IntRange) = substring(range)
 
 inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =

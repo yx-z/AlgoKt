@@ -7,7 +7,7 @@ import max
 // longest alternating subsequence
 fun main(args: Array<String>) {
 	val arr = arrayListOf(5, 6, 7, 4, 8, 10, 9)
-	println(arr.las())
+	println(arr.las()) // == 5, ex. [5, 6, 4, 10, 9]
 }
 
 fun ArrayList<Int>.las(): Int {
