@@ -7,6 +7,7 @@ fun main(args: Array<String>) {
 }
 
 // Longest Alternating Subsequence
+// see dp.LAS for a faster DP solution
 fun IntArray.las(last: Int, curr: Int, sign: Char): Int = when {
 	curr >= size -> 0
 	sign == '+' && this[curr] > last -> {
