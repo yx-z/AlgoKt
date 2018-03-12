@@ -25,6 +25,10 @@ operator fun Array<Array<IntArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2
 
 operator fun <T> Array<Array<Array<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
 
+operator fun Array<Array<Array<IntArray>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
+operator fun <T> Array<Array<Array<Array<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
 operator fun Array<IntArray>.set(i1: Int, i2: Int, v: Int) {
 	this[i1][i2] = v
 }
@@ -39,6 +43,14 @@ operator fun Array<Array<IntArray>>.set(i1: Int, i2: Int, i3: Int, v: Int) {
 
 operator fun <T> Array<Array<Array<T>>>.set(i1: Int, i2: Int, i3: Int, v: T) {
 	this[i1][i2][i3] = v
+}
+
+operator fun Array<Array<Array<IntArray>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: Int) {
+	this[i1][i2][i3][i4] = v
+}
+
+operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
+	this[i1][i2][i3][i4] = v
 }
 
 class UtilTest {
