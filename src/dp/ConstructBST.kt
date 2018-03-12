@@ -7,10 +7,10 @@ import get
 // where cost = sum over all nodes (# of ancestors * freq)  [one's ancestor includes itself]
 fun main(args: Array<String>) {
 	val freq = intArrayOf(5, 8, 2, 1, 9, 5)
-	println(freq.cost())
+	println(freq.bstCost())
 }
 
-fun IntArray.cost(): Int {
+fun IntArray.bstCost(): Int {
 	// dp[i][j] = optimal cost for this[i..j]
 	// dp[i][j] = 0, if i > j
 	//            sum(this[i..j]) + min(dp[i][r - 1] + dp[r + 1][j]): i <= r <= j, o/w
