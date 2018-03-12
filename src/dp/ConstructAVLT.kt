@@ -7,7 +7,7 @@ import kotlin.math.abs
 // similar to 'ConstructBST'
 // construct a balanced BST (AVL Tree) that must satisfy |h(left) - h(right)| < 2
 fun main(args: Array<String>) {
-	val freq = intArrayOf(5, 8, 2, 1, 9, 5)
+	val freq = intArrayOf(5)
 	println(freq.avltCost())
 }
 
@@ -27,6 +27,9 @@ fun IntArray.avltCost(): Int {
 				var cost = this[i..j].sum()
 				var h = 0
 				when {
+					r - 1 < 0 && r + 1 >= size -> {
+						// do nothing
+					}
 					r - 1 < 0 -> {
 						if (dp[r + 1][j].first < 2) {
 							cost += dp[r + 1][j].second
