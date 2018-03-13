@@ -40,7 +40,7 @@ fun FloatArray.largestSum(): Float {
 
 // optimized: O(n)
 fun FloatArray.largestSumOpt(): Float {
-	// dp[i] = max sum starting at i
+	// dp[i] = max sum for this[i until size]
 	// dp[i] = 0, if i !in 0 until size
 	//       = dp[i + 1], if this[i] < 0
 	//       = this[i] + max(0, tmpSum + dp[nex]), o/w
