@@ -61,9 +61,7 @@ fun Array<IntArray>.largestPattern(): Int {
 	var maxSize = Int.MIN_VALUE
 	for (i in 1 until dpFlat.size) {
 		if (dpFlat[i].second.second.second.second == dpFlat[i - 1].second.second.second.second) {
-			maxSize = max(maxSize,
-					(dpFlat[i].second.second.first - dpFlat[i].first + 1) *
-							(dpFlat[i].second.second.second.first - dpFlat[i].second.first + 1))
+			maxSize = max(maxSize, (dpFlat[i].second.second.first - dpFlat[i].first + 1) * (dpFlat[i].second.second.second.first - dpFlat[i].second.first + 1))
 		}
 	}
 

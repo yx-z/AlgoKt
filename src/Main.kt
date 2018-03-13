@@ -5,7 +5,15 @@ import java.util.Arrays
 // multi-parameter version of min/max
 fun min(vararg ints: Int) = ints.min() ?: throw NullPointerException("no minimum value")
 
+fun min(vararg floats: Float) = floats.min() ?: throw NullPointerException("no minimum value")
+
+fun min(vararg doubles: Double) = doubles.min() ?: throw NullPointerException("no minimum value")
+
 fun max(vararg ints: Int) = ints.max() ?: throw NullPointerException("no maximum value")
+
+fun max(vararg floats: Float) = floats.max() ?: throw NullPointerException("no maximum value")
+
+fun max(vararg doubles: Double) = doubles.max() ?: throw NullPointerException("no maximum value")
 
 // substring and subarray slicing
 operator fun String.get(range: IntRange) = substring(range)
@@ -16,20 +24,46 @@ inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
 operator fun IntArray.get(range: IntRange) =
 		Arrays.copyOfRange(this, range.first, range.last + 1) ?: intArrayOf()
 
+operator fun FloatArray.get(range: IntRange) =
+		Arrays.copyOfRange(this, range.first, range.last + 1) ?: floatArrayOf()
+
+operator fun DoubleArray.get(range: IntRange) =
+		Arrays.copyOfRange(this, range.first, range.last + 1) ?: doubleArrayOf()
+
 // python like multidimensional array indexing
 operator fun Array<IntArray>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun Array<FloatArray>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun Array<DoubleArray>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun <T> Array<Array<T>>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun Array<Array<IntArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
 
+operator fun Array<Array<FloatArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
+operator fun Array<Array<DoubleArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
 operator fun <T> Array<Array<Array<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
 
 operator fun Array<Array<Array<IntArray>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
 
+operator fun Array<Array<Array<FloatArray>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
+operator fun Array<Array<Array<DoubleArray>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
 operator fun <T> Array<Array<Array<Array<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
 
 operator fun Array<IntArray>.set(i1: Int, i2: Int, v: Int) {
+	this[i1][i2] = v
+}
+
+operator fun Array<FloatArray>.set(i1: Int, i2: Int, v: Float) {
+	this[i1][i2] = v
+}
+
+operator fun Array<DoubleArray>.set(i1: Int, i2: Int, v: Double) {
 	this[i1][i2] = v
 }
 
@@ -41,11 +75,27 @@ operator fun Array<Array<IntArray>>.set(i1: Int, i2: Int, i3: Int, v: Int) {
 	this[i1][i2][i3] = v
 }
 
+operator fun Array<Array<FloatArray>>.set(i1: Int, i2: Int, i3: Int, v: Float) {
+	this[i1][i2][i3] = v
+}
+
+operator fun Array<Array<DoubleArray>>.set(i1: Int, i2: Int, i3: Int, v: Double) {
+	this[i1][i2][i3] = v
+}
+
 operator fun <T> Array<Array<Array<T>>>.set(i1: Int, i2: Int, i3: Int, v: T) {
 	this[i1][i2][i3] = v
 }
 
 operator fun Array<Array<Array<IntArray>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: Int) {
+	this[i1][i2][i3][i4] = v
+}
+
+operator fun Array<Array<Array<FloatArray>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: Float) {
+	this[i1][i2][i3][i4] = v
+}
+
+operator fun Array<Array<Array<DoubleArray>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: Double) {
 	this[i1][i2][i3][i4] = v
 }
 
