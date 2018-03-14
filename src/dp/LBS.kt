@@ -52,3 +52,5 @@ fun IntArray.lbs(): Int {
 	}
 	return dp[0].first
 }
+
+// or even better find the max of (lds@i + lis@i) for every index i
