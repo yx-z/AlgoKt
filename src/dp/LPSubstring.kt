@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
 }
 
 // Longest Palindrome Substring (consecutive chars) (NOT dp.LPS (Longest Palindrome Subsequence))
-// substring must be consequtive
+// substring must be consecutive
 fun lenLPS(s: String): Int {
 	val len = s.length
 	val dp = Array(len) { Array(len) { false } }
@@ -16,9 +16,9 @@ fun lenLPS(s: String): Int {
 	for (i in 0 until len) {
 		dp[i][i] = true
 	}
-	
+
 	for (l in 2..len) {
-		for (i in 0 .. len - l) {
+		for (i in 0..len - l) {
 			val j = i + l - 1
 			dp[i][j] = if (s[i] == s[j]) {
 				if (s[i + 1] == s[j - 1] || l == 2) {

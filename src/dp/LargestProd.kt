@@ -26,7 +26,7 @@ fun FloatArray.largestProd(): Float {
 	}
 
 	// no 0s in the array
-	var total = this.reduce { acc, fl -> acc * fl }
+	val total = this.reduce { acc, it -> acc * it }
 	if (total < 0) {
 		var leftMax = total
 		var leftIdx = 0

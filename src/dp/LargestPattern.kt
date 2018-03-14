@@ -17,11 +17,6 @@ fun main(args: Array<String>) {
             intArrayOf(0, 0, 0, 1, 0))
 
     println(bitmap.largestPattern())
-	println(bitmap.largestPatternNoPrime())
-}
-
-fun Array<IntArray>.largestPatternNoPrime(): Int {
-	TODO()
 }
 
 fun Array<IntArray>.largestPattern(): Int {
