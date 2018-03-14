@@ -25,14 +25,20 @@ fun main(args: Array<String>) {
 
 fun alphaCombin(n: String): Int {
 	val len = n.length
-	// dp[i] = # of interpretations for n[i until len]
-	// dp[i] = 1 if (i >= len - 1)
+	// dp(i): # of interpretations for n[i until len]
+	// dp(i) = 1 if (i >= len - 1)
 	//         note that for empty strings, there is still one interpretation: empty string
-	//       = dp[i + 1] + dp[i + 2] if (isValid(n[i..i+1]) && isValid(n[i])) ex. [1, 2, ...]
-	//       = dp[i + 1] if (isValid(n[i])) ex. [9, 0, ...] 9 is valid but not 90
-	//       = 0 o/w
+	//       = dp(i + 1) + dp(i + 2) if (isValid(n[i..i+1]) && isValid(n[i])) ex. [1, 2, ...]
+	//       = dp(i + 1) if (isValid(n[i])) ex. [9, 0, ...] 9 is valid but not 90
+	//       = 0 o/w, i.e. !isValid(n[i]) ex. [0, ...]
+	// memoization structure: 1d array
+	// space complexity: O(n)
 	val dp = IntArray(len + 1) { 1 }
+
+	// time complexity: O(n)
+	// evaluation order: i from len down to 0, i.e. right to left
 	for (i in len - 2 downTo 0) {
+		// dependency: dp[i] depends on later two terms dp[i + 1] and dp[i + 2]
 		dp[i] = if (isValid(n[i..i]) && isValid(n[i..i + 1])) {
 			dp[i + 1] + dp[i + 2]
 		} else if (isValid(n[i..i])) {
