@@ -8,6 +8,8 @@ package dp
 // find sos of A[1..n] here
 
 fun main(args: Array<String>) {
+	val A = intArrayOf(Int.MIN_VALUE /* ignored */, 1, 5, 9, 29)
+	println(sos(A))
 }
 
 fun sos(A: IntArray): Int {
@@ -17,7 +19,9 @@ fun sos(A: IntArray): Int {
 	// also find the definition of oscillating' sequence in 'LOS'
 	// sos(i), so's(i) = 0 if i > n
 	// sos(i), so's(i) = 1 if i == n
-	// sos(i) = min{1 + so's(i), } if A[i] < A[i + 1]
-	// so's(i) = min{1 + so's(i), 2 + sos(i)} if A[i] < A[i + 1]
+	// sos(i) = min{1 + so's(i), 2 + sos(i + 1)} if A[i] < A[i + 1]
+	// so's(i) = 1 + sos(i + 1) if A[i] < A[i + 1]
+	// sos(i) = 1 + so's(i + 1) if A[i] > A[i + 1]
+	// so's(i) = min{1 + sos(i), 2 + so's(i + 1)} if A[i] > A[i + 1]
 	TODO()
 }
