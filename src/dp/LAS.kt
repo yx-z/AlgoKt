@@ -1,46 +1,60 @@
 package dp
 
-import get
-import set
 import max
 
 // longest alternating subsequence
 fun main(args: Array<String>) {
-	val arr = arrayListOf(5, 6, 7, 4, 8, 10, 9)
-	println(arr.las()) // == 5, ex. [5, 6, 4, 10, 9]
+	val A = intArrayOf(7, 5, 6, 10, 2)
+	println(las(A))
+	println(lasNoDP(A))
 }
 
-fun ArrayList<Int>.las(): Int {
-	// i < j
-	// dp[sign, i, j] = length of las that starts with first element greater than this[i]
-	//                  and second element smaller than this[j], if sign == 0
-	//                  length of las that starts with first element smaller than this[i]
-	//                  and second element greater than this[j], if sign == 1
-	// dp[sign, i, j] = 0, if j > n
-	//                = dp[sign, i, j + 1], if (this[j] <= this[i] && sign == 0) ||
-	//                                         (this[j] >= this[i] && sign == 1)
-	//                = max(dp[sign, i, j + 1], 1 + dp[!sign, j, j + 1]), o/w
-	val dp = Array(2) { Array(size + 1) { IntArray(size + 1) } }
+// time complexity: O(n)
+// space complexity: O(1)
+// count the number of local extrema
+fun lasNoDP(A: IntArray) = A.indices.filter {
+	it in 1 until A.size - 1 && (A[it] > A[it - 1] && A[it] > A[it + 1] || A[it] < A[it - 1] && A[it] < A[it + 1])
+}.count() + 2
 
-	for (i in size - 1 downTo 0) {
-		for (j in size - 1 downTo i + 1) {
-			if (this[j] <= this[i]) {
-				dp[0, i, j] = dp[0, i, j + 1]
-			} else {
-				dp[0, i, j] = max(dp[0, i, j + 1], 1 + dp[1, j, j + 1])
-			}
+fun las(A: IntArray): Int {
+	val n = A.size
 
-			if (this[j] >= this[i]) {
-				dp[1, i, j] = dp[1, i, j + 1]
-			} else {
-				dp[1, i, j] = max(dp[1, i, j + 1], 1 + dp[0, j, j + 1])
-			}
-		}
+	// inc(i): len of las that increases first (X[2] > X[1]) and starts at A[i]
+	// dec(i): len of las that decreases first (X[2] < X[1]) and starts at A[i]
+	// inc(i), dec(i) = 0 if i !in 1..n
+	// inc(i), dec(i) = 1 if i = n
+	// assume max{ } = 0
+	// inc(i) = 1 + max{ dec(k) : k in i + 1..n && A[k] > A[i] } o/w
+	// dec(i) = 1 + max{ inc(k) : k in i + 1..n && A[k] < A[i] } o/w
+
+	// we want max_i { inc(i), dec(i) }
+	var max = Int.MIN_VALUE
+
+	// two 2d array:
+	// inc[1..n]: inc[i] = inc(i)
+	// dec[1..n]: dec[i] = inc(i)
+	val inc = IntArray(n)
+	val dec = IntArray(n)
+	// space complexity: O(n)
+
+	// base case
+	inc[n - 1] = 1
+	dec[n - 1] = 1
+
+	// we see that inc(i) depends on dec(k), k > i
+	// , and dec(i) depends on inc(k), k > i
+	// so the evaluation order should be from right to left, i.e. i from n down to 1
+	for (i in n - 2 downTo 0) {
+		inc[i] = 1 + (dec
+				.filterIndexed { k, _ -> k in i + 1 until n && A[k] > A[i] }
+				.max() ?: 0)
+		dec[i] = 1 + (inc
+				.filterIndexed { k, _ -> k in i + 1 until n && A[k] < A[i] }
+				.max() ?: 0)
+		max = max(max, inc[i], dec[i])
 	}
+	// time complexity: O(n^2)
 
-	var max = 0
-	for (i in 0 until size) {
-		max = max(max, dp[0, i, i + 1], dp[1, i, i + 1])
-	}
-	return max + 1
+	return max
 }
+
