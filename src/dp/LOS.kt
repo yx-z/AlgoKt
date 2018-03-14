@@ -8,7 +8,7 @@ import java.util.*
 
 // find the length of los of A[1..n]
 fun main(args: Array<String>) {
-	val A = intArrayOf(Int.MIN_VALUE /* ignored value so as to be one-indexed*/, 1, 25, 9, 20, 5)
+	val A = intArrayOf(-1 /* ignored value to be one-indexed */, 1, 25, 9, 20, 5)
 	println(los(A))
 }
 
@@ -23,9 +23,9 @@ fun los(A: IntArray): Int {
 	// los(i) = max { lo's(k) : i < k <= n && A[k] > A[i] } + 1
 	// lo's(i) = max { los(k) : i < k <= n && A[k] < A[i] } + 1
 
-	val los = IntArray(n)
-	val loos = IntArray(n)
-	for (i in n - 1 downTo 0) {
+	val los = IntArray(n + 1)
+	val loos = IntArray(n + 1)
+	for (i in n downTo 1) {
 		los[i] = (loos.filterIndexed { idx, _ -> idx in i + 1 until n && A[idx] > A[i] }.max()
 				?: 0) + 1
 		loos[i] = (los.filterIndexed { idx, _ -> idx in i + 1 until n && A[idx] < A[i] }.max()
@@ -33,5 +33,5 @@ fun los(A: IntArray): Int {
 	}
 	println(Arrays.toString(los))
 	println(Arrays.toString(loos))
-	return los[0]
+	return los[1]
 }

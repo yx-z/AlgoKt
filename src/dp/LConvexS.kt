@@ -3,7 +3,7 @@ package dp
 // longest convex subsequence
 // a convex sequence satisfies a[i] - a[i - 1] > a[i - 1] - a[i - 2]
 fun main(args: Array<String>) {
-	val arr = intArrayOf(1, 2, 4, 7, 8)
+	val arr = intArrayOf(1, 4, 7, 8)
 	println(lcs(arr))
 }
 
