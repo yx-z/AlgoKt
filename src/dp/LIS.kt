@@ -5,25 +5,10 @@ fun main(args: Array<String>) {
 	// test array
 	val arr = arrayOf(4, 2, 3, 5, 7)
 
-	println(lenLISByLCS(arr))
 	println(lenLISDP(arr))
 	println(lenLISDP2(arr))
 	println(lenLISDP3(arr))
 	println(lenLISDPOpt(arr))
-}
-
-// arr.sort the copied array and then solve by using LCS
-fun lenLISByLCS(arr: Array<Int>): Int {
-	val copy = Arrays.copyOf(arr, arr.size)
-	Arrays.sort(copy)
-
-	val s1 = StringBuilder(arr.size)
-	val s2 = StringBuilder(copy.size)
-
-	arr.forEach { s1.append(it) }
-	copy.forEach { s2.append(it) }
-
-	return lenLCS(s1.toString(), s2.toString())
 }
 
 // DP with O(N^2)
