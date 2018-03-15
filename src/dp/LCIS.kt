@@ -55,6 +55,7 @@ fun lcis(A: IntArray, B: IntArray): Int {
 				dp[i, j, k] = max(dp[i - 1, j, k], dp[i, j - 1, k])
 
 				if (A[i - 1] == B[j - 1] && B[j - 1] <= M[k]) {
+					// O(l) work for some entries
 					dp[i, j, k] = max(dp[i, j, k], 1 + ((0 until k).map { dp[i - 1, j - 1, it] }
 							.max() ?: 0))
 				}
@@ -65,7 +66,7 @@ fun lcis(A: IntArray, B: IntArray): Int {
 			}
 		}
 	}
-	// time complexity: O(m * n * l) = O(m * n * (m + n))
+	// time complexity: O(m * n * l^2) = O(m * n * (m + n)^2)
 
 	return max
 }

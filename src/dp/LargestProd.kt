@@ -8,19 +8,19 @@ import max
 // find the largest product in any contiguous subarray.
 // note that two negative numbers produce a positive result, ex. (-2) * (-4) = 8
 fun main(args: Array<String>) {
-	val arr = floatArrayOf(-6F, 12F, -7F, 0F, 14F, -7F, 5F)
+	val arr = intArrayOf(-6, 12, -7, 0, 14, -7, 5)
 	println(arr.largestProd())
 }
 
-fun FloatArray.largestProd(): Float {
+fun IntArray.largestProd(): Int {
 	if (size == 0) {
-		return 0F
+		return 0
 	}
 	if (size == 1) {
-		return max(0F, this[0])
+		return max(0, this[0])
 	}
 	for (i in 0 until size) {
-		if (this[i] == 0F) {
+		if (this[i] == 0) {
 			return max(this[0 until i].largestProd(), this[i + 1 until size].largestProd())
 		}
 	}

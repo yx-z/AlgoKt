@@ -13,14 +13,14 @@ fun main(args: Array<String>) {
 }
 
 // brute force DP: O(N^2)
-fun FloatArray.largestSum(): Float {
+fun IntArray.largestSum():Int {
 	// dp[i, j] = sum of this[i..j]
 	// dp[i, j] = 0, if (i > j || i, j !in 0 until size)
 	//          = this[i], if (i == j)
 	//          = dp[i, j - 1]  + this[j], o/w
 	// we want max(dp[i, j])
-	val dp = Array(size) { FloatArray(size) }
-	var max = Float.MIN_VALUE
+	val dp = Array(size) { IntArray(size) }
+	var max = Int.MIN_VALUE
 	for (i in 0 until size) {
 		for (j in i until size) {
 			dp[i, j] = if (i == j) {
