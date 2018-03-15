@@ -19,9 +19,9 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	val m = A.size
 	val n = B.size
 
-	// let M[1..l] be the sorted sequence of A and B intersected
-	// M is strictly increasing
-	val M = (A.toSet().intersect(B.toSet())).toMutableList()
+	// let M[1..l] be the sorted sequence of common elements of A and B
+	// then M is strictly increasing
+	val M = (A.toSet() intersect B.toSet()).toMutableList()
 	// sorting costs O(min(m, n) * log min(m, n)) time
 	M.sort()
 	// l is O(min(m, n))
@@ -33,7 +33,7 @@ fun lcis(A: IntArray, B: IntArray): Int {
 
 	// memoization structure: 3d array dp[0..m, 0..n, 1..l] : dp[i, j, k] = dp(i, j, k)
 	val dp = Array(m + 1) { Array(n + 1) { IntArray(l) } }
-	// space complexity: O(m * n * l)
+	// space complexity: O(l + m * n * l) = O(m * n * (m + n))
 
 	// assume max{ } = 0
 	// dp(i, j, k) = 0 if i !in 1..m or j !in 1..n or k !in 1..l
@@ -43,12 +43,12 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	//             = max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
 
 	// dependency: dp(i, j, k) depends on entries in the previous table,
-	//                                    entries to the left and to the upper-left
+	//             and entries to the left and to the upper-left
 
 	// evaluation order: outermost loop for k from 1 to l
 	for (k in 0 until l) {
-		// no need to touch i = 0 or j = 0 since they are covered in the base case
 		// middle loop for i from 1 to m (top to down)
+		// no need to touch i = 0 or j = 0 since they are covered in the base case
 		for (i in 1..m) {
 			//innermost loop for i from 1 to n (left to right)
 			for (j in 1..n) {
@@ -65,7 +65,7 @@ fun lcis(A: IntArray, B: IntArray): Int {
 			}
 		}
 	}
-	// time complexity: O(m * n * l) = O(m * n * min(m, n))
+	// time complexity: O(m * n * l) = O(m * n * (m + n))
 
 	return max
 }
