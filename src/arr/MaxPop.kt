@@ -1,4 +1,4 @@
-package dp
+package arr
 
 fun main(args: Array<String>) {
 	// given a list of [birth year, death year]
