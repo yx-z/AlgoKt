@@ -1,5 +1,8 @@
 package str
 
+import set
+import get
+
 fun main(args: Array<String>) {
 	// test string
 	val s = "abbaaa"

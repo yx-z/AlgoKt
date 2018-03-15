@@ -1,34 +1,47 @@
 package dp
 
+import set
+import get
+
 fun main(args: Array<String>) {
-	// "ra*bbit", "rab*bit", "rabb*it" -> 3
-	println("rabbbit" countSubsequencesEqualsTo "rabbit")
+	// given two arrays L(ong)[1..m], S(hort)[1..n]
+	// find the number of subsequences in L that equals to S
+	val L = intArrayOf(3, 1, 2, 2, 3, 3, 4, 4)
+	val S = intArrayOf(2, 3, 4)
+	println(findSubseq(L, S)) // 8 since there are 2 ways of picking 2, 2 of 4, and 2 of 3
 }
 
-infix fun String.countSubsequencesEqualsTo(sub: String): Int {
-	val lenBig = this.length
-	val lenSmall = sub.length
+fun findSubseq(L: IntArray, S: IntArray): Int {
+	val m = L.size
+	val n = S.size
 
-	// dp[i][j]: # of subsequences of this.substring(0, i) = sub.substring(0, j)
-	val dp = Array(lenBig + 1) { IntArray(lenSmall + 1) { 0 } }
+	// dp(i, j): # of subsequences in L[1..i] that equals to S[1..j]
+	// use 2d array dp[0..m, 0..n] : dp[i, j] = dp(i, j)
+	// dp(i, j) = 0 if i < j
+	val dp = Array(m + 1) { IntArray(n + 1) }
+	// space complexity: O(mn)
 
-	// consider sub.substring(0, 0) == "", it is the subsequence of any string
-	// i.e. dp[*][0] = 1
-	(0..lenBig).forEach { dp[it][0] = 1 }
+	// dp(i, 0) = 0 since empty can be a subsequence for any sequence including empty sequence itself
+	for (i in 0..m) {
+		dp[i, 0] = 1
+	}
 
-	(1..lenBig).forEach { row ->
-		(1..lenSmall).forEach { col ->
-			// ignore current character from big
-			// we have at least the same # of substrings from the substring one character shorter
-			dp[row][col] = dp[row - 1][col]
-
-			if (this[row - 1] == sub[col - 1]) {
-				// if the ending character is the same
-				// we can add more
-				dp[row][col] += dp[row - 1][col - 1]
+	// dp(i, j) = dp(i - 1, j) + dp(i - 1, j - 1) if L[i] = S[j]
+	//          = dp(i - 1, j) o/w
+	// dependency: dp[i, j] depends on dp[i - 1, j], and dp[i - 1, j - 1], i.e.
+	//             dp[i, j] depends on the upper entry and the upper-left entry
+	// evaluation order: outer loop for j from left to right (1..n)
+	//                   and inner loop for i from top to bottom (1..m)
+	for (j in 1..n) {
+		for (i in 1..m) {
+			dp[i, j] = dp[i - 1, j]
+			if (L[i - 1] == S[j - 1]) {
+				dp[i, j] += dp[i - 1, j - 1]
 			}
 		}
 	}
+	// time complexity: O(mn)
 
-	return dp[lenBig][lenSmall]
+	// we want dp(m, n)
+	return dp[m][n]
 }
