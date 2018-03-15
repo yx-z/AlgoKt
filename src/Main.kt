@@ -3,17 +3,23 @@ import java.lang.NullPointerException
 import java.util.Arrays
 
 // multi-parameter version of min/max
-fun min(vararg ints: Int) = ints.min() ?: throw NullPointerException("no minimum value")
+fun min(vararg ints: Int) = ints.min()
+		?: throw NullPointerException("no minimum value")
 
-fun min(vararg floats: Float) = floats.min() ?: throw NullPointerException("no minimum value")
+fun min(vararg floats: Float) = floats.min()
+		?: throw NullPointerException("no minimum value")
 
-fun min(vararg doubles: Double) = doubles.min() ?: throw NullPointerException("no minimum value")
+fun min(vararg doubles: Double) = doubles.min()
+		?: throw NullPointerException("no minimum value")
 
-fun max(vararg ints: Int) = ints.max() ?: throw NullPointerException("no maximum value")
+fun max(vararg ints: Int) = ints.max()
+		?: throw NullPointerException("no maximum value")
 
-fun max(vararg floats: Float) = floats.max() ?: throw NullPointerException("no maximum value")
+fun max(vararg floats: Float) = floats.max()
+		?: throw NullPointerException("no maximum value")
 
-fun max(vararg doubles: Double) = doubles.max() ?: throw NullPointerException("no maximum value")
+fun max(vararg doubles: Double) = doubles.max()
+		?: throw NullPointerException("no maximum value")
 
 // substring and subarray slicing
 operator fun String.get(range: IntRange) = substring(range)
@@ -102,6 +108,23 @@ operator fun Array<Array<Array<DoubleArray>>>.set(i1: Int, i2: Int, i3: Int, i4:
 operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
 	this[i1][i2][i3][i4] = v
 }
+
+// pretty print for arrays
+fun IntArray.print() = println(Arrays.toString(this))
+
+fun FloatArray.print() = println(Arrays.toString(this))
+
+fun DoubleArray.print() = println(Arrays.toString(this))
+
+fun <T> Array<T>.print() = println(Arrays.toString(this))
+
+fun Array<IntArray>.print() = forEach { it.print() }
+
+fun Array<FloatArray>.print() = forEach { it.print() }
+
+fun Array<DoubleArray>.print() = forEach { it.print() }
+
+fun <T> Array<Array<T>>.print() = forEach { it.print() }
 
 class UtilTest {
 
