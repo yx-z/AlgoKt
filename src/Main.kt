@@ -114,21 +114,29 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 
 // pretty print for arrays
 // ex. arr.println()
-fun IntArray.println() = println(Arrays.toString(this))
+fun IntArray.println(printIdx: Boolean = false) {
+	indices.forEach { print(" $it") }
+	println()
+	println(Arrays.toString(this))
+}
 
-fun FloatArray.println() = println(Arrays.toString(this))
-
-fun DoubleArray.println() = println(Arrays.toString(this))
-
-fun <T> Array<T>.println() = println(Arrays.toString(this))
-
-fun Array<IntArray>.println() = forEach { it.println() }
-
-fun Array<FloatArray>.println() = forEach { it.println() }
-
-fun Array<DoubleArray>.println() = forEach { it.println() }
-
-fun <T> Array<Array<T>>.println() = forEach { it.println() }
+fun Array<IntArray>.println(printIdx: Boolean = false) {
+	if (printIdx) {
+		print("  ")
+		val maxCol = map { it.size }.max() ?: 0
+		(0 until maxCol).forEach {
+			print(" $it ")
+		}
+		System.out.println()
+		indices.forEach {
+			print("$it ")
+			print(Arrays.toString(this[it]))
+			System.out.println()
+		}
+	} else {
+		forEach { it.println(false) }
+	}
+}
 
 class UtilTest {
 

@@ -1,6 +1,9 @@
 package dp
 
 import max
+import set
+import get
+import println
 
 // longest double increaasing subsequence
 
@@ -10,50 +13,53 @@ import max
 // find the length of the ldis of A[1..n]
 
 fun main(args: Array<String>) {
-	val A = intArrayOf(1, 2, 5, 8, 6)
-	println(ldis(A)) // [1, 2, 5, 8, 6] -> 5, the normal lis is [1, 2, 5, 8] -> 4
+	val A = intArrayOf(0, 7, 1, 4, 6, 5, 3, 2)
+	println(ldis(A)) // [0, 1, 4, 6, 5] -> 5
 }
 
 fun ldis(A: IntArray): Int {
 	val n = A.size
 	// trivial case
-	if (n <= 2) {
+	if (n < 2) {
 		return n
 	}
 
-	// dp(i): (len of ldis starting @ A[i], second element in that sequence)
-	// use a 1d array dp[1..n] : dp[i] = dp(i)
-	val dp = Array(n) { 0 to 0 }
-	// space complexity: O(n)
+	// dp(i, j): the length of ldis with first two elements A[i] and A[j]
+	// memoization structure: 2d array dp[1..n - 1, 1..n] : dp[i, j] = dp(i, j)
+	val dp = Array(n) { IntArray(n) }
+	// space complexity: O(n^2)
 
-	// we want max_i{ dp[i].first }
-	var max = Int.MIN_VALUE
+	// base case:
+	// dp(i, j) = 0 if i >= j // process only when i < j
+	//          = 2 if j = n
+	for (i in 0 until n - 1) {
+		dp[i, n - 1] = 2
+	}
 
-	// base cases:
-	// dp(i) = (0, 0) if i > n
-	//       = (1, A[n]) if i = n
-	//       = (2, A[n - 1]) if i = n - 1
-	dp[n - 1] = 1 to A[n - 1]
-	dp[n - 2] = 2 to A[n - 1]
+	// we want max dp(i, j)
+	// which is at least 2 considering the base case
+	var max = 2
 
 	// assume max{ } = 0
 	// recursive case:
-	// dp(i) = 1 + max{ dp(k)_1 } where k in i + 1..n and A[i] < dp(k)_2
-	// dependency: dp(i) depends on dp(k) for all k > i, i.e. entries to the right
-	// evaluation order: i from right to left, i.e. n down to 1
-	for (i in n - 3 downTo 0) {
-		var len = Int.MIN_VALUE
-		var elem = A[i]
-		for (k in i + 1 until n) {
-			if (A[i] < dp[k].second) {
-				if (len < 1 + dp[k].first) {
-					len = 1 + dp[k].first
-					elem = dp[k].second
+	// dp(i, j) = max{2, 1 + max{ dp(j, k) } : where i < j < k and A[i] < A[k]}
+	// dependency: dp(i, j) depends on dp(j, k) where j > i and k > j
+	//             i.e. all entries on a row below and to right of current entry
+
+	// evaluation order: outer loop for i from down to top (n - 2 down to 0)
+	for (i in n - 2 downTo 0) {
+		// inner loop for j from right to left (n down to i + 1)
+		for (j in n - 2 downTo i + 1) {
+			var maxLen = 2
+			// innermost loop for k from left to right (j + 1..n)
+			for (k in j + 1 until n) {
+				if (A[i] < A[k]) {
+					maxLen = max(maxLen, 1 + dp[j, k])
 				}
 			}
+			dp[i, j] = maxLen
+			max = max(max, dp[i, j])
 		}
-		dp[i] = len to elem
-		max = max(max, dp[i].first)
 	}
 	// time complexity: O(n^2)
 
