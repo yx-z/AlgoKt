@@ -3,6 +3,7 @@ import java.lang.NullPointerException
 import java.util.Arrays
 
 // multi-parameter version of min/max
+// ex. min(i1, i2, i3, i4), max(i1, i2, i3, i4, i5)
 fun min(vararg ints: Int) = ints.min()
 		?: throw NullPointerException("no minimum value")
 
@@ -22,6 +23,7 @@ fun max(vararg doubles: Double) = doubles.max()
 		?: throw NullPointerException("no maximum value")
 
 // substring and subarray slicing
+// ex. "abcde"[1..2] -> "bc", intArrayOf(1, 5, 6, 10)[0..0] -> intArrayOf(1)
 operator fun String.get(range: IntRange) = substring(range)
 
 inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
@@ -37,6 +39,7 @@ operator fun DoubleArray.get(range: IntRange) =
 		Arrays.copyOfRange(this, range.first, range.last + 1) ?: doubleArrayOf()
 
 // python like multidimensional array indexing
+// ex. arr[1, 2, 3, 4], arr[2, 5, 3] = 2
 operator fun Array<IntArray>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun Array<FloatArray>.get(i1: Int, i2: Int) = this[i1][i2]
@@ -110,21 +113,22 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 }
 
 // pretty print for arrays
-fun IntArray.print() = println(Arrays.toString(this))
+// ex. arr.println()
+fun IntArray.println() = println(Arrays.toString(this))
 
-fun FloatArray.print() = println(Arrays.toString(this))
+fun FloatArray.println() = println(Arrays.toString(this))
 
-fun DoubleArray.print() = println(Arrays.toString(this))
+fun DoubleArray.println() = println(Arrays.toString(this))
 
-fun <T> Array<T>.print() = println(Arrays.toString(this))
+fun <T> Array<T>.println() = println(Arrays.toString(this))
 
-fun Array<IntArray>.print() = forEach { it.print() }
+fun Array<IntArray>.println() = forEach { it.println() }
 
-fun Array<FloatArray>.print() = forEach { it.print() }
+fun Array<FloatArray>.println() = forEach { it.println() }
 
-fun Array<DoubleArray>.print() = forEach { it.print() }
+fun Array<DoubleArray>.println() = forEach { it.println() }
 
-fun <T> Array<Array<T>>.print() = forEach { it.print() }
+fun <T> Array<Array<T>>.println() = forEach { it.println() }
 
 class UtilTest {
 
