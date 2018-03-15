@@ -115,14 +115,17 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 // pretty print for arrays
 // ex. arr.println()
 fun IntArray.println(printIdx: Boolean = false) {
-	indices.forEach { print(" $it") }
-	println()
+	if (printIdx) {
+		print(" ")
+		indices.forEach { print(" $it") }
+	}
+	System.out.println()
 	println(Arrays.toString(this))
 }
 
 fun Array<IntArray>.println(printIdx: Boolean = false) {
 	if (printIdx) {
-		print("  ")
+		print("   ")
 		val maxCol = map { it.size }.max() ?: 0
 		(0 until maxCol).forEach {
 			print(" $it ")
@@ -130,6 +133,9 @@ fun Array<IntArray>.println(printIdx: Boolean = false) {
 		System.out.println()
 		indices.forEach {
 			print("$it ")
+			if (it < 10) {
+				print(" ")
+			}
 			print(Arrays.toString(this[it]))
 			System.out.println()
 		}
