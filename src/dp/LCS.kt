@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 }
 
 infix fun IntArray.lcs(that: IntArray): Int {
-	// dp[i, j] = length of lcs for this[0 until i] & that[0 until j]
+	// dp[i, j]: length of lcs for this[0 until i] & that[0 until j]
 	// dp[i, j] = 0, if (i == 0 || j == 0)
 	//          = if (this[i] == that[j]) {
 	//                  max(1 + dp[i - 1, j - 1], dp[i - 1, j], dp[i, j - 1])
