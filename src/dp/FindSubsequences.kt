@@ -21,7 +21,7 @@ fun findSubseq(L: IntArray, S: IntArray): Int {
 	val dp = Array(m + 1) { IntArray(n + 1) }
 	// space complexity: O(mn)
 
-	// dp(i, 0) = 0 since empty can be a subsequence for any sequence including empty sequence itself
+	// dp(i, 0) = 1 since empty can be a subsequence for any sequence including empty sequence itself
 	for (i in 0..m) {
 		dp[i, 0] = 1
 	}
