@@ -8,18 +8,6 @@ import set
 // ex. "abc" shuffle "123" -> "abc123", "a1b2c3", "1ab23c", ...
 
 // 1. given A[1..m], B[1..n], and C[1..m + n] determine if C is a shuffle of A and B
-fun main(args: Array<String>) {
-	val A = "abc"
-	val B = "123"
-	val Cs = arrayOf(
-			"ab132c", // false
-			"ab123c", // true
-			"ab1c23") // true
-	Cs.forEach {
-		println(it.isShuffle(A, B))
-	}
-}
-
 fun String.isShuffle(A: String, B: String): Boolean {
 	val C = this // follow the naming convention in the problem
 	val m = A.length
@@ -57,28 +45,9 @@ fun String.isShuffle(A: String, B: String): Boolean {
 		// inner loop for b from 1 to n (left to right)
 		for (b in 1..n) {
 			dp[a, b] = when {
-				C[a + b - 1] == A[a - 1] && A[a - 1] == B[b - 1] -> {
-					when {
-						a - 1 >= 0 && b - 1 >= 0 -> dp[a - 1, b] || dp[a, b - 1]
-						a - 1 >= 0 -> dp[a - 1, b]
-						b - 1 >= 0 -> dp[a, b - 1]
-						else -> false
-					}
-				}
-				C[a + b - 1] == A[a - 1] -> {
-					if (a - 1 >= 0) {
-						dp[a - 1, b]
-					} else {
-						false
-					}
-				}
-				C[a + b - 1] == B[b - 1] -> {
-					if (b - 1 >= 0) {
-						dp[a, b - 1]
-					} else {
-						false
-					}
-				}
+				C[a + b - 1] == A[a - 1] && A[a - 1] == B[b - 1] -> dp[a - 1, b] || dp[a, b - 1]
+				C[a + b - 1] == A[a - 1] -> dp[a - 1, b]
+				C[a + b - 1] == B[b - 1] -> dp[a, b - 1]
 				else -> false
 			}
 		}
@@ -88,3 +57,17 @@ fun String.isShuffle(A: String, B: String): Boolean {
 	// we want dp(m, n)
 	return dp[m, n]
 }
+
+fun main(args: Array<String>) {
+	// 1.
+	val A = "abc"
+	val B = "123"
+	val Cs = arrayOf(
+			"ab132c", // false
+			"ab123c", // true
+			"ab1c23") // true
+	Cs.forEach {
+		println(it.isShuffle(A, B))
+	}
+}
+

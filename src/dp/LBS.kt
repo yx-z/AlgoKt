@@ -1,8 +1,5 @@
 package dp
 
-import get
-import lenLISDPOpt
-
 // longest bitonic subsequence
 
 // X[1..n] is bitonic if there exists i: 1 < i < n, X[1..i] is inscreasing and X[i..n] is decreasing
@@ -14,43 +11,42 @@ fun main(args: Array<String>) {
 }
 
 fun IntArray.lbs(): Int {
-	if (size < 3) {
+	val A = this
+	val n = A.size
+
+	if (n < 3) {
 		return 0
 	}
-	// dp(i): (length of lbs for A[i..n], leftMin)
-	// dp(i) = (-inf, -inf) if i >= n - 1
-	val invalid = Int.MIN_VALUE to Int.MIN_VALUE
-	//       = (3, A[n - 2]) if i == n - 2 && A[n - 1] > A[n - 2] && A[n - 1] > A[n]
-	//       = (-inf, -inf) if i == n - 2 && (A[n - 1] <= A[n - 2] || A[n - 1] <= A[n])
-	//       = (max{dp(k)_1 + A[i] < dp(k)_2, l, LDS(A[i + 1]) + A[i + 1] > A[i] ? 1 : +inf}, A[k]) k in i + 1 until n - 1 o/w
-	val dp = Array(size) { invalid }
-	if (this[size - 2] > this[size - 3] && this[size - 2] > this[size - 1]) {
-		dp[size - 3] = 3 to this[size - 2]
-	}
-	for (i in size - 4 downTo 0) {
-		var maxLen = Int.MIN_VALUE
-		var minLeft = Int.MIN_VALUE
-		for (k in i + 1 until size) {
-			val len = dp[k].first + if (this[i] < dp[k].second) {
-				1
-			} else {
-				0
-			}
-			if (maxLen < len) {
-				maxLen = len
-				minLeft = this[k]
-			}
-		}
-		if (this[i + 1] > this[i]) {
-			val anotherLen = lenLISDPOpt(this[i + 1 until size].reversed().toTypedArray())
-			if (anotherLen > maxLen) {
-				maxLen = anotherLen + 1
-				minLeft = this[i]
-			}
-		}
-		dp[i] = maxLen to minLeft
-	}
-	return dp[0].first
-}
+	
+	// inc(i): length of LIS that ends @ A[i]
+	// 1d array inc[1..n] : inc[i] = inc(i)
+	val inc = IntArray(n)
+	// dec(i): length of LDS that starts @ A[i]
+	// 1d array dec[1..n] : dec[i] = dec(i)
+	val dec = IntArray(n)
+	// space complexity: O(n)
 
-// or even better find the max of (lds@i + lis@i) for every index i
+	// base case:
+	// inc(1) = 1
+	// dec(n) = 1
+	inc[0] = 1
+	dec[n - 1] = 1
+
+	// recursive case:
+	// inc(i) = max{ inc(k) + 1 } for k in 1 until i and A[k] < A[i]
+	// dec(i) = max{ dec(k) + 1 } for k in i + 1..n and A[k] < A[i]
+	// dependency: inc(i) depends on inc(k) where k < i, i.e. entries to the left
+	//             dec(i) depends on dec(k) where k > i, i.e. entries to the right
+	// evaluation order: for inc(i), iterate i,k from 1 to n (left to right)
+	for (i in 1 until n) {
+		inc[i] = (inc.filterIndexed { k, _ -> k < i && A[k] < A[i]}.max() ?: 0) + 1
+	}
+
+	// for dec(i), iterate i, k from n down to 1 (right to left)
+	for (i in n - 2 downTo 0) {
+		dec[i] = (dec.filterIndexed { k, _ -> k > i && A[k] < A[i]}.max() ?: 0) + 1
+	}
+
+	// we want max_i{ inc(i) + dec(i) }
+	return (0 until n).map { inc[it] + dec[it] }.max() ?: 0
+}
