@@ -1,5 +1,7 @@
 package dp
 
+import println
+
 // longest bitonic subsequence
 
 // X[1..n] is bitonic if there exists i: 1 < i < n, X[1..i] is inscreasing and X[i..n] is decreasing
@@ -14,10 +16,6 @@ fun IntArray.lbs(): Int {
 	val A = this
 	val n = A.size
 
-	if (n < 3) {
-		return 0
-	}
-	
 	// inc(i): length of LIS that ends @ A[i]
 	// 1d array inc[1..n] : inc[i] = inc(i)
 	val inc = IntArray(n)
@@ -33,6 +31,7 @@ fun IntArray.lbs(): Int {
 	dec[n - 1] = 1
 
 	// recursive case:
+	// assume max{ } = 1
 	// inc(i) = max{ inc(k) + 1 } for k in 1 until i and A[k] < A[i]
 	// dec(i) = max{ dec(k) + 1 } for k in i + 1..n and A[k] < A[i]
 	// dependency: inc(i) depends on inc(k) where k < i, i.e. entries to the left
@@ -46,7 +45,8 @@ fun IntArray.lbs(): Int {
 	for (i in n - 2 downTo 0) {
 		dec[i] = (dec.filterIndexed { k, _ -> k > i && A[k] < A[i]}.max() ?: 0) + 1
 	}
+	// time complexity: O(n^2)
 
-	// we want max_i{ inc(i) + dec(i) }
-	return (0 until n).map { inc[it] + dec[it] }.max() ?: 0
+	// we want max_i{ inc(i) + dec(i) } - 1 (- 1 since we count A[it] twice)
+	return ((0 until n).map { inc[it] + dec[it] }.max() ?: 1) - 1
 }
