@@ -58,6 +58,51 @@ fun String.isShuffle(A: String, B: String): Boolean {
 	return dp[m, n]
 }
 
+// a smooth shuffle of X and Y is a shuffle of X and Y
+// that never uses more than two consecutive strings of either string
+// ex. "abcd" smoothShuffle "1234" -> "ab12cd34", "a12b3cd4", ...
+//     but not "abc12d34" since "abc", has length more than two
+//     neither is "ab1234cd" (due to "1234")
+// 2. given X[1..m], Y[1..n], and Z[1..m + n], determine if Z is a smooth shuffle of X and Y
+fun String.isSmoothShuffle(X: String, Y: String): Boolean {
+	val Z = this
+	val m = X.length
+	val n = Y.length
+
+	// ss(i, j): whether Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
+	// = 0 if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
+	// = 1 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] AND Z[i + j] represents X[i]
+	// = 2 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] And Z[i + j] represents Y[j]
+
+	// memoization structure: 2d array dp[0..m, 0..n] : dp[i, j] = ss(i, j)
+	val dp = Array(m + 1) { Array(n + 1) { 0 } }
+	// space complexity: O(mn)
+
+	// base case:
+	// ss(i, j) = 1 if i = 0 and j = 0
+	//          = Z[1..i] == X[1..i] ? 1 : 0 if j = 0 and 1 <= i <= 2
+	//          = Z[1..j] == Y[1..j] ? 2 : 0 if i = 0 and 1 <= j <= 2
+	//          = 0 if (i = 0 and j > 2) or (j = 0 and i > 2)
+	//          = 0 if i !in 0..m || j !in 0..n
+	dp[0, 0] = 1
+	dp[1, 0] = if (Z[0] == X[0]) 1 else 0
+	dp[2, 0] = if (Z[0] == X[0] && Z[1] == X[1]) 1 else 0
+	dp[0, 1] = if (Z[0] == Y[0]) 2 else 0
+	dp[0, 2] = if (Z[0] == Y[0] && Z[1] == Y[1]) 2 else 0
+
+	// recursive case:
+	// when Z[i + j] = X[i] = ORing the following cases
+	// when Z[i + j] = X[i]: ss(i - 1, j) != 0 && if (ss(i - 1, j) == 1) then (ss(i - 2, j) == 2 || i - 2 == 0) ? 1 : 0
+	// when Z[i + j] = Y[j]: ss(i, j - 1) != 0 && if (ss(i, j - 1) == 2) then ss(i, j - 2) == 1 ? 2 : 0
+	// else: false
+
+	// X = "111", Y = "11", Z = "1x 1x 1y 1y 1x"
+
+
+	// we want ss(m, n) = 1 or 2 (simply != 0)
+	return dp[m, n] != 0
+}
+
 fun main(args: Array<String>) {
 	// 1.
 	val A = "abc"
@@ -67,7 +112,18 @@ fun main(args: Array<String>) {
 			"ab123c", // true
 			"ab1c23") // true
 	Cs.forEach {
-		println(it.isShuffle(A, B))
+		//		println(it.isShuffle(A, B))
+	}
+
+	val X = "abcd"
+	val Y = "12345"
+	val Zs = arrayOf(
+			"ab123cd5", // false
+			"ab12c34d5", // true
+			"ab1c34d5" // false
+	)
+	Zs.forEach {
+		println(it.isSmoothShuffle(X, Y))
 	}
 }
 
