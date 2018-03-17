@@ -104,7 +104,7 @@ fun IntArray.prefixSum(s: Int = 0, e: Int = size - 1): Int {
 
 // similarly we have suffixSum and I won't do analysis here
 fun IntArray.suffixSum(s: Int = 0, e: Int = size - 1): Int {
-	// sum for this[s + i..e]
+	// dp(i): sum for this[s + i..e]
 	val dp = IntArray(e - s + 1)
 	dp[e - s] = this[e]
 	var max = max(dp[e - s], 0)

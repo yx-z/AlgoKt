@@ -1,6 +1,7 @@
 package dp
 
 import get
+import println
 import set
 
 // given two strings X and Y, a shuffle of them is interspersing characters of X and Y
@@ -70,9 +71,9 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 	val n = Y.length
 
 	// ss(i, j): whether Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
-	// = 0 if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
-	// = 1 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] AND Z[i + j] represents X[i]
-	// = 2 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] And Z[i + j] represents Y[j]
+	// ss(i, j) = 0 if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
+	//          = 1 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] AND Z[i + j] represents X[i]
+	//          = 2 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] And Z[i + j] represents Y[j]
 
 	// memoization structure: 2d array dp[0..m, 0..n] : dp[i, j] = ss(i, j)
 	val dp = Array(m + 1) { Array(n + 1) { 0 } }
@@ -91,13 +92,59 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 	dp[0, 2] = if (Z[0] == Y[0] && Z[1] == Y[1]) 2 else 0
 
 	// recursive case:
-	// when Z[i + j] = X[i] = ORing the following cases
-	// when Z[i + j] = X[i]: ss(i - 1, j) != 0 && if (ss(i - 1, j) == 1) then (ss(i - 2, j) == 2 || i - 2 == 0) ? 1 : 0
-	// when Z[i + j] = Y[j]: ss(i, j - 1) != 0 && if (ss(i, j - 1) == 2) then ss(i, j - 2) == 1 ? 2 : 0
-	// else: false
-
-	// X = "111", Y = "11", Z = "1x 1x 1y 1y 1x"
-
+	// ss(i, j) = when Z[i + j] = X[i] = Y[j]: ORing the following cases
+	//            when Z[i + j] = X[i]: ss(i - 1, j) != 0 && if (ss(i - 1, j) == 1) then (ss(i - 2, j) == 2 || i - 2 == 0) ? 1 : 0
+	//            when Z[i + j] = Y[j]: ss(i, j - 1) != 0 && if (ss(i, j - 1) == 2) then ss(i, j - 2) == 1 ? 2 : 0
+	//            else: 0
+	// dependency: ss(i, j) depends on ss(i - 1, j), ss(i, j - 1),
+	//                                 ss(i - 2, j ), and ss(i, j - 2)
+	//             , that is entries above and entries to the left
+	// evaluation order: outer loop for i from 1 to m (top down)
+	for (i in 1..m) {
+		// inner loop for j from 1 to n (left to right)
+		for (j in 1..n) {
+			dp[i, j] = when {
+//				Z[i + j - 1] == X[i - 1] && X[i - 1] == Y[j - 1] -> {
+//				}
+				Z[i + j - 1] == X[i - 1] -> {
+					if (dp[i - 1, j] == 0) {
+						0
+					} else {
+						if (dp[i - 1, j] == 1) {
+							if (i - 2 == 0) {
+								1
+							} else {
+								if (i - 2 > 0 && dp[i - 2, j] == 2) {
+									1
+								} else {
+									0
+								}
+							}
+						} else {
+							1
+						}
+					}
+				}
+				Z[i + j - 1] == Y[j - 1] ->
+					if (dp[i, j - 1] == 0) {
+						0
+					} else {
+						if (dp[i, j - 1] == 2) {
+							if (j - 2 >= 0 && dp[i, j - 2] == 1) {
+								2
+							} else {
+								0
+							}
+						} else {
+							2
+						}
+					}
+				else -> 0
+			}
+		}
+	}
+	// time complexity: O(mn)
+	dp.println(true)
 
 	// we want ss(m, n) = 1 or 2 (simply != 0)
 	return dp[m, n] != 0
@@ -118,9 +165,9 @@ fun main(args: Array<String>) {
 	val X = "abcd"
 	val Y = "12345"
 	val Zs = arrayOf(
-			"ab123cd5", // false
+			"ab123cd45", // false
 			"ab12c34d5", // true
-			"ab1c34d5" // false
+			"1ab23c4d5" // true
 	)
 	Zs.forEach {
 		println(it.isSmoothShuffle(X, Y))

@@ -1,7 +1,5 @@
 package dp
 
-import println
-
 // longest bitonic subsequence
 
 // X[1..n] is bitonic if there exists i: 1 < i < n, X[1..i] is inscreasing and X[i..n] is decreasing
