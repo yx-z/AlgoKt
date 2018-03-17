@@ -22,8 +22,6 @@ fun String.isShuffle(A: String, B: String): Boolean {
 	// base case:
 	// dp(a, b) = true if a = 0 and b = 0 (empty string is the shuffle of two empty strings)
 	//          = false if a !in 0..m || b !in 0..n
-	//          = dp(0, b - 1) && C[b] == B[b] if a = 0
-	//          = dp(a - 1, 0) && C[a] == A[a] if b = 0
 	dp[0, 0] = true
 	for (a in 1..m) {
 		dp[a, 0] = dp[a - 1, 0] && C[a - 1] == A[a - 1]
@@ -66,88 +64,89 @@ fun String.isShuffle(A: String, B: String): Boolean {
 //     neither is "ab1234cd" (due to "1234")
 // 2. given X[1..m], Y[1..n], and Z[1..m + n], determine if Z is a smooth shuffle of X and Y
 fun String.isSmoothShuffle(X: String, Y: String): Boolean {
+	// follow naming conventions in the problem statement
 	val Z = this
 	val m = X.length
 	val n = Y.length
 
-	// ss(i, j): whether Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
-	// ss(i, j) = 0 if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
-	//          = 1 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] AND Z[i + j] represents X[i]
-	//          = 2 if Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j] And Z[i + j] represents Y[j]
-
-	// memoization structure: 2d array dp[0..m, 0..n] : dp[i, j] = ss(i, j)
-	val dp = Array(m + 1) { Array(n + 1) { 0 } }
-	// space complexity: O(mn)
+	// ss(i, j) = null if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
+	//          = set of pairs of possible combination of sources of last two characters
+	//            that make Z[1..i + j] to be a smooth shuffle of X[1..i] and Y[1..j] o/w
+	// ex. ss(i, j) = [(X, Y), (Y, Y)] means Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
+	//     and the last two characters of Z can be from EITHER (X then Y) OR (Y then Y)
+	// memoization structure: 2d array dp[0..m, 0..n]: dp[i, j] = ss(i, j)
+	val dp = Array(m + 1) { Array(n + 1) { HashSet<Pair<Char, Char>>(0) } }
+	// the longest list is just [(X, X), (X, Y), (Y, X), (Y, Y)] taking O(1) space
+	// space complexity: O(m * n * 2 * 4) = O(m * n)
 
 	// base case:
-	// ss(i, j) = 1 if i = 0 and j = 0
-	//          = Z[1..i] == X[1..i] ? 1 : 0 if j = 0 and 1 <= i <= 2
-	//          = Z[1..j] == Y[1..j] ? 2 : 0 if i = 0 and 1 <= j <= 2
-	//          = 0 if (i = 0 and j > 2) or (j = 0 and i > 2)
-	//          = 0 if i !in 0..m || j !in 0..n
-	dp[0, 0] = 1
-	dp[1, 0] = if (Z[0] == X[0]) 1 else 0
-	dp[2, 0] = if (Z[0] == X[0] && Z[1] == X[1]) 1 else 0
-	dp[0, 1] = if (Z[0] == Y[0]) 2 else 0
-	dp[0, 2] = if (Z[0] == Y[0] && Z[1] == Y[1]) 2 else 0
+	// ss(i, j) = [] if i !in 0..m or j !in 0..n
+	// ss(0, j) = [] if j > 2
+	// ss(i, 0) = [] if i > 2
+	// ss(0, 0) = [(X, X), (X, Y), (Y, X), (Y, Y)]
+	dp[0, 0] = hashSetOf('X' to 'Y', 'X' to 'X', 'Y' to 'X', 'Y' to 'Y')
+	// ss(1, 0) = [] if Z[1] != X[1]
+	//          = [(X, X), (Y, X)] o/w
+	if (Z[0] == X[0]) {
+		dp[1, 0] = hashSetOf('X' to 'X', 'Y' to 'X')
+	}
+	// ss(2, 0) = [] if Z[1..2] != X[1..2]
+	//          = [(X, X)] o/w
+	if (Z[0..1] == X[0..1]) {
+		dp[2, 0] = hashSetOf('X' to 'X')
+	}
+	// ss(0, 1) = [] if Z[1] != Y[1]
+	//          = [(X, Y), (Y, Y)] o/w
+	if (Z[0] == Y[0]) {
+		dp[0, 1] = hashSetOf('X' to 'Y', 'Y' to 'Y')
+	}
+	// ss(0, 2) = [] if Z[1..2] != Y[1..2]
+	//          = [(Y, Y)] o/w
+	if (Z[0..1] == Y[0..1]) {
+		dp[0, 2] = hashSetOf('Y' to 'Y')
+	}
 
 	// recursive case:
-	// ss(i, j) = when Z[i + j] = X[i] = Y[j]: ORing the following cases
-	//            when Z[i + j] = X[i]: ss(i - 1, j) != 0 && if (ss(i - 1, j) == 1) then (ss(i - 2, j) == 2 || i - 2 == 0) ? 1 : 0
-	//            when Z[i + j] = Y[j]: ss(i, j - 1) != 0 && if (ss(i, j - 1) == 2) then ss(i, j - 2) == 1 ? 2 : 0
-	//            else: 0
-	// dependency: ss(i, j) depends on ss(i - 1, j), ss(i, j - 1),
-	//                                 ss(i - 2, j ), and ss(i, j - 2)
-	//             , that is entries above and entries to the left
+	// ss(i, j) = [do both of the following] if Z[i + j] = X[i] = Y[j]
+	//          = [copy ss(i - 1, j), remove (X, X) if it exists, then transform (A, B) to (B, X)]
+	//            if Z[i + j] = X[i] != Y[j]
+	//          = [copy ss(i, j - 1), remove (Y, Y) if it exists, then transform (A, B) to (B, Y)]
+	//            if Z[i + j] = Y[j] != X[i]
+	//          = [] o/w i.e. Z[i + j] != X[i] and Z[i + j] != Y[j]
+	// dependency: ss(i, j) depends on ss(i - 1, j) and ss(j, i - 1)
+	//             that is, entries to the left and entries above
 	// evaluation order: outer loop for i from 1 to m (top down)
 	for (i in 1..m) {
 		// inner loop for j from 1 to n (left to right)
 		for (j in 1..n) {
-			dp[i, j] = when {
-//				Z[i + j - 1] == X[i - 1] && X[i - 1] == Y[j - 1] -> {
-//				}
-				Z[i + j - 1] == X[i - 1] -> {
-					if (dp[i - 1, j] == 0) {
-						0
-					} else {
-						if (dp[i - 1, j] == 1) {
-							if (i - 2 == 0) {
-								1
-							} else {
-								if (i - 2 > 0 && dp[i - 2, j] == 2) {
-									1
-								} else {
-									0
-								}
-							}
-						} else {
-							1
-						}
-					}
+			when {
+				Z[i + j - 1] == X[i - 1] && X[i - 1] == Y[j - 1] -> {
+					dp[i - 1, j]
+							.filter { it.first == 'Y' || it.second == 'Y' }
+							.forEach { dp[i, j].add(it.second to 'X') }
+
+					dp[i, j - 1]
+							.filter { it.first == 'X' || it.second == 'X' }
+							.forEach { dp[i, j].add(it.second to 'Y') }
 				}
-				Z[i + j - 1] == Y[j - 1] ->
-					if (dp[i, j - 1] == 0) {
-						0
-					} else {
-						if (dp[i, j - 1] == 2) {
-							if (j - 2 >= 0 && dp[i, j - 2] == 1) {
-								2
-							} else {
-								0
-							}
-						} else {
-							2
-						}
-					}
-				else -> 0
+				Z[i + j - 1] == X[i - 1] -> {
+					dp[i - 1, j]
+							.filter { it.first == 'Y' || it.second == 'Y' }
+							.forEach { dp[i, j].add(it.second to 'X') }
+				}
+				Z[i + j - 1] == Y[j - 1] -> {
+					dp[i, j - 1]
+							.filter { it.first == 'X' || it.second == 'X' }
+							.forEach { dp[i, j].add(it.second to 'Y') }
+				}
+			// else -> do nothing, keep the current set empty
 			}
 		}
 	}
-	// time complexity: O(mn)
-	dp.println(true)
+	// time complexity: O(m * n * (8 + 8)) = O(m * n)
 
-	// we want ss(m, n) = 1 or 2 (simply != 0)
-	return dp[m, n] != 0
+	// we want ss(m, n) != []
+	return dp[m][n].isNotEmpty()
 }
 
 fun main(args: Array<String>) {
@@ -172,5 +171,11 @@ fun main(args: Array<String>) {
 	Zs.forEach {
 		println(it.isSmoothShuffle(X, Y))
 	}
+
+	val exX = "xxxxxxxx"
+	val exY = "xxxxxxxxxxx"
+	val exZ = exX + exY
+//	println(exZ.isShuffle(exX, exY))
+	println(exZ.isSmoothShuffle(exX, exY))
 }
 
