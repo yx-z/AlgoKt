@@ -157,9 +157,7 @@ fun main(args: Array<String>) {
 			"ab132c", // false
 			"ab123c", // true
 			"ab1c23") // true
-	Cs.forEach {
-		println(it.isShuffle(A, B))
-	}
+	Cs.forEach { println(it.isShuffle(A, B)) }
 
 	// regular tests for smoothShuffle()
 	val X = "abcd"
@@ -169,9 +167,7 @@ fun main(args: Array<String>) {
 			"ab12c34d5", // true
 			"1ab23c4d5" // true
 	)
-	Zs.forEach {
-		println(it.isSmoothShuffle(X, Y))
-	}
+	Zs.forEach { println(it.isSmoothShuffle(X, Y)) }
 
 	// ex-treme example of X, Y, and Z
 	val exX = "xxxxxxxx"
