@@ -122,21 +122,21 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 			when {
 				Z[i + j - 1] == X[i - 1] && X[i - 1] == Y[j - 1] -> {
 					dp[i - 1, j]
-							.filter { it.first == 'Y' || it.second == 'Y' }
+							.filterNot { it.first == 'X' && it.second == 'X' }
 							.forEach { dp[i, j].add(it.second to 'X') }
 
 					dp[i, j - 1]
-							.filter { it.first == 'X' || it.second == 'X' }
+							.filterNot { it.first == 'Y' && it.second == 'Y' }
 							.forEach { dp[i, j].add(it.second to 'Y') }
 				}
 				Z[i + j - 1] == X[i - 1] -> {
 					dp[i - 1, j]
-							.filter { it.first == 'Y' || it.second == 'Y' }
+							.filterNot { it.first == 'X' && it.second == 'X' }
 							.forEach { dp[i, j].add(it.second to 'X') }
 				}
 				Z[i + j - 1] == Y[j - 1] -> {
 					dp[i, j - 1]
-							.filter { it.first == 'X' || it.second == 'X' }
+							.filterNot { it.first == 'Y' && it.second == 'Y' }
 							.forEach { dp[i, j].add(it.second to 'Y') }
 				}
 			// else -> do nothing, keep the current set empty
@@ -150,7 +150,7 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 }
 
 fun main(args: Array<String>) {
-	// 1.
+	// regular tests for shuffle()
 	val A = "abc"
 	val B = "123"
 	val Cs = arrayOf(
@@ -158,9 +158,10 @@ fun main(args: Array<String>) {
 			"ab123c", // true
 			"ab1c23") // true
 	Cs.forEach {
-		//		println(it.isShuffle(A, B))
+		println(it.isShuffle(A, B))
 	}
 
+	// regular tests for smoothShuffle()
 	val X = "abcd"
 	val Y = "12345"
 	val Zs = arrayOf(
@@ -172,10 +173,19 @@ fun main(args: Array<String>) {
 		println(it.isSmoothShuffle(X, Y))
 	}
 
+	// ex-treme example of X, Y, and Z
 	val exX = "xxxxxxxx"
 	val exY = "xxxxxxxxxxx"
 	val exZ = exX + exY
-//	println(exZ.isShuffle(exX, exY))
-	println(exZ.isSmoothShuffle(exX, exY))
+	println(exZ.isShuffle(exX, exY)) // true
+	println(exZ.isSmoothShuffle(exX, exY)) // true
+
+	// a counterexample of smoothShuffle of X, Y, and Z
+	val exCounterX = "xxxx"
+	val exCounterY = "xxxxxxxxxxx"
+	val exCounterZ = exCounterX + exCounterY
+	println(exCounterZ.isShuffle(exCounterX, exCounterY)) // true
+	// length of two strings are too different to be separated properly in any shuffle
+	println(exCounterZ.isSmoothShuffle(exCounterX, exCounterY)) // false
 }
 
