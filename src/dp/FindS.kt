@@ -103,7 +103,7 @@ fun OneArray<Int>.subseqNotSuperseq(X: OneArray<Int>): Int {
 		}
 	}
 	// time complexity: O(kn)
-	dp.prettyPrintln(true)
+//	dp.prettyPrintln(true)
 
 	return max
 }
@@ -118,70 +118,46 @@ infix fun OneArray<Int>.occurAs2DisjointSubseq(Y: OneArray<Int>): Boolean {
 	// ex. dp(i, j, l) = (a, b) if Y[a] = Y[b] = X[i] and there are two disjoint subsequences
 	//                   Y[1..a] and Y[2..b] that equals X[1..i]
 	//                   a <= j, b <= l, 1 <= j < l <= n
-	//                 = null o/w
-	val dp = Array(k + 1) { Array(n) { arrayOfNulls<Set<Pair<Int, Int>>>(n + 1) } }
-
-	// base case:
-	// dp(0, j, l) = (j - 1, l - 1)
-	for (j in 1 until n) {
-		for (l in j + 1..n) {
-			dp[0, j, l] = hashSetOf(j - 1 to l - 1)
+	//                 = [] o/w
+	val dp = OneArray<OneArray<OneArray<HashSet<Pair<Int, Int>>>>>(k)
+	for (i in 1..k) {
+		dp[i] = OneArray(n - 1)
+		for (j in 1 until n) {
+			dp[i][j] = OneArray(n)
+			for (l in 1..n) {
+				dp[i][j][l] = HashSet(0)
+			}
 		}
 	}
 
-	// recursive case:
-	// dp(i, j, l) = if X[i] = Y[j] = Y[l]
-	//                   (j', l') = dp(i - 1, j, l)
-	//                   if j' < l'
-	//                       (j, l)
-	//             = if X[i] = Y[j] != Y[l]
-	//                   dp(i, j, l - 1)
-	//             = if X[i] = Y[l] != Y[j]
-	//                   dp(i, j - 1, l)
-	//             = dp(i, j - 1, l - 1)
 	for (i in 1..k) {
 		for (j in 1 until n) {
 			for (l in j + 1..n) {
-				dp[i, j, l] = when {
-					X[i] == Y[j] && Y[j] == Y[l] -> {
-						if (dp[i - 1, j, l] == null) {
-							null
-						} else {
-							val set = HashSet<Pair<Int, Int>>()
-							dp[i, j - 1, l - 1]?.forEach { set.add(it) }
-							if (dp[i - 1, j, l] != null && dp[i - 1, j, l]!!.filter { (preJ, preL) -> preJ < j && preL < l }.isNotEmpty()) {
-								set.add(i to j)
-							}
-							set
+				if (X[i] == Y[j] && Y[j] == Y[l]) {
+					if (i == 1) {
+						dp[i][j][l].add(j to l)
+					} else {
+						if (dp[i - 1][max(1, j - 1)][max(1, l - 1)].isNotEmpty()) {
+							dp[i][j][l].add(j to l)
 						}
 					}
-					X[i] == Y[j] && Y[j] != Y[l] -> {
-						val set = HashSet<Pair<Int, Int>>()
-						dp[i, j, l - 1]?.forEach { set.add(it) }
-						set
-					}
-					X[i] == Y[l] && Y[l] != Y[j] -> {
-						val set = HashSet<Pair<Int, Int>>()
-						dp[i, j - 1, l]?.forEach { set.add(it) }
-						set
-					}
-					else -> {
-						val set = HashSet<Pair<Int, Int>>()
-						dp[i, j - 1, l - 1]?.forEach { set.add(it) }
-						set
-					}
+				} else {
+					dp[i][j][l].addAll(dp[i][max(1, j - 1)][max(1, l - 1)])
+					dp[i][j][l].addAll(dp[i][max(1, j - 1)][l])
+					dp[i][j][l].addAll(dp[i][j][max(1, l - 1)])
 				}
 			}
 		}
 	}
 
-	for (i in 0 until dp.size) {
-		dp[i].prettyPrintln()
-		println()
+	for (i in 1..k) {
+		for (j in 1 until n) {
+//			dp[i][j].prettyPrintln()
+		}
+//		println()
 	}
 
-	// we want dp(k, n - 1, n) != null
-	return dp[k, n - 1, n] != null && dp[k, n - 1, n]!!.isNotEmpty()
+	return dp[k][n - 1][n].isNotEmpty()
 }
 
 fun main(args: Array<String>) {
@@ -204,11 +180,11 @@ fun main(args: Array<String>) {
 
 //	println(oneArrY.size - oneArrY.subseqNotSuperseq(oneArrX))
 
-//	println(oneArrX occurAs2DisjointSubseq oneArrY)
+	println(oneArrX occurAs2DisjointSubseq oneArrY)
 
 	val test3X = arrayOf(1, 2, 3).toOneArray()
-	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 2).toOneArray()
-	println(test3X occurAs2DisjointSubseq test3Y)
+	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 3).toOneArray()
+//	println(test3X occurAs2DisjointSubseq test3Y)
 }
 
 fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()
