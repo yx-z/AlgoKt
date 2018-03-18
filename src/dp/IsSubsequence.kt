@@ -2,7 +2,10 @@ package dp
 
 import max
 import get
+import println
 import set
+import toOneArray
+import OneArray
 
 // given X[1..k] and Y[1..n] : k <= n
 
@@ -70,29 +73,34 @@ infix fun IntArray.isSubseqOf(Y: IntArray): Boolean {
 //    , you can also find the longest subsequence of Y that is not a supersequence of X
 // let me find the length of such subsequence = l
 // and we can know the minimum number of elements to be removed as n - l
-fun IntArray.subseqNotSuperseq(X: IntArray): Int {
+fun OneArray<Int>.subseqNotSuperseq(X: OneArray<Int>): Int {
 	val Y = this
 	val k = X.size
 	val n = Y.size
 
-	// dp(i, j): length of longest subsequence of Y[0..j] that contains X[0..i] as its subsequence
-	// ex. dp[0, j] is the length of longest subsequene of Y[1..j] that contains X[0] which is empty
-	//     as its subsequence but cannot contain any of X[i..k], i in 1..k
-	// memoization structure: 2d array dp[0 until k, 0..n] : dp[i, j] = dp(i, j)
-	val dp = Array(k) { IntArray(n + 1) }
-	// space complexity: O(k * n)
+	// dp[i, j] = (len of longest subseq of Y[1..j] that only contains X[0..i] in the order but not X[i + 1 until k],
+	//             last idx of subseq X[0 until i]), j >= i
+	// 2d array dp[0..k, 0..n] taking space O(kn)
+	val dp = Array(k + 1) { Array(n + 1) { 0 to it } }
 
-	// we want max_i{ dp(i, n) }
+	// we want max_i{ dp[i, n]_1 }
 	var max = 0
 
-	// base case:
-	// dp(i, 0) = 0
-	// dp(0, j) = segment Y[1..i] into pieces delimtered by X[1]
+	for (i in 1..k) {
+		for (j in 1..n) {
+			dp[i, j] = if (Y[j] == X[i]) {
+				max(j - dp[i - 1, j - 1].second - 1, dp[i, j - 1].first) to j
+			} else {
+				1 + dp[i, j - 1].first to dp[i, j - 1].second
+			}
 
-	// recursive case:
-	// dp(i, j) =  if Y[j] = X[i + 1]
-
-	// time complexity: O(k * n)
+			if (j == n) {
+				max = max(max, dp[i, n].first)
+			}
+		}
+	}
+	// time complexity: O(kn)
+	dp.println(true)
 
 	return max
 }
@@ -108,7 +116,14 @@ fun main(args: Array<String>) {
 //	Ys.forEach { println(X isSubsequenceOf it) }
 //	Ys.forEach { println(X isSubseqOf it) }
 
-	val xX = intArrayOf(1, 2, 4, 3, 6)
-	val xY = intArrayOf(1, 2, 4, 3, 6, 6, 2, 4, 6)
-	println(xY.subseqNotSuperseq(xX))
+	val strX = "PPAP"
+	val strY = "PEN" + "PINEAPPLE" + "APPLEPIE"
+	val intArrX = strX.toAlpha()
+	val intArrY = strY.toAlpha()
+	val oneArrX = intArrX.toOneArray()
+	val oneArrY = intArrY.toOneArray()
+
+	println(oneArrY.size - oneArrY.subseqNotSuperseq(oneArrX))
 }
+
+fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()

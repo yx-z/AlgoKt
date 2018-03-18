@@ -1,5 +1,5 @@
 import java.lang.NullPointerException
-import java.util.Arrays
+import java.util.*
 
 // multi-parameter version of min/max
 // ex. min(i1, i2, i3, i4), max(i1, i2, i3, i4, i5)
@@ -72,8 +72,8 @@ fun <T> Array<T>.println(printIdx: Boolean = false) {
 	if (printIdx) {
 		print(" ")
 		indices.forEach { print(" $it") }
+		System.out.println()
 	}
-	System.out.println()
 	println(Arrays.toString(this))
 }
 
@@ -118,3 +118,38 @@ fun Array<IntArray>.println(printIdx: Boolean = false) {
 		forEach { it.println(false) }
 	}
 }
+
+// one-indexed Array
+class OneArray<T>(val size: Int) {
+	private var container = arrayOfNulls<Any?>(size)
+
+	operator fun get(i: Int) = container[i - 1] as T
+
+	operator fun set(i: Int, v: T) {
+		container[i - 1] = v
+	}
+
+	override fun toString() = Arrays.toString(container)
+
+	fun println(printIdx: Boolean = false) {
+		if (printIdx) {
+			container.indices.forEach { print(" ${it + 1} ") }
+			System.out.println()
+		}
+		println(this)
+	}
+
+	constructor(intArray: IntArray) : this(intArray.size) {
+		container = intArray.toTypedArray() as Array<Any?>
+	}
+
+	constructor(array: Array<T>) : this(array.size) {
+		container = array as Array<Any?>
+	}
+
+	fun toArray() = container
+}
+
+fun IntArray.toOneArray() = OneArray<Int>(this)
+
+fun <T> Array<T>.toOneArray() = OneArray(this)
