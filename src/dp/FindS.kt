@@ -134,12 +134,8 @@ infix fun OneArray<Int>.occurAs2DisjointSubseq(Y: OneArray<Int>): Boolean {
 		for (j in 1 until n) {
 			for (l in j + 1..n) {
 				if (X[i] == Y[j] && Y[j] == Y[l]) {
-					if (i == 1) {
+					if (i == 1 || dp[max(1, -1)][max(1, j - 1)][max(1, l - 1)].isNotEmpty()) {
 						dp[i][j][l].add(j to l)
-					} else {
-						if (dp[i - 1][max(1, j - 1)][max(1, l - 1)].isNotEmpty()) {
-							dp[i][j][l].add(j to l)
-						}
 					}
 				} else {
 					dp[i][j][l].addAll(dp[i][max(1, j - 1)][max(1, l - 1)])
@@ -150,15 +146,18 @@ infix fun OneArray<Int>.occurAs2DisjointSubseq(Y: OneArray<Int>): Boolean {
 		}
 	}
 
-	for (i in 1..k) {
-		for (j in 1 until n) {
+//	for (i in 1..k) {
+//		for (j in 1 until n) {
 //			dp[i][j].prettyPrintln()
-		}
+//		}
 //		println()
-	}
+//	}
 
 	return dp[k][n - 1][n].isNotEmpty()
 }
+
+// 4. weighed subseq
+
 
 fun main(args: Array<String>) {
 	val X = intArrayOf(3, 5, 1, 2, 6)
@@ -184,7 +183,7 @@ fun main(args: Array<String>) {
 
 	val test3X = arrayOf(1, 2, 3).toOneArray()
 	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 3).toOneArray()
-//	println(test3X occurAs2DisjointSubseq test3Y)
+	println(test3X occurAs2DisjointSubseq test3Y)
 }
 
 fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()
