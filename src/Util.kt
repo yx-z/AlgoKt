@@ -19,6 +19,19 @@ inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
 operator fun IntArray.get(range: IntRange) =
 		Arrays.copyOfRange(this, range.first, range.last + 1) ?: intArrayOf()
 
+operator fun <T> OneArray<T>.get(range: IntRange): OneArray<T> {
+	val start = range.start
+	val end = range.endInclusive
+	val len = end - start + 1
+	val arr = OneArray<T>(len)
+	var arrIdx = 1
+	for (i in start..end) {
+		arr[arrIdx] = this[i]
+		arrIdx++
+	}
+	return arr
+}
+
 // python like multidimensional array indexing
 // ex. arr[1, 2, 3, 4], arr[2, 5, 3] = 2
 operator fun Array<IntArray>.get(i1: Int, i2: Int) = this[i1][i2]
@@ -77,6 +90,7 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 
 // One-indexed Array
 class OneArray<T>(val size: Int) {
+	val indices = 1..size
 	private var container = arrayOfNulls<Any?>(size)
 
 	operator fun get(i: Int) = container[i - 1] as T
@@ -112,6 +126,12 @@ class OneArray<T>(val size: Int) {
 		println()
 
 		println(this)
+	}
+
+	fun forEach(action: (T) -> Unit) {
+		for (element in container) {
+			action(element as T)
+		}
 	}
 }
 
@@ -154,7 +174,7 @@ fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
 fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = false) {
 	for (i in 1..this.size) {
 		if (printIndex) {
-			println("$i:")
+			println("#$i")
 		}
 		this[i].prettyPrintTable(printIndex)
 		println()
@@ -166,3 +186,7 @@ operator fun String.times(n: Int) = this.repeat(n)
 fun IntArray.toOneArray() = OneArray<Int>(this)
 
 fun <T> Array<T>.toOneArray() = OneArray(this)
+
+fun <T> oneArrayOf(vararg ts: T) = ts.toOneArray()
+
+fun oneArrayOf(vararg `is`: Int) = `is`.toOneArray()

@@ -1,12 +1,13 @@
 package dp
 
 import max
+import min
 import get
 import set
 import toOneArray
 import OneArray
+import oneArrayOf
 import prettyPrintTable
-import prettyPrintTables
 
 // given X[1..k] and Y[1..n] : k <= n
 
@@ -158,36 +159,86 @@ infix fun OneArray<Int>.occurAs2DisjointSubseq(Y: OneArray<Int>): Boolean {
 }
 
 // 4. weighed subseq
+// given X[1..k], Y[1..n], and C[1..n] as the cost of Y
 fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
-	TODO()
+	val X = this
+	val k = X.size
+	val n = Y.size
+
+	// dp(i, j): minimum cost of a subseq in Y[1..j] that ends in Y[j] and equals to X[1..i]
+	// memoization structure: dp[1..k, 1..n] : dp[i, j] = dp(i, j)
+	val dp = OneArray<OneArray<Int>>(k)
+	// space complexity: O(k * n)
+
+	// we want min_j { dp(k, j) }
+	var min = Int.MAX_VALUE / 2
+
+	// base case:
+	// dp(i, j) = 0 if i !in 1..k or j !in 1..n
+	for (i in 1..k) {
+		dp[i] = OneArray(n)
+		for (j in 1..n) {
+			// assume +inf = Int.MAX_VALUE / 2 (so as to avoid overflow)
+			dp[i, j] = Int.MAX_VALUE / 2
+		}
+	}
+
+	// recursive case:
+	// assume min{ } = +inf
+	// dp(i, j) = min_l{ dp(i - 1, l) : l < j } + C[j] if X[i] = Y[j]
+	//          = +inf o/w
+	// dependency: dp(i, j) depends on entries on the row above and to the left
+	// evaluation order: outer loop for i from 1 to k (top down)
+	for (i in 1..k) {
+		// inner loop for j from 1 to n (left to right)
+		for (j in 1..n) {
+			if (X[i] == Y[j]) {
+				dp[i, j] = if (i == 1) {
+					C[j]
+				} else {
+					(1 until j).map { dp[i - 1, it] + C[j] }.min()
+							?: (Int.MAX_VALUE / 2)
+				}
+			}
+			if (i == k) {
+				min = min(min, dp[i, j])
+			}
+		}
+	}
+	// time complexity: O(k * n)
+//	dp.prettyPrintTable(true)
+
+	return min
 }
 
 
 fun main(args: Array<String>) {
-	val X = intArrayOf(3, 5, 1, 2, 6)
-	val Ys = arrayOf(
+	val test1X = intArrayOf(3, 5, 1, 2, 6)
+	val test1Ys = arrayOf(
 			intArrayOf(3, 5, 1, 2, 6), // true
 			intArrayOf(3, 5, 2, 1, 1, 2, 6), // true
 			intArrayOf(3, 5, 1, 6, 2, 2) // false
 	)
 
-//	Ys.forEach { println(X isSubsequenceOf it) }
-//	Ys.forEach { println(X isSubseqOf it) }
+//	test1Ys.forEach { println(test1X isSubsequenceOf it) }
+//	test1Ys.forEach { println(test1X isSubseqOf it) }
 
-	val strX = "PPAP"
-	val strY = "PEN" + "PINEAPPLE" + "APPLEPIE"
-	val intArrX = strX.toAlpha()
-	val intArrY = strY.toAlpha()
-	val oneArrX = intArrX.toOneArray()
-	val oneArrY = intArrY.toOneArray()
+	val test2X = "PPAP".toAlpha().toOneArray()
+	val test2Y = ("PEN" + "PINEAPPLE" + "APPLEPIE").toAlpha().toOneArray()
 
-//	println(oneArrY.size - oneArrY.subseqNotSuperseq(oneArrX))
+//	println(test2Y.size - test2Y.subseqNotSuperseq(test2X))
 
-//	println(oneArrX occurAs2DisjointSubseq oneArrY)
+//	println(test2X occurAs2DisjointSubseq test2Y)
 
 	val test3X = arrayOf(1, 2, 3).toOneArray()
 	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 3).toOneArray()
 //	println(test3X occurAs2DisjointSubseq test3Y)
+
+	val test4X = oneArrayOf(1, 2)
+	val test4Y = oneArrayOf(1, 2, 3, 1, 1, 2)
+	val test4C = oneArrayOf(-10, 20, 0, 10, 20, 25)
+
+	println(test4X.minWeighedSubseq(test4Y, test4C))
 }
 
 fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()
