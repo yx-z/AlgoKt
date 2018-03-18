@@ -75,40 +75,26 @@ fun IntArray.subseqNotSuperseq(X: IntArray): Int {
 	val k = X.size
 	val n = Y.size
 
-	// dp(i, j): length of the longest such subsequence :
-	//           Y[1..j] is NOT a supersequence of X[1..i]
-	// memoization structure: 2d array dp[0..k. 0..n] : dp[i, j] = dp(i, j)
-	val dp = Array(k + 1) { IntArray(n + 1) }
+	// dp(i, j): length of longest subsequence of Y[0..j] that contains X[0..i] as its subsequence
+	// ex. dp[0, j] is the length of longest subsequene of Y[1..j] that contains X[0] which is empty
+	//     as its subsequence but cannot contain any of X[i..k], i in 1..k
+	// memoization structure: 2d array dp[0 until k, 0..n] : dp[i, j] = dp(i, j)
+	val dp = Array(k) { IntArray(n + 1) }
 	// space complexity: O(k * n)
 
+	// we want max_i{ dp(i, n) }
+	var max = 0
+
 	// base case:
-	// dp(i, j) = 0 if i = 0 or i !in 0..k or j !in 0..n or i > j
-	//          = j if i = 0
-	for (j in 0..n) {
-		dp[0, j] = j
-	}
+	// dp(i, 0) = 0
+	// dp(0, j) = segment Y[1..i] into pieces delimtered by X[1]
 
 	// recursive case:
-	// dp(i, j) = max{ dp[i, j - 1], dp[i - 1, j - 1] } if X[i] = Y[j]
-	//          = max{ dp[i, j - 1], dp[i - 1, j - 1] + 1 } if X[i] != Y[j]
-	// dependency: dp[i, j] depends on dp[i, j - 1] and dp[i - 1, j - 1]
-	//             that is entries to the left and to the upper-left
-	// evaluation order: outer loop for i from 1 to k (top down)
-	for (i in 1..k) {
-		// inner loop for j from 1 to n (left to right)
-		for (j in 1..n) {
-			dp[i, j] = max(dp[i, j - 1], dp[i - 1, j - 1] +
-					if (X[i - 1] == Y[j - 1]) {
-						0
-					} else {
-						1
-					}
-			)
-		}
-	}
+	// dp(i, j) =  if Y[j] = X[i + 1]
 
-	// we want dp(k, n)
-	return dp[k, n]
+	// time complexity: O(k * n)
+
+	return max
 }
 
 fun main(args: Array<String>) {
@@ -123,6 +109,6 @@ fun main(args: Array<String>) {
 //	Ys.forEach { println(X isSubseqOf it) }
 
 	val xX = intArrayOf(1, 2, 4, 3, 6)
-	val xY = intArrayOf(1, 2, 4, 3, 6, 6, 6, 4, 2, 3, 6)
+	val xY = intArrayOf(1, 2, 4, 3, 6, 6, 2, 4, 6)
 	println(xY.subseqNotSuperseq(xX))
 }
