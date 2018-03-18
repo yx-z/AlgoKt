@@ -8,10 +8,10 @@ fun main(args: Array<String>) {
 	// find the number of subsequences in L that equals to S
 	val L = intArrayOf(3, 1, 2, 2, 3, 3, 4, 4)
 	val S = intArrayOf(2, 3, 4)
-	println(findSubseq(L, S)) // 8 since there are 2 ways of picking 2, 2 of 4, and 2 of 3
+	println(numSubseq(L, S)) // 8 since there are 2 ways of picking 2, 2 of 4, and 2 of 3
 }
 
-fun findSubseq(L: IntArray, S: IntArray): Int {
+fun numSubseq(L: IntArray, S: IntArray): Int {
 	val m = L.size
 	val n = S.size
 

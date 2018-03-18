@@ -39,9 +39,9 @@ fun billsDP(k: Int): Int {
 }
 
 fun main(args: Array<String>) {
-//	println(billsGreedy(122))
-//	println(billsRec(21))
-//	println(billsDP(122))
+//	prettyPrintln(billsGreedy(122))
+//	prettyPrintln(billsRec(21))
+//	prettyPrintln(billsDP(122))
 
 // 3. give an example that such algorithm fails to be the option with least number of bills used
 	var amount = 1

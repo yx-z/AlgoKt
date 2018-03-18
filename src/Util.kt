@@ -58,8 +58,8 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 }
 
 // pretty print for arrays
-// ex. arr.println()
-fun IntArray.println(printIdx: Boolean = false) {
+// ex. arr.prettyPrintln()
+fun IntArray.prettyPrintln(printIdx: Boolean = false) {
 	if (printIdx) {
 		print(" ")
 		indices.forEach { print(" $it") }
@@ -68,7 +68,7 @@ fun IntArray.println(printIdx: Boolean = false) {
 	println(Arrays.toString(this))
 }
 
-fun <T> Array<T>.println(printIdx: Boolean = false) {
+fun <T> Array<T>.prettyPrintln(printIdx: Boolean = false) {
 	if (printIdx) {
 		print(" ")
 		indices.forEach { print(" $it") }
@@ -77,7 +77,7 @@ fun <T> Array<T>.println(printIdx: Boolean = false) {
 	println(Arrays.toString(this))
 }
 
-fun <T> Array<Array<T>>.println(printIdx: Boolean = false) {
+fun <T> Array<Array<T>>.prettyPrintln(printIdx: Boolean = false) {
 	if (printIdx) {
 		print("   ")
 		val maxCol = map { it.size }.max() ?: 0
@@ -94,11 +94,11 @@ fun <T> Array<Array<T>>.println(printIdx: Boolean = false) {
 			System.out.println()
 		}
 	} else {
-		forEach { it.println(false) }
+		forEach { it.prettyPrintln(false) }
 	}
 }
 
-fun Array<IntArray>.println(printIdx: Boolean = false) {
+fun Array<IntArray>.prettyPrintln(printIdx: Boolean = false) {
 	if (printIdx) {
 		print("   ")
 		val maxCol = map { it.size }.max() ?: 0
@@ -115,7 +115,7 @@ fun Array<IntArray>.println(printIdx: Boolean = false) {
 			System.out.println()
 		}
 	} else {
-		forEach { it.println(false) }
+		forEach { it.prettyPrintln(false) }
 	}
 }
 
@@ -131,7 +131,7 @@ class OneArray<T>(val size: Int) {
 
 	override fun toString() = Arrays.toString(container)
 
-	fun println(printIdx: Boolean = false) {
+	fun prettyPrintln(printIdx: Boolean = false) {
 		if (printIdx) {
 			container.indices.forEach { print(" ${it + 1} ") }
 			System.out.println()
