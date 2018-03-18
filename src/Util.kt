@@ -187,6 +187,6 @@ fun IntArray.toOneArray() = OneArray<Int>(this)
 
 fun <T> Array<T>.toOneArray() = OneArray(this)
 
-fun <T> oneArrayOf(vararg ts: T) = ts.toOneArray()
+inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
-fun oneArrayOf(vararg `is`: Int) = `is`.toOneArray()
+inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
