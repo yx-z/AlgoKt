@@ -2,7 +2,6 @@ package dp
 
 import max
 import get
-import prettyPrintln
 import set
 import toOneArray
 import OneArray
@@ -157,6 +156,9 @@ infix fun OneArray<Int>.occurAs2DisjointSubseq(Y: OneArray<Int>): Boolean {
 }
 
 // 4. weighed subseq
+fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
+	TODO()
+}
 
 
 fun main(args: Array<String>) {
@@ -179,11 +181,21 @@ fun main(args: Array<String>) {
 
 //	println(oneArrY.size - oneArrY.subseqNotSuperseq(oneArrX))
 
-	println(oneArrX occurAs2DisjointSubseq oneArrY)
+//	println(oneArrX occurAs2DisjointSubseq oneArrY)
 
 	val test3X = arrayOf(1, 2, 3).toOneArray()
 	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 3).toOneArray()
-	println(test3X occurAs2DisjointSubseq test3Y)
+//	println(test3X occurAs2DisjointSubseq test3Y)
+
+	val arr = OneArray<OneArray<Int>>(10)
+	for (i in 1..10) {
+		arr[i] = OneArray(5)
+		for (j in 1..5) {
+			arr[i, j] = i * j
+		}
+	}
+	arr.prettyPrintln(true)
+	println(arr.toString())
 }
 
 fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()

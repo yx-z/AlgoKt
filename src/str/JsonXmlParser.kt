@@ -94,8 +94,6 @@ data class Node(var key: String,
 	}
 }
 
-operator fun String.times(times: Int) = repeat(times)
-
 fun String.read() = File(this).bufferedReader().readLines()
 
 fun String.isKeyValPairJson() = matches(".*\".*\": \"?.*\"?,?.*".toRegex())

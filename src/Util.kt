@@ -57,69 +57,25 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 	this[i1][i2][i3][i4] = v
 }
 
-// pretty print for arrays
-// ex. arr.prettyPrintln()
-fun IntArray.prettyPrintln(printIdx: Boolean = false) {
-	if (printIdx) {
-		print(" ")
-		indices.forEach { print(" $it") }
-	}
-	System.out.println()
-	println(Arrays.toString(this))
+operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
+operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
+operator fun <T> OneArray<OneArray<T>>.set(i1: Int, i2: Int, v: T) {
+	this[i1][i2] = v
 }
 
-fun <T> Array<T>.prettyPrintln(printIdx: Boolean = false) {
-	if (printIdx) {
-		print(" ")
-		indices.forEach { print(" $it") }
-		System.out.println()
-	}
-	println(Arrays.toString(this))
+operator fun <T> OneArray<OneArray<OneArray<T>>>.set(i1: Int, i2: Int, i3: Int, v: T) {
+	this[i1][i2][i3] = v
 }
 
-fun <T> Array<Array<T>>.prettyPrintln(printIdx: Boolean = false) {
-	if (printIdx) {
-		print("   ")
-		val maxCol = map { it.size }.max() ?: 0
-		(0 until maxCol).forEach {
-			print(" $it ")
-		}
-		System.out.println()
-		indices.forEach {
-			print("$it ")
-			if (it < 10) {
-				print(" ")
-			}
-			print(Arrays.toString(this[it]))
-			System.out.println()
-		}
-	} else {
-		forEach { it.prettyPrintln(false) }
-	}
+operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
+	this[i1][i2][i3][i4] = v
 }
 
-fun Array<IntArray>.prettyPrintln(printIdx: Boolean = false) {
-	if (printIdx) {
-		print("   ")
-		val maxCol = map { it.size }.max() ?: 0
-		(0 until maxCol).forEach {
-			print(" $it ")
-		}
-		System.out.println()
-		indices.forEach {
-			print("$it ")
-			if (it < 10) {
-				print(" ")
-			}
-			print(Arrays.toString(this[it]))
-			System.out.println()
-		}
-	} else {
-		forEach { it.prettyPrintln(false) }
-	}
-}
-
-// one-indexed Array
+// One-indexed Array
 class OneArray<T>(val size: Int) {
 	private var container = arrayOfNulls<Any?>(size)
 
@@ -129,15 +85,7 @@ class OneArray<T>(val size: Int) {
 		container[i - 1] = v
 	}
 
-	override fun toString() = Arrays.toString(container)
-
-	fun prettyPrintln(printIdx: Boolean = false) {
-		if (printIdx) {
-			container.indices.forEach { print(" ${it + 1} ") }
-			System.out.println()
-		}
-		println(this)
-	}
+	override fun toString() = Arrays.deepToString(container)
 
 	constructor(intArray: IntArray) : this(intArray.size) {
 		container = intArray.toTypedArray() as Array<Any?>
@@ -148,7 +96,29 @@ class OneArray<T>(val size: Int) {
 	}
 
 	fun toArray() = container
+
+	fun prettyPrintln(printIndex: Boolean = false) {
+		if (!printIndex) {
+			println(this)
+		}
+
+		print(" ")
+		container.indices.forEach {
+			val len = container[it].toString().length
+			print(it + 1)
+			print(" " * (len - it.toString().length + 2))
+		}
+		println()
+
+		println(this)
+	}
 }
+
+fun <T> OneArray<OneArray<T>>.prettyPrintln(printIndex: Boolean = false) {
+
+}
+
+operator fun String.times(n: Int) = this.repeat(n)
 
 fun IntArray.toOneArray() = OneArray<Int>(this)
 
