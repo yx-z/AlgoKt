@@ -5,6 +5,8 @@ import get
 import set
 import toOneArray
 import OneArray
+import prettyPrintTable
+import prettyPrintTables
 
 // given X[1..k] and Y[1..n] : k <= n
 
@@ -186,16 +188,6 @@ fun main(args: Array<String>) {
 	val test3X = arrayOf(1, 2, 3).toOneArray()
 	val test3Y = arrayOf(1, 2, 2, 1, 2, 3, 4, 2, 3).toOneArray()
 //	println(test3X occurAs2DisjointSubseq test3Y)
-
-	val arr = OneArray<OneArray<Int>>(10)
-	for (i in 1..10) {
-		arr[i] = OneArray(5)
-		for (j in 1..5) {
-			arr[i, j] = i * j
-		}
-	}
-	arr.prettyPrintln(true)
-	println(arr.toString())
 }
 
 fun String.toAlpha() = map { it - 'A' + 1 }.toIntArray()

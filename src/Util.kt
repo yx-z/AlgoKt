@@ -100,6 +100,7 @@ class OneArray<T>(val size: Int) {
 	fun prettyPrintln(printIndex: Boolean = false) {
 		if (!printIndex) {
 			println(this)
+			return
 		}
 
 		print(" ")
@@ -114,8 +115,50 @@ class OneArray<T>(val size: Int) {
 	}
 }
 
-fun <T> OneArray<OneArray<T>>.prettyPrintln(printIndex: Boolean = false) {
+fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
+	var maxLenEle = 0
+	var maxLenCol = 0
+	for (row in 1..size) {
+		maxLenCol = max(maxLenCol, this[row].size)
+		for (col in 1..this[row].size) {
+			maxLenEle = max(maxLenEle, this[row, col].toString().length)
+		}
+	}
 
+	if (printIndex) {
+		print(" " * (size.toString().length + 2))
+		for (col in 1..maxLenCol) {
+			print(col)
+			print(" " * (maxLenEle - col.toString().length + 1))
+		}
+		println()
+	}
+	for (row in 1..size) {
+		if (printIndex) {
+			print(row)
+			print(" " * (size.toString().length - row.toString().length + 1))
+		}
+		print("[")
+		for (col in 1..this[row].size) {
+			print(this[row, col])
+			print(" " * (maxLenEle - this[row, col].toString().length))
+			if (col == this[row].size) {
+				println("]")
+			} else {
+				print(" ")
+			}
+		}
+	}
+}
+
+fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = false) {
+	for (i in 1..this.size) {
+		if (printIndex) {
+			println("$i:")
+		}
+		this[i].prettyPrintTable(printIndex)
+		println()
+	}
 }
 
 operator fun String.times(n: Int) = this.repeat(n)
