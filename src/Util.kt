@@ -93,6 +93,16 @@ class OneArray<T>(val size: Int) {
 	val indices = 1..size
 	private var container = arrayOfNulls<Any?>(size)
 
+	constructor(intArray: IntArray) : this(intArray.size) {
+		container = intArray.toTypedArray() as Array<Any?>
+	}
+
+	constructor(size: Int, init: (Int) -> T) : this(size) {
+		(0 until size).forEach {
+			container[it] = init(it)
+		}
+	}
+
 	operator fun get(i: Int) = container[i - 1] as T
 
 	operator fun set(i: Int, v: T) {
@@ -101,15 +111,11 @@ class OneArray<T>(val size: Int) {
 
 	override fun toString() = Arrays.deepToString(container)
 
-	constructor(intArray: IntArray) : this(intArray.size) {
-		container = intArray.toTypedArray() as Array<Any?>
-	}
-
 	constructor(array: Array<T>) : this(array.size) {
 		container = array as Array<Any?>
 	}
 
-	fun toArray() = container
+	fun toArray() = Arrays.copyOf(container, size)
 
 	fun prettyPrintln(printIndex: Boolean = false) {
 		if (!printIndex) {
