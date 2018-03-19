@@ -145,15 +145,7 @@ class OneArray<T>(val size: Int) {
 			return
 		}
 
-		print(" ")
-		container.indices.forEach {
-			val len = container[it].toString().length
-			print(it + 1)
-			print(" " * (len - it.toString().length + 2))
-		}
-		println()
-
-		println(this)
+		TODO()
 	}
 
 	fun forEach(action: (T) -> Unit) {
@@ -172,6 +164,7 @@ fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
 			maxLenEle = max(maxLenEle, this[row, col].toString().length)
 		}
 	}
+	maxLenEle = max(maxLenEle, maxLenCol.toString().length)
 
 	if (printIndex) {
 		print(" " * (size.toString().length + 2))
@@ -218,3 +211,9 @@ fun <T> Array<T>.toOneArray() = OneArray(this)
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
+
+fun main(args: Array<String>) {
+	val SIZE = 10
+	val arr = OneArray(SIZE) { it * 13 }
+	arr.prettyPrintln(true)
+}
