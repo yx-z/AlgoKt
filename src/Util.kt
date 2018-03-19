@@ -130,7 +130,7 @@ class OneArray<T>(val size: Int) {
 		if (i in indices) {
 			container[i - 1] = v
 		} else {
-			setOverflowHandler?.invoke(i, v)
+			setOverflowHandler?.invoke(i, v) ?: throw ArrayIndexOutOfBoundsException()
 		}
 	}
 
