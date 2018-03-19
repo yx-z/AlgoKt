@@ -97,7 +97,7 @@ class OneArray<T>(val size: Int) {
 	private var container = arrayOfNulls<Any?>(size)
 
 	constructor(array: Array<T>) : this(array.size) {
-		container = array as Array<Any?>
+		container = Arrays.copyOf(array, size) as Array<Any?>
 	}
 
 	constructor(size: Int, init: (Int) -> T) : this(size) {
@@ -176,25 +176,60 @@ class OneArray<T>(val size: Int) {
 		container.sort()
 	}
 
+	fun sortDescending() {
+		sort()
+		reverse()
+	}
+
 	fun <R : Comparable<R>> sortBy(selector: (T) -> R) {
 		val com = Comparator { t1: T, t2: T -> selector(t1).compareTo(selector(t2)) }
 		Arrays.sort(container as Array<T>, com)
 	}
 
+	fun <R : Comparable<R>> sortByDescending(selector: (T) -> R) {
+		sortBy(selector)
+		reverse()
+	}
+
 	fun sorted(): OneArray<T> {
-		val copy = copy()
-		copy.sort()
-		return copy as OneArray<T>
+		val ret = copy()
+		ret.sort()
+		return ret
+	}
+
+	fun sortedDescending(): OneArray<T> {
+		val ret = sorted()
+		ret.reverse()
+		return ret
 	}
 
 	fun <R : Comparable<R>> sortedBy(selector: (T) -> R): OneArray<T> {
-		val copy = copy()
-		val com = Comparator { t1: T, t2: T -> selector(t1).compareTo(selector(t2)) }
-		Arrays.sort(copy.container as Array<T>, com)
-		return copy as OneArray<T>
+		val ret = copy()
+		ret.sortBy(selector)
+		return ret
 	}
 
-	fun copy() = toArray().toOneArray()
+	fun <R : Comparable<R>> sortedByDescending(selector: (T) -> R): OneArray<T> {
+		val ret = sortedBy(selector)
+		ret.reverse()
+		return ret
+	}
+
+	fun copy(): OneArray<T> {
+		val ret = OneArray<T>(size)
+		ret.container = toArray()
+		return ret
+	}
+
+	fun reverse() {
+		container.reverse()
+	}
+
+	fun reversed(): OneArray<T> {
+		val ret = copy()
+		ret.reverse()
+		return ret
+	}
 }
 
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
