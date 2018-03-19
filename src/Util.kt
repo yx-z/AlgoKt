@@ -145,7 +145,36 @@ class OneArray<T>(val size: Int) {
 			return
 		}
 
-		TODO()
+		print(" ")
+		container.indices
+				.map { it + 1 }
+				.forEach {
+					print(it)
+					print(" ")
+					val lenIdx = it.toString().length
+					val lenEle = container[it - 1].toString().length
+					if (lenEle > lenIdx) {
+						print(" " * (lenEle - lenIdx))
+					}
+				}
+		println()
+
+		print("[")
+		container.indices
+				.map { it + 1 }
+				.forEach {
+					print(container[it - 1])
+					val lenIdx = it.toString().length
+					val lenEle = container[it - 1].toString().length
+					if (lenIdx > lenEle) {
+						print(" " * (lenIdx - lenEle))
+					}
+					if (it == size) {
+						println("]")
+					} else {
+						print(" ")
+					}
+				}
 	}
 
 	fun forEach(action: (T) -> Unit) {
@@ -212,8 +241,3 @@ inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
 
-fun main(args: Array<String>) {
-	val SIZE = 10
-	val arr = OneArray(SIZE) { it * 13 }
-	arr.prettyPrintln(true)
-}
