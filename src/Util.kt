@@ -99,10 +99,6 @@ class OneArray<T>(val size: Int) {
 		container = array as Array<Any?>
 	}
 
-	constructor(intArray: IntArray) : this(intArray.size) {
-		container = intArray.toTypedArray() as Array<Any?>
-	}
-
 	constructor(size: Int, init: (Int) -> T) : this(size) {
 		(1..size).forEach {
 			container[it - 1] = init(it)
@@ -224,9 +220,11 @@ fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = 
 	}
 }
 
-operator fun String.times(n: Int) = this.repeat(n)
+operator fun String.times(n: Int) = repeat(n)
 
-fun IntArray.toOneArray() = OneArray<Int>(this)
+fun IntArray.toOneArray() = toTypedArray().toOneArray()
+
+fun CharArray.toOneArray() = toTypedArray().toOneArray()
 
 fun <T> Array<T>.toOneArray() = OneArray(this)
 
