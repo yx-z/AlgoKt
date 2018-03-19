@@ -1,5 +1,6 @@
 import java.lang.NullPointerException
 import java.util.*
+import kotlin.Comparator
 
 // multi-parameter version of min/max
 // ex. min(i1, i2, i3, i4), max(i1, i2, i3, i4, i5)
@@ -170,6 +171,30 @@ class OneArray<T>(val size: Int) {
 			action(element as T)
 		}
 	}
+
+	fun sort() {
+		container.sort()
+	}
+
+	fun <R : Comparable<R>> sortBy(selector: (T) -> R) {
+		val com = Comparator { t1: T, t2: T -> selector(t1).compareTo(selector(t2)) }
+		Arrays.sort(container as Array<T>, com)
+	}
+
+	fun sorted(): OneArray<T> {
+		val copy = copy()
+		copy.sort()
+		return copy as OneArray<T>
+	}
+
+	fun <R : Comparable<R>> sortedBy(selector: (T) -> R): OneArray<T> {
+		val copy = copy()
+		val com = Comparator { t1: T, t2: T -> selector(t1).compareTo(selector(t2)) }
+		Arrays.sort(copy.container as Array<T>, com)
+		return copy as OneArray<T>
+	}
+
+	fun copy() = toArray().toOneArray()
 }
 
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
@@ -233,3 +258,4 @@ fun String.toCharOneArray() = toCharArray().toOneArray()
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
+
