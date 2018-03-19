@@ -228,6 +228,8 @@ fun CharArray.toOneArray() = toTypedArray().toOneArray()
 
 fun <T> Array<T>.toOneArray() = OneArray(this)
 
+fun String.toCharOneArray() = toCharArray().toOneArray()
+
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
