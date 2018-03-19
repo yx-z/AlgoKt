@@ -5,43 +5,23 @@ import get
 import set
 import toOneArray
 
-// given a String S[1..n],
-// determine the smallest number of palindromes that make up the string
+// given a String S[1..n]
+
 fun main(args: Array<String>) {
 	val str = "BUBBASEESABANANA".toCharArray().toList().toOneArray()
-	println(str.splitInPal())
+//	println(str.minSplitInPal()) // BUB BASEESAB ANANA -> 3
+
+	println(str.maxSplitLen())
 }
 
-fun OneArray<Char>.splitInPal(): Int {
+// 1. determine the smallest number of palindromes that make up the string
+fun OneArray<Char>.minSplitInPal(): Int {
 	val S = this
 	val n = S.size
 //	S.prettyPrintln(true)
 
-	// first we may preprocess to get isPal[i, j] = isPal(S[i..j]), i <= j
-	val isPal = OneArray(n) { OneArray(n) { false } }
-	// space complexity: O(n^2)
-	// base case:
-	// isPai(i, j) = true if i >= j
-	for (i in 1..n) {
-		for (j in 1..i) {
-			isPal[i, j] = true
-		}
-	}
-	// time complexity: O(n^2)
-	// recursive case:
-	// isPal(i, j) = isPal(i + 1, j - 1) && S[i] == S[j]
-	// dependency: isPal[i, j] depends on isPal[i + 1, j - 1]
-	//             , that is entry to the lower-left
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
-	for (i in n downTo 1) {
-		// inner loop for j from i + 1 to n (left to right)
-		for (j in i + 1..n) {
-			if (i != j) {
-				isPal[i, j] = isPal[i + 1, j - 1] && S[i] == S[j]
-			}
-		}
-	}
-	// time complexity: O(n^2)
+	// preprocess to get isPal[i..j] that determines if S[i, j] is palindromic
+	val isPal = isPal()
 //	isPal.prettyPrintTable(true)
 
 	// dp(i): # of pal that can separate S[1..i]
@@ -74,4 +54,83 @@ fun OneArray<Char>.splitInPal(): Int {
 	return dp[n]
 	// overall space complexity: O(n^2)
 	// overall time complexity: O(n^2)
+}
+
+// 2. find the max int k : S can be split into palindromes of len at least k
+fun OneArray<Char>.maxSplitLen(): Int {
+	val S = this
+	val n = S.size
+
+	val isPal = isPal()
+
+	// dp(i): max int k : S[1..i] can be split into palindroms of len at least k
+	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)
+	val dp = OneArray(n) { 1 }
+	// space complexity: O(n)
+
+	// base case:
+	// dp(1) = 1
+
+	// recursive case:
+	// assume max{ } = 1
+	// dp(i) = i if S[1..i] is palindromic
+	//       = max_k{ dp(k) : 1 <= k < i,
+	//                and S[k + 1..i] is palindromic,
+	//                and i - k >= dp(k) } o/w
+	// dependency: dp(i) depends on dp(k) : k < i, that is entries to the left
+	// evaluation order: outer loop for i from 2 to n (left to right)
+	for (i in 2..n) {
+		dp[i] = if (isPal[1, i]) {
+			i
+		} else {
+			((1 until i)
+					.filter { k -> isPal[k + 1, i] && i - k >= dp[k] }
+					.map { k -> dp[k] }
+					.max()) ?: 1
+		}
+	}
+	// time complexity: O(n^2)
+
+	dp.prettyPrintln()
+
+	// we want dp(n)
+	return dp[n]
+	// overall space complexity: O(n^2)
+	// overall time complexity: O(n^2)
+}
+
+// 3. find the total number of ways to S into palindromes
+fun OneArray<Char>.numSplitInPal(): Int {
+	TODO()
+}
+
+// util fun to return a table isPal[i, j] indicating if S[i..j] is palindromic
+fun OneArray<Char>.isPal(): OneArray<OneArray<Boolean>> {
+	val S = this
+	val n = S.size
+	val isPal = OneArray(n) { OneArray(n) { false } }
+	// space complexity: O(n^2)
+	// base case:
+	// isPal(i, j) = true if i >= j
+	for (i in 1..n) {
+		for (j in 1..i) {
+			isPal[i, j] = true
+		}
+	}
+	// time complexity: O(n^2)
+	// recursive case:
+	// isPal(i, j) = isPal(i + 1, j - 1) && S[i] == S[j]
+	// dependency: isPal[i, j] depends on isPal[i + 1, j - 1]
+	//             , that is entry to the lower-left
+	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	for (i in n downTo 1) {
+		// inner loop for j from i + 1 to n (left to right)
+		for (j in i + 1..n) {
+			if (i != j) {
+				isPal[i, j] = isPal[i + 1, j - 1] && S[i] == S[j]
+			}
+		}
+	}
+	// time complexity: O(n^2)
+	return isPal
 }

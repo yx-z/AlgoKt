@@ -95,6 +95,10 @@ class OneArray<T>(val size: Int) {
 	private var getOverflowHandler: ((Int) -> T)? = null
 	private var setOverflowHandler: ((Int, T) -> Unit)? = null
 
+	constructor(array: Array<T>) : this(array.size) {
+		container = array as Array<Any?>
+	}
+
 	constructor(intArray: IntArray) : this(intArray.size) {
 		container = intArray.toTypedArray() as Array<Any?>
 	}
@@ -103,10 +107,6 @@ class OneArray<T>(val size: Int) {
 		(1..size).forEach {
 			container[it - 1] = init(it)
 		}
-	}
-
-	constructor(array: Array<T>) : this(array.size) {
-		container = array as Array<Any?>
 	}
 
 	fun assignGetOverflowHandler(getterOverflowHandler: ((Int) -> T)) {
@@ -139,7 +139,7 @@ class OneArray<T>(val size: Int) {
 
 	fun toArray() = Arrays.copyOf(container, size)
 
-	fun prettyPrintln(printIndex: Boolean = false) {
+	fun prettyPrintln(printIndex: Boolean = true) {
 		if (!printIndex) {
 			println(this)
 			return
@@ -184,7 +184,7 @@ class OneArray<T>(val size: Int) {
 	}
 }
 
-fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
+fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
 	var maxLenEle = 0
 	var maxLenCol = 0
 	for (row in 1..size) {
@@ -222,7 +222,7 @@ fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
 	}
 }
 
-fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = false) {
+fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = true) {
 	for (i in 1..this.size) {
 		if (printIndex) {
 			println("#$i")
