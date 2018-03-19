@@ -205,8 +205,9 @@ fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = false) {
 	}
 	for (row in 1..size) {
 		if (printIndex) {
+			print(" " * (size.toString().length - row.toString().length))
 			print(row)
-			print(" " * (size.toString().length - row.toString().length + 1))
+			print(" ")
 		}
 		print("[")
 		for (col in 1..this[row].size) {
@@ -240,4 +241,3 @@ fun <T> Array<T>.toOneArray() = OneArray(this)
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
-

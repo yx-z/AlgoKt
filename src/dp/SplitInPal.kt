@@ -1,10 +1,8 @@
 package dp
 
+import OneArray
 import get
 import set
-import min
-import OneArray
-import prettyPrintTable
 import toOneArray
 
 // given a String S[1..n],
