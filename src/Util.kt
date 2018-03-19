@@ -100,8 +100,8 @@ class OneArray<T>(val size: Int) {
 	}
 
 	constructor(size: Int, init: (Int) -> T) : this(size) {
-		(0 until size).forEach {
-			container[it] = init(it)
+		(1..size).forEach {
+			container[it - 1] = init(it)
 		}
 	}
 
@@ -130,7 +130,8 @@ class OneArray<T>(val size: Int) {
 		if (i in indices) {
 			container[i - 1] = v
 		} else {
-			setOverflowHandler?.invoke(i, v) ?: throw ArrayIndexOutOfBoundsException()
+			setOverflowHandler?.invoke(i, v)
+					?: throw ArrayIndexOutOfBoundsException()
 		}
 	}
 
