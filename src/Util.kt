@@ -94,7 +94,7 @@ class OneArray<T>(val size: Int) {
 	val indices = 1..size
 	var getOverflowHandler: ((Int) -> T)? = null
 	var setOverflowHandler: ((Int, T) -> Unit)? = null
-	private var container = arrayOfNulls<Any?>(size)
+	var container = arrayOfNulls<Any?>(size)
 
 	constructor(array: Array<T>) : this(array.size) {
 		container = Arrays.copyOf(array, size) as Array<Any?>
@@ -230,7 +230,13 @@ class OneArray<T>(val size: Int) {
 		ret.reverse()
 		return ret
 	}
+
+	fun asSequence() = (container as Array<T>).asSequence()
 }
+
+fun <T : Comparable<T>> OneArray<T>.max() = (container as Array<T>).max()
+
+fun <T : Comparable<T>> OneArray<T>.min() = (container as Array<T>).min()
 
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
 	var maxLenEle = 0
@@ -293,4 +299,3 @@ fun String.toCharOneArray() = toCharArray().toOneArray()
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
-
