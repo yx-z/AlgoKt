@@ -67,4 +67,6 @@ fun OneArray<Char>.metaPal(): Int {
 
 	// we want dp(1)
 	return dp[1]
+	// overall space complexity: O(n^2)
+	// overall time complexity: O(n^2)
 }
