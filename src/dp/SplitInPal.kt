@@ -11,7 +11,9 @@ fun main(args: Array<String>) {
 	val str = "BUBBASEESABANANA".toCharArray().toList().toOneArray()
 //	println(str.minSplitInPal()) // BUB BASEESAB ANANA -> 3
 
-	println(str.maxSplitLen())
+//	println(str.maxSplitLen()) // BUB BASEESAB ANANA -> 3
+
+	println(str.numSplitInPal())
 }
 
 // 1. determine the smallest number of palindromes that make up the string
@@ -31,7 +33,7 @@ fun OneArray<Char>.minSplitInPal(): Int {
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.assignGetOverflowHandler { 0 }
+	dp.getOverflowHandler = { 0 }
 	// dp(1) = 1
 	dp[1] = 1
 
@@ -61,6 +63,9 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	val S = this
 	val n = S.size
 
+	// see util fun below
+	// space complexity: O(n^2)
+	// time complexity: O(n^2)
 	val isPal = isPal()
 
 	// dp(i): max int k : S[1..i] can be split into palindroms of len at least k
@@ -78,16 +83,56 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	//                and S[k + 1..i] is palindromic,
 	//                and i - k >= dp(k) } o/w
 	// dependency: dp(i) depends on dp(k) : k < i, that is entries to the left
-	// evaluation order: outer loop for i from 2 to n (left to right)
+	// evaluation order: outer loop for i from 2 to n (top down)
 	for (i in 2..n) {
 		dp[i] = if (isPal[1, i]) {
 			i
 		} else {
+			// inner loop for k from 1 until i (left to right)
 			((1 until i)
 					.filter { k -> isPal[k + 1, i] && i - k >= dp[k] }
 					.map { k -> dp[k] }
 					.max()) ?: 1
 		}
+	}
+	// time complexity: O(n^2)
+
+//	dp.prettyPrintln()
+
+	// we want dp(n)
+	return dp[n]
+	// overall space complexity: O(n^2)
+	// overall time complexity: O(n^2)
+}
+
+// 3. find the total number of ways to split S into palindromes
+fun OneArray<Char>.numSplitInPal(): Int {
+	val S = this
+	val n = S.size
+
+	// see util fun below
+	// space complexity: O(n^2)
+	// time complexity: O(n^2)
+	val isPal = isPal()
+
+	// dp(i): # of ways to split S[1..i] into palindromes
+	// memoization structure: 1d array dp[0..n] : dp[i] = dp(i)
+	val dp = OneArray(n) { 1 }
+
+	// base case:
+	// dp(0) = 1
+	dp.getOverflowHandler = { 1 }
+
+	// recursive case:
+	// dp(i) = sum{ dp(k) : 0 <= k < i and S[k + 1..i] is palindromic }
+	// dependency: dp(i) depends on dp(k) : k < i, that is entries to the left
+	// evaluation order: outer loop for i from 2 to n (top down)
+	for (i in 1..n) {
+		// inner loop for k from 1 until i (left to right)
+		dp[i] = (0 until i)
+				.filter { k -> isPal[k + 1, i] }
+				.map { k -> dp[k] }
+				.sum()
 	}
 	// time complexity: O(n^2)
 
@@ -97,11 +142,6 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	return dp[n]
 	// overall space complexity: O(n^2)
 	// overall time complexity: O(n^2)
-}
-
-// 3. find the total number of ways to S into palindromes
-fun OneArray<Char>.numSplitInPal(): Int {
-	TODO()
 }
 
 // util fun to return a table isPal[i, j] indicating if S[i..j] is palindromic

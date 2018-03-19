@@ -91,9 +91,9 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 // One-indexed Array
 class OneArray<T>(val size: Int) {
 	val indices = 1..size
+	var getOverflowHandler: ((Int) -> T)? = null
+	var setOverflowHandler: ((Int, T) -> Unit)? = null
 	private var container = arrayOfNulls<Any?>(size)
-	private var getOverflowHandler: ((Int) -> T)? = null
-	private var setOverflowHandler: ((Int, T) -> Unit)? = null
 
 	constructor(array: Array<T>) : this(array.size) {
 		container = array as Array<Any?>
@@ -107,14 +107,6 @@ class OneArray<T>(val size: Int) {
 		(1..size).forEach {
 			container[it - 1] = init(it)
 		}
-	}
-
-	fun assignGetOverflowHandler(getterOverflowHandler: ((Int) -> T)) {
-		getOverflowHandler = getterOverflowHandler
-	}
-
-	fun assignSetOverflowHandler(setterOverflowHandler: ((Int, T) -> Unit)) {
-		setOverflowHandler = setterOverflowHandler
 	}
 
 	operator fun get(i: Int): T {
