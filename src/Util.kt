@@ -92,6 +92,8 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 class OneArray<T>(val size: Int) {
 	val indices = 1..size
 	private var container = arrayOfNulls<Any?>(size)
+	private var getOverflowHandler: ((Int) -> T)? = null
+	private var setOverflowHandler: ((Int, T) -> Unit)? = null
 
 	constructor(intArray: IntArray) : this(intArray.size) {
 		container = intArray.toTypedArray() as Array<Any?>
@@ -103,17 +105,36 @@ class OneArray<T>(val size: Int) {
 		}
 	}
 
-	operator fun get(i: Int) = container[i - 1] as T
-
-	operator fun set(i: Int, v: T) {
-		container[i - 1] = v
-	}
-
-	override fun toString() = Arrays.deepToString(container)
-
 	constructor(array: Array<T>) : this(array.size) {
 		container = array as Array<Any?>
 	}
+
+	fun assignGetOverflowHandler(getterOverflowHandler: ((Int) -> T)) {
+		getOverflowHandler = getterOverflowHandler
+	}
+
+	fun assignSetOverflowHandler(setterOverflowHandler: ((Int, T) -> Unit)) {
+		setOverflowHandler = setterOverflowHandler
+	}
+
+	operator fun get(i: Int): T {
+		if (i in indices) {
+			return container[i - 1] as T
+		}
+
+		return getOverflowHandler?.invoke(i)
+				?: throw ArrayIndexOutOfBoundsException()
+	}
+
+	operator fun set(i: Int, v: T) {
+		if (i in indices) {
+			container[i - 1] = v
+		} else {
+			setOverflowHandler?.invoke(i, v)
+		}
+	}
+
+	override fun toString() = Arrays.deepToString(container)
 
 	fun toArray() = Arrays.copyOf(container, size)
 
