@@ -42,8 +42,8 @@ fun OneArray<Pair<Int, Color>>.lbfs(): Int {
 	val A = this
 	val n = A.size
 
-	A.sortBy { -it.first }
-	A.prettyPrintln()
+	val sortA = A.sortedByDescending { it.first }
+	sortA.prettyPrintln()
 
 	// dp(i) = len of longest such sequence starting @ A[i]
 	val dp = OneArray(n) { 0 }
