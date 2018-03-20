@@ -7,8 +7,8 @@ import kotlin.Comparator
 class OneArray<T>(val size: Int) {
 	val indices = 1..size
 	var container = arrayOfNulls<Any?>(size)
-	var getOverflowHandler: ((Int) -> T)? = null
-	var setOverflowHandler: ((Int, T) -> Unit)? = null
+	var getIndexOutOfBoundHandler: ((Int) -> T)? = null
+	var setIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
 
 	// constructing
 	constructor(array: Array<T>) : this(array.size) {
@@ -27,7 +27,7 @@ class OneArray<T>(val size: Int) {
 			return container[i - 1] as T
 		}
 
-		return getOverflowHandler?.invoke(i)
+		return getIndexOutOfBoundHandler?.invoke(i)
 				?: throw ArrayIndexOutOfBoundsException()
 	}
 
@@ -35,7 +35,7 @@ class OneArray<T>(val size: Int) {
 		if (i in indices) {
 			container[i - 1] = v
 		} else {
-			setOverflowHandler?.invoke(i, v)
+			setIndexOutOfBoundHandler?.invoke(i, v)
 					?: throw ArrayIndexOutOfBoundsException()
 		}
 	}

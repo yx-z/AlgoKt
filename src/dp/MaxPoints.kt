@@ -53,9 +53,9 @@ fun OneArray<Int>.maxPoints(): Int {
 
 	// base case:
 	// dp(i, j) = 0 if i > j or i, j !in 1..n
-//	dp.getOverflowHandler = { OneArray(n) { 0 } }
+//	dp.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		dp[i].getOverflowHandler = { 0 }
+		dp[i].getIndexOutOfBoundHandler = { 0 }
 	}
 	// dp(i, i) = C[i]
 	for (i in 1..n) {
@@ -106,16 +106,16 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 
 	// base caese:
 	// self(i, j) = 0 if i > j or i, j !in 1..n
-	self.getOverflowHandler = { OneArray(n) { 0 } }
-	points.getOverflowHandler = { OneArray(n) { 0 } }
+	self.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	points.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
 	// points(i, j) = 0 if i > j or i, j !in 1..n
 	// self(i, i) = i
 	// points(i, i) = C[i]
 	for (i in 1..n) {
 		self[i, i] = i
 		points[i, i] = C[i]
-		self[i].getOverflowHandler = { 0 }
-		points[i].getOverflowHandler = { 0 }
+		self[i].getIndexOutOfBoundHandler = { 0 }
+		points[i].getIndexOutOfBoundHandler = { 0 }
 	}
 	// time complextiy: O(n)
 
@@ -150,10 +150,10 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 	}
 
 	// time complexity: O(n^2)
-	println("SELF: ")
-	self.prettyPrintTable()
-	println("\nPOINTS:")
-	points.prettyPrintTable()
+//	println("SELF: ")
+//	self.prettyPrintTable()
+//	println("\nPOINTS:")
+//	points.prettyPrintTable()
 
 	// we want points(1, n)
 	return points[1, n]
