@@ -111,7 +111,7 @@ fun main(args: Array<String>) {
 	println(map)
 	// print count of elements
 	println(map.getNumberOfElements())
-	// get load factor
+	// util.get load factor
 	println(map.load())
 	// some operations
 	println(map.get("one"))

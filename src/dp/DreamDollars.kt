@@ -1,6 +1,6 @@
 package dp
 
-// given a set of bills with the following values
+// given a util.set of bills with the following values
 val bills = intArrayOf(365, 91, 52, 28, 13, 7, 4, 1)
 
 // a greedy algorithm to make up target money is always taking the largest bill that does not exceed
@@ -29,7 +29,7 @@ fun billsRec(k: Int): Int {
 fun billsDP(k: Int): Int {
 	// dp[i] = minimum number of bills to make up i
 	// dp[i] = 0, if i == 0
-	// dp[i] = min(dp[i - bill]) + 1 for bill : i - bill >= 0
+	// dp[i] = util.min(dp[i - bill]) + 1 for bill : i - bill >= 0
 	val dp = IntArray(k + 1)
 	for (i in 1..k) {
 		dp[i] = bills.filter { i - it >= 0 }.map { dp[i - it] }.min()!! + 1

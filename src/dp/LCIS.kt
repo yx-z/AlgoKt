@@ -1,8 +1,8 @@
 package dp
 
-import get
-import set
-import max
+import util.get
+import util.set
+import util.max
 
 // longest common increasing subsequence
 
@@ -22,9 +22,9 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	// let M[1..l] be the sorted sequence of common elements of A and B
 	// then M is strictly increasing
 	val M = (A.toSet() intersect B.toSet()).toMutableList()
-	// sorting costs O(min(m, n) * log min(m, n)) time
+	// sorting costs O(util.min(m, n) * log util.min(m, n)) time
 	M.sort()
-	// l is O(min(m, n))
+	// l is O(util.min(m, n))
 	val l = M.size
 
 	// dp(i, j, k): len of lcis for A[1..i] and B[1..j] : last element = M[k]
@@ -35,12 +35,12 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	val dp = Array(m + 1) { Array(n + 1) { IntArray(l) } }
 	// space complexity: O(l + m * n * l) = O(m * n * (m + n))
 
-	// assume max{ } = 0
+	// assume util.max{ } = 0
 	// dp(i, j, k) = 0 if i !in 1..m or j !in 1..n or k !in 1..l
-	//             = max{ 1 + max_p{ dp(i - 1, j - 1, p) : p < k },
+	//             = util.max{ 1 + max_p{ dp(i - 1, j - 1, p) : p < k },
 	//                    dp(i - 1, j, k),
 	//                    dp(i, j - 1, k) } if A[i] = B[j] = M[k]
-	//             = max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
+	//             = util.max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
 
 	// dependency: dp(i, j, k) depends on entries in the previous table,
 	//             and entries to the left and to the upper-left

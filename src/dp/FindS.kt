@@ -1,13 +1,12 @@
 package dp
 
-import max
-import min
-import get
-import set
-import toOneArray
-import OneArray
-import oneArrayOf
-import prettyPrintTable
+import util.max
+import util.min
+import util.get
+import util.set
+import util.toOneArray
+import util.OneArray
+import util.oneArrayOf
 
 // given X[1..k] and Y[1..n] : k <= n
 
@@ -184,7 +183,7 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 	}
 
 	// recursive case:
-	// assume min{ } = +inf
+	// assume util.min{ } = +inf
 	// dp(i, j) = min_l{ dp(i - 1, l) : l < j } + C[j] if X[i] = Y[j]
 	//          = +inf o/w
 	// dependency: dp(i, j) depends on entries on the row above and to the left
@@ -206,7 +205,7 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 		}
 	}
 	// time complexity: O(k * n)
-//	dp.prettyPrintTable(true)
+//	dp.util.prettyPrintTable(true)
 
 	return min
 }

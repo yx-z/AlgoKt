@@ -55,7 +55,7 @@ class ParkingSpotTakenException : RuntimeException("parking spot taken here")
 
 class NoVehicleFoundException : RuntimeException("no vehicle found in this parking spot")
 
-class ParkingLotFullException(cap: Int, currSize: Int) : RuntimeException("parking lot full:\nmax cap: $cap\ncurr size: $currSize")
+class ParkingLotFullException(cap: Int, currSize: Int) : RuntimeException("parking lot full:\nutil.max cap: $cap\ncurr size: $currSize")
 
 abstract class Vehicle(val license: String, val size: Int) {
 	override fun toString() = "$license ($size)"

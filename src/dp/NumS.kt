@@ -1,7 +1,7 @@
 package dp
 
-import set
-import get
+import util.set
+import util.get
 
 fun main(args: Array<String>) {
 	// given two arrays L(ong)[1..m], S(hort)[1..n]

@@ -1,6 +1,6 @@
 package dp
 
-import get
+import util.get
 
 // given a = 1, b = 2, c = 3, ..., z = 26
 // and a number (as a string), determine the number of ways to interpret this number into alphabets

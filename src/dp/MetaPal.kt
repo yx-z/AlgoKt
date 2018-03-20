@@ -1,10 +1,8 @@
 package dp
 
-import min
-import set
-import get
-import toOneArray
-import OneArray
+import util.get
+import util.toOneArray
+import util.OneArray
 
 // a metapalindrome is a decomposition of string into palindromes,
 // such that the sequence of palindrome lengths itself is a palindrome
@@ -26,7 +24,7 @@ fun OneArray<Char>.metaPal(): Int {
 	// space complexity: O(n^2)
 	val isPal = isPal()
 
-	// dp(i): min len of metapal of S[i..n - i + 1]
+	// dp(i): util.min len of metapal of S[i..n - i + 1]
 	val lM = (n + 1) / 2
 	val rM = n - lM + 1
 	// memoization structure: 1d array dp[1..lM] : dp[i] = dp(i)
@@ -40,7 +38,7 @@ fun OneArray<Char>.metaPal(): Int {
 
 	// recursive case:
 	// dp(i) = 1 if S[i..j] is palindromic
-	//         min{ dp(k + 1) + 2 } : i <= k < lM,
+	//         util.min{ dp(k + 1) + 2 } : i <= k < lM,
 	//         S[i..k] and S[s..j] are both palindromic
 	//         where lM - i = j - rM and k - i = j - s
 	// dependency: dp(i) depends on dp(k) : k > i, that is entries to the right

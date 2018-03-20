@@ -1,11 +1,11 @@
 package dp
 
-import min
-import get
-import set
-import OneArray
-import prettyPrintTable
-import toOneArray
+import util.min
+import util.get
+import util.set
+import util.OneArray
+import util.prettyPrintTable
+import util.toOneArray
 
 // Shortest Palindromic Supersequence
 // given a String S[1..n], find the shortest palindromic superseuqnce of S
@@ -34,7 +34,7 @@ fun OneArray<Char>.sps(): Int {
 	// dp(i, j) = dp(i + 1, j - 1) +  2 if S[i] == S[j]
 	//            since we need to wrap S[i] and S[j] as the first and the last
 	//            character in the sps
-	//          = min{ dp(i + 1, j), dp(i, j - 1) } + 2
+	//          = util.min{ dp(i + 1, j), dp(i, j - 1) } + 2
 	//            find the minimum and either wrap two S[i] around SPS or two S[j]
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 1, j ),
 	//             and dp(i, j - 1)

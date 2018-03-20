@@ -1,7 +1,7 @@
 package dp
 
-import get
-import max
+import util.get
+import util.max
 
 // similar to `LargestSum`,
 // given an array of numbers,

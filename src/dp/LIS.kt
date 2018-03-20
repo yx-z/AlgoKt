@@ -36,7 +36,7 @@ fun lenLISDP2(arr: Array<Int>): Int {
 
 	// dp[i] = length of LIS that starts at arr[i]
 	// dp[i] = 0, if i > n
-	//         1 + max(dp[j]) where j > i && arr[j] > arr[i], o/w
+	//         1 + util.max(dp[j]) where j > i && arr[j] > arr[i], o/w
 	val dp = IntArray(len)
 	var lenMax = 0
 	for (i in (len - 1) downTo 0) {

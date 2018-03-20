@@ -1,10 +1,10 @@
 package dp
 
-import max
-import set
-import get
-import OneArray
-import toCharOneArray
+import util.max
+import util.set
+import util.get
+import util.OneArray
+import util.toCharOneArray
 
 // find the length of the longest CONTIGUOUS SUBSTRING that appears both
 // forward and backward in T[1..n]
@@ -34,7 +34,7 @@ fun OneArray<Char>.lfbs(): Int {
 	val dp = OneArray(n) { OneArray(n) { 0 } }
 	// space complexity: O(n^2)
 
-	// we want max{ dp(i, j) }
+	// we want util.max{ dp(i, j) }
 	var max = 0
 
 	// dp(i, j) = 0 if T[i] != T[j] or i >= j

@@ -33,13 +33,13 @@ fun main(args: Array<String>) {
 }
 
 fun Array<Pair<Int, Boolean>>.libafs(): Int {
-	// get the original index in the sorted array
+	// util.get the original index in the sorted array
 	val idx = IntArray(size) { it }
 	val sortedIdx = idx.sortedByDescending { this[it].first }
 
 	// dp[i] = length of libafs that starts @ this[i]
-	// dp[i] = 1 + max(dp[k] : this[k] > this[i], k in i + 1 until size), if this[i].second
-	//       = 1 + max(dp[k] : this[k] > this[i], k in 0 until i), o/w
+	// dp[i] = 1 + util.max(dp[k] : this[k] > this[i], k in i + 1 until size), if this[i].second
+	//       = 1 + util.max(dp[k] : this[k] > this[i], k in 0 until i), o/w
 	val dp = IntArray(size)
 	sortedIdx.forEach { i ->
 		dp[i] = 1 + if (this[i].second) {

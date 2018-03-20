@@ -1,7 +1,7 @@
 package dp
 
-import get
-import set
+import util.get
+import util.set
 
 // given two strings X and Y, a shuffle of them is interspersing characters of X and Y
 // while keeping them in the same order
@@ -69,7 +69,7 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 	val n = Y.length
 
 	// ss(i, j) = null if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
-	//          = set of pairs of possible combination of sources of last two characters
+	//          = util.set of pairs of possible combination of sources of last two characters
 	//            that make Z[1..i + j] to be a smooth shuffle of X[1..i] and Y[1..j] o/w
 	// ex. ss(i, j) = [(X, Y), (Y, Y)] means Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
 	//     and the last two characters of Z can be from EITHER (X then Y) OR (Y then Y)
@@ -138,7 +138,7 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 							.filterNot { it.first == 'Y' && it.second == 'Y' }
 							.forEach { dp[i, j].add(it.second to 'Y') }
 				}
-			// else -> do nothing, keep the current set empty
+			// else -> do nothing, keep the current util.set empty
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// given two sorted arrays (may be different length)
-	// get median of their merged sorted array
+	// util.get median of their merged sorted array
 	val test1 = intArrayOf(1, 3, 8)
 	val test2 = intArrayOf(2, 7, 9, 10)
 	println(Arrays.toString(test1))

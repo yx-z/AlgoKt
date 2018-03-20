@@ -1,8 +1,8 @@
 package dp
 
-import max
-import get
-import set
+import util.max
+import util.get
+import util.set
 
 // Longest Palindrome Subsequence
 
@@ -30,8 +30,8 @@ fun lps(A: IntArray): Int {
 	}
 
 	// recursive cases:
-	// dp(i, j) = max{ 2 + dp(i + 1, j - 1), dp(i + 1, j), dp(i, j - 1)} if A[i] = A[j]
-	//          = max{ dp(i + 1, j - 1), dp(i + 1, j), dp(i, j - 1) } o/w
+	// dp(i, j) = util.max{ 2 + dp(i + 1, j - 1), dp(i + 1, j), dp(i, j - 1)} if A[i] = A[j]
+	//          = util.max{ dp(i + 1, j - 1), dp(i + 1, j), dp(i, j - 1) } o/w
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 1, j), and dp(i, j - 1)
 	//             that is, left, lower-left, and lower entry
 	// evaluation order: outer loop for i: bottom to top, i.e. n down to 1,

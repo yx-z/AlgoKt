@@ -1,9 +1,9 @@
 package dp
 
 import math.isPrime
-import get
-import set
-import max
+import util.get
+import util.set
+import util.max
 
 // given a bitmap as a 2d array, identify the largest rectangular pattern that appear more than once
 // the copies of a pattern may overlap but cannot coincide

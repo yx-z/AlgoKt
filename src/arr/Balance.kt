@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 }
 
 // arr.size is even
-// return the min non-negative number that can be added to either half of the array that balances it
+// return the util.min non-negative number that can be added to either half of the array that balances it
 fun balanceArr(arr: Array<Int>): Int {
 	val sumLeft = arr.slice(0..arr.size / 2).sum()
 	val sumRight = arr.slice(arr.size / 2 + 1 until arr.size).sum()

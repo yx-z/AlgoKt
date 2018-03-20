@@ -1,8 +1,8 @@
 package dp
 
-import get
-import set
-import max
+import util.get
+import util.set
+import util.max
 
 // given an array of arbitrary numbers
 // find the largest sum of elements in a contiguous subarray
@@ -19,7 +19,7 @@ fun IntArray.largestSumN2(): Int {
 	// dp[i, j] = 0, if (i > j || i, j !in 0 until size)
 	//          = this[i], if (i == j)
 	//          = dp[i, j - 1]  + this[j], o/w
-	// we want max(dp[i, j])
+	// we want util.max(dp[i, j])
 	val dp = Array(size) { IntArray(size) }
 	var max = Int.MIN_VALUE
 	for (i in 0 until size) {
@@ -47,8 +47,8 @@ fun IntArray.largestSumNlogN(s: Int = 0, e: Int = size - 1): Int {
 	// 2. i > n / 2 right of the middle line
 	// 3. i < n / 2 < j crossing the middle line
 	// we may recursively solve 1 and 2
-	// and do O(n) to find 3: max prefix sum of A[n / 2 + 1..n] + max suffix sum of A[1..n / 2 - 1]
-	// finally compare 1, 2, and 3 and get the biggest one as solution
+	// and do O(n) to find 3: util.max prefix sum of A[n / 2 + 1..n] + util.max suffix sum of A[1..n / 2 - 1]
+	// finally compare 1, 2, and 3 and util.get the biggest one as solution
 
 	// runtime analysis
 	// T(n) <= O(n) + 2T(n / 2) -> T ~ O(n log n)
@@ -117,10 +117,10 @@ fun IntArray.suffixSum(s: Int = 0, e: Int = size - 1): Int {
 
 // optimized: O(n)
 fun IntArray.largestSumN(): Int {
-	// dp[i] = max sum for this[i until size]
+	// dp[i] = util.max sum for this[i until size]
 	// dp[i] = 0, if i !in 0 until size
 	//       = dp[i + 1], if this[i] < 0
-	//       = this[i] + max(0, tmpSum + dp[nex]), o/w
+	//       = this[i] + util.max(0, tmpSum + dp[nex]), o/w
 	//       , where nex is the next positive number
 	val dp = IntArray(size + 1)
 	dp[size] = 0
