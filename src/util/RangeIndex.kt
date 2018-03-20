@@ -6,11 +6,9 @@ import java.util.*
 // ex. "abcde"[1..2] -> "bc", intArrayOf(1, 5, 6, 10)[0..0] -> intArrayOf(1)
 operator fun String.get(range: IntRange) = substring(range)
 
-inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T?> =
-		Arrays.copyOfRange(this, range.first, range.last + 1) ?: arrayOfNulls(0)
+inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T> = Arrays.copyOfRange(this, range.first, range.last + 1)
 
-operator fun IntArray.get(range: IntRange) =
-		Arrays.copyOfRange(this, range.first, range.last + 1) ?: intArrayOf()
+operator fun IntArray.get(range: IntRange) = Arrays.copyOfRange(this, range.first, range.last + 1)
 
 operator fun <T> OneArray<T>.get(range: IntRange): OneArray<T> {
 	val start = range.start

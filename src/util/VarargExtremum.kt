@@ -5,6 +5,11 @@ package util
 fun min(vararg ints: Int) = ints.min()
 		?: throw NullPointerException("no minimum value")
 
+fun min(vararg doubles: Double) = doubles.min()
+		?: throw NullPointerException("no minimum value")
+
 fun max(vararg ints: Int) = ints.max()
 		?: throw NullPointerException("no maximum value")
 
+fun max(vararg doubles: Double) = doubles.max()
+		?: throw NullPointerException("no minimum value")
