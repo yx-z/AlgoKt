@@ -232,11 +232,39 @@ class OneArray<T>(val size: Int) {
 	}
 
 	fun asSequence() = (container as Array<T>).asSequence()
+
+	fun isEmpty() = size <= 0
+
+	fun isNotEmpty() = isEmpty().not()
 }
 
-fun <T : Comparable<T>> OneArray<T>.max() = (container as Array<T>).max()
+fun <T : Comparable<T>> OneArray<T>.max(): T? {
+	if (isEmpty()) {
+		return null
+	}
+	var max = this[1]
+	for (i in 2..size) {
+		val e = this[i]
+		if (max < e) {
+			max = e
+		}
+	}
+	return max
+}
 
-fun <T : Comparable<T>> OneArray<T>.min() = (container as Array<T>).min()
+fun <T : Comparable<T>> OneArray<T>.min(): T? {
+	if (isEmpty()) {
+		return null
+	}
+	var min = this[1]
+	for (i in 2..size) {
+		val e = this[i]
+		if (min > e) {
+			min = e
+		}
+	}
+	return min
+}
 
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
 	var maxLenEle = 0
