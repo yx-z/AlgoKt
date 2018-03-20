@@ -241,3 +241,69 @@ fun String.toCharOneArray() = toCharArray().toOneArray()
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
+
+operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
+	if (size != other.size) {
+		throw OneArrayNotAlignedException()
+	}
+
+	return indices.map { this[it] + other[it] }.toOneArray()
+}
+
+operator fun OneArray<Int>.minus(other: OneArray<Int>): OneArray<Int> {
+	if (size != other.size) {
+		throw OneArrayNotAlignedException()
+	}
+
+	return indices.map { this[it] - other[it] }.toOneArray()
+}
+
+operator fun OneArray<Int>.times(other: OneArray<Int>): OneArray<Int> {
+	if (size != other.size) {
+		throw OneArrayNotAlignedException()
+	}
+
+	return indices.map { this[it] * other[it] }.toOneArray()
+}
+
+operator fun OneArray<Int>.div(other: OneArray<Int>): OneArray<Int> {
+	if (size != other.size) {
+		throw OneArrayNotAlignedException()
+	}
+
+	return indices.map { this[it] / other[it] }.toOneArray()
+}
+
+operator fun OneArray<Int>.rem(other: OneArray<Int>): OneArray<Int> {
+	if (size != other.size) {
+		throw OneArrayNotAlignedException()
+	}
+
+	return indices.map { this[it] % other[it] }.toOneArray()
+}
+
+operator fun OneArray<Int>.plus(num: Int) =  asSequence().map { it + num }.toList().toOneArray()
+
+operator fun OneArray<Double>.plus(num: Double) =  asSequence().map { it + num }.toList().toOneArray()
+
+operator fun OneArray<Int>.minus(num: Int) = asSequence().map { it - num }.toList().toOneArray()
+
+operator fun OneArray<Double>.minus(num: Double) = asSequence().map { it - num }.toList().toOneArray()
+
+operator fun OneArray<Int>.times(mult: Int) = asSequence().map { it * mult }.toList().toOneArray()
+
+operator fun OneArray<Double>.times(num: Double) = asSequence().map { it * num }.toList().toOneArray()
+
+operator fun OneArray<Int>.div(num: Int) = asSequence().map { it / num }.toList().toOneArray()
+
+operator fun OneArray<Double>.div(num: Double) = asSequence().map { it / num }.toList().toOneArray()
+
+operator fun OneArray<Int>.rem(num: Int) = asSequence().map { it % num }.toList().toOneArray()
+
+operator fun OneArray<Double>.rem(num: Double) = asSequence().map { it % num }.toList().toOneArray()
+
+operator fun OneArray<Int>.inc() = asSequence().map { it + 1 }.toList().toOneArray()
+
+operator fun OneArray<Int>.dec() = asSequence().map { it - 1 }.toList().toOneArray()
+
+class OneArrayNotAlignedException : Exception("size mismatch between two OneArray's")
