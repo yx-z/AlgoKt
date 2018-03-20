@@ -246,7 +246,7 @@ inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
 // numerical operating
 operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
-		throw OneArrayNotAlignedException()
+		throw TwoArrayNotAlignedException()
 	}
 
 	return indices.map { this[it] + other[it] }.toOneArray()
@@ -254,7 +254,7 @@ operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
 
 operator fun OneArray<Int>.minus(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
-		throw OneArrayNotAlignedException()
+		throw TwoArrayNotAlignedException()
 	}
 
 	return indices.map { this[it] - other[it] }.toOneArray()
@@ -262,7 +262,7 @@ operator fun OneArray<Int>.minus(other: OneArray<Int>): OneArray<Int> {
 
 operator fun OneArray<Int>.times(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
-		throw OneArrayNotAlignedException()
+		throw TwoArrayNotAlignedException()
 	}
 
 	return indices.map { this[it] * other[it] }.toOneArray()
@@ -270,7 +270,7 @@ operator fun OneArray<Int>.times(other: OneArray<Int>): OneArray<Int> {
 
 operator fun OneArray<Int>.div(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
-		throw OneArrayNotAlignedException()
+		throw TwoArrayNotAlignedException()
 	}
 
 	return indices.map { this[it] / other[it] }.toOneArray()
@@ -278,15 +278,15 @@ operator fun OneArray<Int>.div(other: OneArray<Int>): OneArray<Int> {
 
 operator fun OneArray<Int>.rem(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
-		throw OneArrayNotAlignedException()
+		throw TwoArrayNotAlignedException()
 	}
 
 	return indices.map { this[it] % other[it] }.toOneArray()
 }
 
-operator fun OneArray<Int>.plus(num: Int) =  asSequence().map { it + num }.toList().toOneArray()
+operator fun OneArray<Int>.plus(num: Int) = asSequence().map { it + num }.toList().toOneArray()
 
-operator fun OneArray<Double>.plus(num: Double) =  asSequence().map { it + num }.toList().toOneArray()
+operator fun OneArray<Double>.plus(num: Double) = asSequence().map { it + num }.toList().toOneArray()
 
 operator fun OneArray<Int>.minus(num: Int) = asSequence().map { it - num }.toList().toOneArray()
 
@@ -308,7 +308,7 @@ operator fun OneArray<Int>.inc() = asSequence().map { it + 1 }.toList().toOneArr
 
 operator fun OneArray<Int>.dec() = asSequence().map { it - 1 }.toList().toOneArray()
 
-// python-like vararg indexing for multi-dimensional OneArray's
+// python-like vararg indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
@@ -328,4 +328,4 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 }
 
 // exceptioning
-class OneArrayNotAlignedException : Exception("size mismatch between two OneArray's")
+class TwoArrayNotAlignedException : Exception("size mismatches between two arrays")

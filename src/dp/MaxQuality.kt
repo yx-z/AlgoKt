@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 	// sample method
 	val quality: (OneArray<Char>) -> Int = {
 		var sum = 0
-		it.forEach { sum += ('r' - it) * (it - 'b') }
+		it.asSequence().forEach { sum += ('r' - it) * (it - 'b') }
 		sum
 	}
 	println(S.maxQ(quality))

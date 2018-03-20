@@ -42,11 +42,11 @@ import util.*
 // 1.2 find the maximum point you can get given such player
 // assume you play first
 // since o/w you will be given an array after the other player takes one int
-fun OneArray<Int>.maxPoint(): Int {
+fun OneArray<Int>.maxPoints(): Int {
 	val C = this
 	val n = C.size
 
-	// dp(i, j): max points possible given C[i..j]
+	// dp(i, j): max points I can get if I play first given C[i..j]
 	// memoization strucuture: 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)
 	val dp = OneArray(n) { OneArray(n) { 0 } }
 	// space complexity: O(n^2)
@@ -57,9 +57,9 @@ fun OneArray<Int>.maxPoint(): Int {
 	for (i in 1..n) {
 		dp[i].getOverflowHandler = { 0 }
 	}
-	// dp(i, i) = 1
+	// dp(i, i) = C[i]
 	for (i in 1..n) {
-		dp[i, i] = 1
+		dp[i, i] = C[i]
 	}
 
 	// recursive case:
@@ -85,7 +85,82 @@ fun OneArray<Int>.maxPoint(): Int {
 	return dp[1, n]
 }
 
+// 2. given a perfect player O, find the maximum points you can get
+// assume you play first
+fun OneArray<Int>.maxPointsPerfect(): Int {
+	val C = this
+	val n = C.size
+
+	// self(i, j): index I will choose if I play first, given C[i..j]
+	// oppo(i, j): index O will choose if O play first, given C[i..j]
+	// since we both are perfect players, given the same condition
+	// we would always do the same choice
+	// so oppo(i, j) = self(i, j)
+	// memoization structure: 2d array self[1..n, 1..n] : self[i, j] = self(i, j)
+	val self = OneArray(n) { OneArray(n) { 0 } }
+
+	// points(i, j): maximum points I will get if I play first, given C[i..j]
+	// memoization structure: 2d array points[1..n, 1..n] : points[i, j] = points(i, j)
+	val points = OneArray(n) { OneArray(n) { 0 } }
+	// space complexity: O(n^2)
+
+	// base caese:
+	// self(i, j) = 0 if i > j or i, j !in 1..n
+	self.getOverflowHandler = { OneArray(n) { 0 } }
+	points.getOverflowHandler = { OneArray(n) { 0 } }
+	// points(i, j) = 0 if i > j or i, j !in 1..n
+	// self(i, i) = i
+	// points(i, i) = C[i]
+	for (i in 1..n) {
+		self[i, i] = i
+		points[i, i] = C[i]
+		self[i].getOverflowHandler = { 0 }
+		points[i].getOverflowHandler = { 0 }
+	}
+	// time complextiy: O(n)
+
+	// recursive case:
+	// self(i, j) = if (pointsI > pointsJ) i else j
+	// where pointsI = C[i] + if (self(i + 1, j) == i + 1) points(i + 2, j) else points(i + 1, j - 1)
+	//       pointsJ = C[j] + if (self(i, j - 1) == i) points(i + 1, j - 1) else points(i, j - 2)
+	// points(i, j) = if (self(i, j) == i)
+	//                    C[i] + if (self(i + 1, j) == i + 1) points(i + 2, j) else points(i + 1, j - 1)
+	//                else
+	//                    C[j] + if (self(i, j - 1) == i) points(i + 1, j - 1) else points(i, j - 2)
+	// dependency: self(i, j) depends on self(i + 1, j), self(i, j - 1),
+	//             points(i + 2, j), points(i + 1, j - 1), and points(i, j - 2)
+	//             points(i, j) depends on self(i, j), self(i + 1, j), self(i, j - 1),
+	//             points(i + 2, j), points(i + 1, j - 1), and points(i, j - 2)
+	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	for (i in n - 1 downTo 1) {
+		// inner loop for j from i + 1 to n (left to right)
+		for (j in i + 1..n) {
+			// points(i, j) depends on self(i, j)
+			// so we should evaluate self(i, j) first, then points(i, j)
+			val pointsI = C[i] + if (self[i + 1, j] == i + 1) points[i + 2, j] else points[i + 1, j - 1]
+			val pointsJ = C[j] + if (self[i, j - 1] == i) points[i + 1, j - 1] else points[i, j - 2]
+			self[i, j] = if (pointsI > pointsJ) i else j
+
+			points[i, j] = if (self[i, j] == i) {
+				C[i] + if (self[i + 1, j] == i + 1) points[i + 2, j] else points[i + 1, j - 1]
+			} else {
+				C[j] + if (self[i, j - 1] == i + 1) points[i + 1, j - 1] else points[i, j - 2]
+			}
+		}
+	}
+
+	// time complexity: O(n^2)
+	println("SELF: ")
+	self.prettyPrintTable()
+	println("\nPOINTS:")
+	points.prettyPrintTable()
+
+	// we want points(1, n)
+	return points[1, n]
+}
+
 fun main(args: Array<String>) {
 	val C = oneArrayOf(1, 6, 10, 2)
-	println(C.maxPoint())
+//	println(C.maxPoints())
+	println(C.maxPointsPerfect())
 }
