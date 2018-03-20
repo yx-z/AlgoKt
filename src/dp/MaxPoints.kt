@@ -1,5 +1,6 @@
 package dp
 
+import math.reverseIter
 import util.*
 
 // given an array of ints C[1..n], you want to play a game with your brother.
@@ -85,82 +86,70 @@ fun OneArray<Int>.maxPoints(): Int {
 	return dp[1, n]
 }
 
-// 2. given a perfect player O, find the maximum points you can get
+// 2. given another perfect player O just as you, find the max points you can get
 // assume you play first
 fun OneArray<Int>.maxPointsPerfect(): Int {
 	val C = this
 	val n = C.size
 
-	// self(i, j): index I will choose if I play first, given C[i..j]
-	// oppo(i, j): index O will choose if O play first, given C[i..j]
+	// dp(i, j): (index I will choose if I play first, given C[i..j], max sum of points for C[i..j])
+	// dp(i, j): (index O will choose if I play first, given C[i..j], max sum of points for C[i..j])
 	// since we both are perfect players, given the same condition
 	// we would always do the same choice
-	// so oppo(i, j) = self(i, j)
-	// memoization structure: 2d array self[1..n, 1..n] : self[i, j] = self(i, j)
-	val self = OneArray(n) { OneArray(n) { 0 } }
-
-	// points(i, j): maximum points I will get if I play first, given C[i..j]
-	// memoization structure: 2d array points[1..n, 1..n] : points[i, j] = points(i, j)
-	val points = OneArray(n) { OneArray(n) { 0 } }
+	// so oppo(i, j) = dp(i, j)
+	// memoization structure: 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)
+	val dp = OneArray(n) { OneArray(n) { 0 to 0 } }
 	// space complexity: O(n^2)
 
-	// base caese:
-	// self(i, j) = 0 if i > j or i, j !in 1..n
-	self.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
-	points.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
-	// points(i, j) = 0 if i > j or i, j !in 1..n
-	// self(i, i) = i
-	// points(i, i) = C[i]
+	// base case:
+	// dp(i, j) = (0, 0) if i > j or i, j !in 1..n
+	dp.getIndexOutOfBoundHandler = { OneArray(n) { 0 to 0 } }
+	// dp(i, i) = (i, C[i])
 	for (i in 1..n) {
-		self[i, i] = i
-		points[i, i] = C[i]
-		self[i].getIndexOutOfBoundHandler = { 0 }
-		points[i].getIndexOutOfBoundHandler = { 0 }
+		dp[i, i] = i to C[i]
+		dp[i].getIndexOutOfBoundHandler = { 0 to 0 }
 	}
 	// time complextiy: O(n)
 
 	// recursive case:
-	// self(i, j) = if (pointsI > pointsJ) i else j
-	// where pointsI = C[i] + if (self(i + 1, j) == i + 1) points(i + 2, j) else points(i + 1, j - 1)
-	//       pointsJ = C[j] + if (self(i, j - 1) == i) points(i + 1, j - 1) else points(i, j - 2)
-	// points(i, j) = if (self(i, j) == i)
-	//                    C[i] + if (self(i + 1, j) == i + 1) points(i + 2, j) else points(i + 1, j - 1)
-	//                else
-	//                    C[j] + if (self(i, j - 1) == i) points(i + 1, j - 1) else points(i, j - 2)
-	// dependency: self(i, j) depends on self(i + 1, j), self(i, j - 1),
-	//             points(i + 2, j), points(i + 1, j - 1), and points(i, j - 2)
-	//             points(i, j) depends on self(i, j), self(i + 1, j), self(i, j - 1),
-	//             points(i + 2, j), points(i + 1, j - 1), and points(i, j - 2)
+	// dp(i, j) = if (pI > pJ) (i, pI) else (j, pJ)
+	// where pI = C[i] + if (dp(i + 1, j)_1 == i + 1) dp(i + 2, j)_2 else dp(i + 1, j - 1)_2
+	//       pJ = C[j] + if (dp(i, j - 1)_1 == i) dp(i + 1, j - 1)_2 else dp(i, j - 2)_2
+	// dependency: dp(i, j) depends on dp(i + 1, j), dp(i + 2, j), dp(i + 1, j - 1),
+	//             dp(i, j - 1) and dp(i, j - 2)
 	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
 	for (i in n - 1 downTo 1) {
 		// inner loop for j from i + 1 to n (left to right)
 		for (j in i + 1..n) {
-			// points(i, j) depends on self(i, j)
-			// so we should evaluate self(i, j) first, then points(i, j)
-			val pointsI = C[i] + if (self[i + 1, j] == i + 1) points[i + 2, j] else points[i + 1, j - 1]
-			val pointsJ = C[j] + if (self[i, j - 1] == i) points[i + 1, j - 1] else points[i, j - 2]
-			self[i, j] = if (pointsI > pointsJ) i else j
-
-			points[i, j] = if (self[i, j] == i) {
-				C[i] + if (self[i + 1, j] == i + 1) points[i + 2, j] else points[i + 1, j - 1]
+			val pI = C[i] + if (dp[i + 1, j].first == i + 1) {
+				dp[i + 2, j].second
 			} else {
-				C[j] + if (self[i, j - 1] == i + 1) points[i + 1, j - 1] else points[i, j - 2]
+				dp[i + 1, j - 1].second
+			}
+
+			val pJ = C[j] + if (dp[i, j - 1].first == i) {
+				dp[i + 1, j - 1].second
+			} else {
+				dp[i, j - 2].second
+			}
+
+			dp[i, j] = if (pI > pJ) {
+				i to pI
+			} else {
+				j to pJ
 			}
 		}
 	}
-
 	// time complexity: O(n^2)
-//	println("SELF: ")
-//	self.prettyPrintTable()
-//	println("\nPOINTS:")
-//	points.prettyPrintTable()
 
-	// we want points(1, n)
-	return points[1, n]
+	dp.prettyPrintTable()
+
+	// we want points(1, n)_2
+	return dp[1, n].second
 }
 
 fun main(args: Array<String>) {
-	val C = oneArrayOf(1, 6, 10, 2)
+	val C = oneArrayOf(10, 20, 5, 5)
 //	println(C.maxPoints())
 	println(C.maxPointsPerfect())
 }
