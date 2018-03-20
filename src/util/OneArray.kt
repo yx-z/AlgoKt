@@ -3,8 +3,6 @@ package util
 import java.util.*
 import kotlin.Comparator
 
-
-
 // One-indexed Array
 class OneArray<T>(val size: Int) {
 	val indices = 1..size
