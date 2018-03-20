@@ -3,13 +3,14 @@ package util
 import java.util.*
 import kotlin.Comparator
 
-// One-indexed Array
+// One-Indexed Array
 class OneArray<T>(val size: Int) {
 	val indices = 1..size
+	var container = arrayOfNulls<Any?>(size)
 	var getOverflowHandler: ((Int) -> T)? = null
 	var setOverflowHandler: ((Int, T) -> Unit)? = null
-	var container = arrayOfNulls<Any?>(size)
 
+	// constructing
 	constructor(array: Array<T>) : this(array.size) {
 		container = Arrays.copyOf(array, size) as Array<Any?>
 	}
@@ -20,6 +21,7 @@ class OneArray<T>(val size: Int) {
 		}
 	}
 
+	// accessing
 	operator fun get(i: Int): T {
 		if (i in indices) {
 			return container[i - 1] as T
@@ -38,9 +40,10 @@ class OneArray<T>(val size: Int) {
 		}
 	}
 
-	override fun toString() = Arrays.deepToString(container)
-
 	fun toArray() = Arrays.copyOf(container, size)
+
+	// printing
+	override fun toString() = Arrays.deepToString(container)
 
 	fun prettyPrintln(printIndex: Boolean = true) {
 		if (!printIndex) {
@@ -80,12 +83,7 @@ class OneArray<T>(val size: Int) {
 				}
 	}
 
-	fun forEach(action: (T) -> Unit) {
-		for (element in container) {
-			action(element as T)
-		}
-	}
-
+	// sorting
 	fun sort() {
 		container.sort()
 	}
@@ -129,6 +127,7 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
+	// modifying
 	fun copy(): OneArray<T> {
 		val ret = OneArray<T>(size)
 		ret.container = toArray()
@@ -147,11 +146,13 @@ class OneArray<T>(val size: Int) {
 
 	fun asSequence() = (container as Array<T>).asSequence()
 
+	// sizing
 	fun isEmpty() = size <= 0
 
 	fun isNotEmpty() = isEmpty().not()
 }
 
+// comparing
 fun <T : Comparable<T>> OneArray<T>.max(): T? {
 	if (isEmpty()) {
 		return null
@@ -180,6 +181,7 @@ fun <T : Comparable<T>> OneArray<T>.min(): T? {
 	return min
 }
 
+// pretty-printing
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
 	var maxLenEle = 0
 	var maxLenCol = 0
@@ -228,8 +230,7 @@ fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = 
 	}
 }
 
-operator fun String.times(n: Int) = repeat(n)
-
+// converting
 fun IntArray.toOneArray() = toTypedArray().toOneArray()
 
 fun CharArray.toOneArray() = toTypedArray().toOneArray()
@@ -242,6 +243,7 @@ inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
 
+// numerical operating
 operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
 		throw OneArrayNotAlignedException()
@@ -306,4 +308,24 @@ operator fun OneArray<Int>.inc() = asSequence().map { it + 1 }.toList().toOneArr
 
 operator fun OneArray<Int>.dec() = asSequence().map { it - 1 }.toList().toOneArray()
 
+// python-like vararg indexing for multi-dimensional OneArray's
+operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+
+operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+
+operator fun <T> OneArray<OneArray<T>>.set(i1: Int, i2: Int, v: T) {
+	this[i1][i2] = v
+}
+
+operator fun <T> OneArray<OneArray<OneArray<T>>>.set(i1: Int, i2: Int, i3: Int, v: T) {
+	this[i1][i2][i3] = v
+}
+
+operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
+	this[i1][i2][i3][i4] = v
+}
+
+// exceptioning
 class OneArrayNotAlignedException : Exception("size mismatch between two OneArray's")
