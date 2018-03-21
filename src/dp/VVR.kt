@@ -27,14 +27,13 @@ fun OneArray<Arrow>.maxPoint(): Int {
 	// ex. dp(i) = (12, [(L, R), (R, D)]) represents given Arrows[1..i], I can
 	//     earn 12 points at most and my feet are standing on either (L and R) or (R and D)
 	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)
-	val dp = OneArray(n) { 0 to HashSet<Pair<Arrow, Arrow>>() }
+	val dp = Array(n + 1) { 0 to HashSet<Pair<Arrow, Arrow>>() }
 	// the length of set is at most 4 * 3 so the space complexity: O(2 * 4 * 3 * n) = O(n)
 
 	// base case:
 	// dp(i) = (0, []) if i !in 1..n
-	dp.getterIndexOutOfBoundHandler = { 0 to HashSet() }
 	// dp(1) = (0, [(L, R)]
-	dp[1] = 0 to hashSetOf(Arrow.L to Arrow.R)
+	dp[0] = 0 to hashSetOf(Arrow.L to Arrow.R)
 
 	// recursive case:
 	// consider dp(i), we need to find dp(i)_1 and dp(i)_2:
@@ -50,7 +49,7 @@ fun OneArray<Arrow>.maxPoint(): Int {
 	//               copy dp[i - 1]_2 and transform all pairs (p1, p2) to (Arrows[i], p2), (p1, Arrows[i])
 	// dependency: dp(i) depends on dp(i - 1), that is entry to the left
 	// evaluation order: i from 2 to n (left to right)
-	for (i in 2..n) {
+	for (i in 1..n) {
 		val add = dp[i - 1].second.any { (p1, p2) -> p1 == Arrows[i] || p2 == Arrows[i] }
 		val first = dp[i - 1].first + if (add) 1 else 0
 		if (add) {
@@ -67,7 +66,6 @@ fun OneArray<Arrow>.maxPoint(): Int {
 		dp[i] = first to dp[i].second
 	}
 	// time complexity: O(n)
-
 
 	// we want dp(n)_1
 	return dp[n].first
