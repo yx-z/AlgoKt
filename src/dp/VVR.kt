@@ -16,7 +16,8 @@ import util.*
 // find the maximum number of points you can get in such vvr game
 fun main(args: Array<String>) {
 	val Arrows = oneArrayOf(Arrow.U, Arrow.U, Arrow.D, Arrow.D, Arrow.L, Arrow.R, Arrow.L, Arrow.R)
-	println(Arrows.maxPoint())
+//	println(Arrows.maxPoint())
+	println(Arrows.maxPoints())
 }
 
 fun OneArray<Arrow>.maxPoint(): Int {
@@ -70,10 +71,72 @@ fun OneArray<Arrow>.maxPoint(): Int {
 	return dp[n].first
 }
 
+// an alternative solution without set operation
+fun OneArray<Arrow>.maxPoints(): Int {
+	val Arrows = asSequence().map { it.toInt() }.toList().toOneArray()
+	val n = size
+
+	// dp(i, p, q): max points I can get given A[1..i] standing on p, q in the end
+	// memoization structure: 3d array dp[1..n, 1..4, 1..4] : dp[i, p, q] = dp(i, p, q)
+	val dp = OneArray(n) { OneArray(Arrow.values().size) { OneArray(Arrow.values().size) { 0 } } }
+
+	// base case:
+	// when the first input is either < or >, we don't move and earn a point
+	// dp(1, p, q) = 0 o/w
+	if (Arrows[1] == 1 || Arrows[1] == 2) {
+		dp[1, 1, 2] = 1
+	}
+
+	// recursive case:
+	// dp(i, p, q) = if either p or q = Arrows[i]
+	//                   if p = Arrows[i]
+	//                       max{ 1 + dp(i - 1, p, q), dp(i - 1, k, q : k != p) }
+	//                   else
+	//                       max{ 1 + dp(i - 1, p, q), dp(i - 1, p, k : k != q) }
+	//               else if neither p nor q = Arrows[i]
+	//                   -inf
+	// dependency: dp(i, p , q) depends on dp(i - 1, m, n) that is entries in the table before
+	// evaluation order: outer loop for i from 2 to n (left to right)
+	for (i in 2..n) {
+		// inner loop for p, q is arbitrary
+		for (p in 1..4) {
+			for (q in 1..4) {
+				if (p != q) {
+					dp[i, p, q] = if (p != Arrows[i] && q != Arrows[i]) {
+						0
+					} else {
+						val notMove = 1 + dp[i - 1, p, q]
+						if (p == Arrows[i]) {
+							max(notMove, (1..4).filter { it != p }.map { dp[i - 1, it, q] }.max()
+									?: 0)
+						} else { // q == Arrows[i]
+							max(notMove, (1..4).filter { it != q }.map { dp[i - 1, p, it] }.max()
+									?: 0)
+						}
+					}
+				}
+			}
+		}
+	}
+	// time complexity: O(n)
+
+//	dp.prettyPrintTables()
+
+	// we want max_(p, q){ dp(n, p, q) }
+	return dp[n].asSequence().map { it.max() }.maxBy { it ?: 0 } ?: 0
+}
+
 enum class Arrow {
 	L, // < Left
 	R, // > Right
 	U, // ^ Up
 	D; // v Down
+
+	fun toInt() = when (this) {
+		L -> 1
+		R -> 2
+		U -> 3
+		D -> 4
+	}
 }
 
