@@ -195,9 +195,57 @@ fun OneArray<Int>.maxPointsPerfect2(): Int {
 	// we may return oppo(1, n) if we know that O play first
 }
 
+// 3. find the maximum expected point you can get given a player who always
+// pick uniformly randomly that is s/he has 1/2 of chance picking the leftmost
+// and the other 1/2 of chance picking the rightmost
+fun OneArray<Int>.maxPointsExpected(): Double {
+	val C = this
+	val n = C.size
+
+	// dp(i, j): max points I can get if I play first given C[i..j]
+	// memoization strucuture: 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)
+	val dp = OneArray(n) { OneArray(n) { 0.0 } }
+	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0.0 } }
+	// space complexity: O(n^2)
+
+	// base case:
+	// dp(i, j) = 0 if i > j or i, j !in 1..n
+	for (i in 1..n) {
+		dp[i].getterIndexOutOfBoundHandler = { 0.0 }
+	}
+	// dp(i, i) = C[i]
+	for (i in 1..n) {
+		dp[i, i] = C[i].toDouble()
+	}
+
+	// recursive case:
+	// dp(i, j) = max{ C[i] + 1/2 dp(i + 2, j) + 1/2 dp(i + 1, j - 1),
+	//                 C[j] + 1/2 dp(i + 1, j - 1) + 1/2 dp(i, j - 2) }
+	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 2, j) and dp(i, j - 2)
+	//             that is entries below, to the left, and to the lower-left
+	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	for (i in n - 1 downTo 1) {
+		// inner loop for j from 1 to n (left to right)
+		for (j in i + 1..n) {
+			dp[i, j] = max(
+					C[i] + dp[i + 2, j] / 2.0 + dp[i + 1, j - 1].toDouble() / 2.0,
+					C[j] + dp[i + 1, j - 1] / 2.0 + dp[i, j - 2] / 2.0
+			)
+		}
+	}
+	// time complexity: O(n^2)
+
+//	dp.prettyPrintTable()
+
+	// we want dp(1, n)
+	return dp[1, n]
+}
+
+
 fun main(args: Array<String>) {
-	val C = oneArrayOf(10, 20, 5, 5)
+	val C = oneArrayOf(10, 30, 0)
 //	println(C.maxPoints())
 //	println(C.maxPointsPerfect())
-	println(C.maxPointsPerfect2())
+//	println(C.maxPointsPerfect2())
+	println(C.maxPointsExpected())
 }

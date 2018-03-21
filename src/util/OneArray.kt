@@ -42,7 +42,7 @@ class OneArray<T>(val size: Int) {
 	}
 
 	constructor(size: Int, init: (Int) -> T) : this(size) {
-		(1..size).forEach {
+		indices.forEach {
 			container[it - 1] = init(it)
 		}
 	}
