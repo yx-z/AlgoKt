@@ -37,10 +37,17 @@ class OneArray<T>(val size: Int) {
 	var setterIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
 
 	// constructing
+	/**
+	 * constructor that constructs from a given array
+	 * @param array array to be copied from, i.e. will not be used directly
+	 */
 	constructor(array: Array<T>) : this(array.size) {
 		container = Arrays.copyOf(array, size) as Array<Any?>
 	}
 
+	/**
+	 * constructor that accepts an initialization method transforming index into <T>
+	 */
 	constructor(size: Int, init: (Int) -> T) : this(size) {
 		indices.forEach {
 			container[it - 1] = init(it)
