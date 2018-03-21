@@ -1,8 +1,6 @@
 package dp
 
-import util.OneArray
-import util.max
-import util.oneArrayOf
+import util.*
 
 // suppose you are going to slide down a hill with n ramps
 // given Ramp[1..n], in which Ramp[i] represents the distance
@@ -60,8 +58,58 @@ fun OneArray<Int>.next(target: Int): Int {
 	return -idx + 1
 }
 
+// 2. find the maximum air distance you can travel given at most k jumps
+fun maxAirDistKJumps(Ramp: OneArray<Int>, Length: OneArray<Int>, k: Int): Int {
+	// follow the naming convention in the problem statement
+	val n = Ramp.size // == Length.size by assumption
+
+	// dp(i, j): max air distance starting from the i-th ramp with j jumps left
+	// memoization structure: 2d array dp[1..n, 1..k] : dp[i, j] = dp(i, j)
+	val dp = OneArray(n) { OneArray(k) { 0 } }
+	// space complexity: O(nk)
+
+	// we want max_i{ dp(i, k) }
+	var max = 0
+
+	// base case:
+	// dp(i, j) = 0 if i !in 1..n or j <= 0
+	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	for (i in 1..n) {
+		dp[i].getterIndexOutOfBoundHandler = { 0 }
+	}
+	// dp(n, j) = Length[n] for all j in 1..k
+	for (j in 1..k) {
+		dp[n, j] = Length[n]
+		if (j == k) {
+			max = max(max, dp[n, j])
+		}
+	}
+
+	// recursive case:
+	// dp(i, j) =  max{ dp(i + 1, j), Length[i] + dp(next(i), j - 1) }
+	// dependency: dp(i, j) depends on dp(l, j - 1) : l > i
+	//             that is entries to the lower left
+	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	for (i in n - 1 downTo 1) {
+		// inner loop for j from 1 to k (left to right)
+		for (j in 1..k) {
+			dp[i, j] = max(dp[i + 1, j], Length[i] + dp[Ramp.next(Ramp[i] + Length[i]), j - 1])
+			if (j == k) {
+				max = max(max, dp[i, j])
+			}
+		}
+	}
+	// time complexity: O(nk)
+
+//	dp.prettyPrintTable()
+
+	return max
+}
+
+
 fun main(args: Array<String>) {
 	val Ramp = oneArrayOf(10, 30, 50, 90, 140)
 	val Length = oneArrayOf(24, 25, 15, 30, 50)
-	println(maxAirDist(Ramp, Length))
+//	println(maxAirDist(Ramp, Length))
+//	println(maxAirDistKJumps(Ramp, Length, 3))
 }
