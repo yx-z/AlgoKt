@@ -33,7 +33,7 @@ fun OneArray<Char>.minSplitInPal(): Int {
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.getIndexOutOfBoundHandler = { 0 }
+	dp.getterIndexOutOfBoundHandler = { 0 }
 	// dp(1) = 1
 	dp[1] = 1
 
@@ -121,7 +121,7 @@ fun OneArray<Char>.numSplitInPal(): Int {
 
 	// base case:
 	// dp(0) = 1
-	dp.getIndexOutOfBoundHandler = { 1 }
+	dp.getterIndexOutOfBoundHandler = { 1 }
 
 	// recursive case:
 	// dp(i) = sum{ dp(k) : 0 <= k < i and S[k + 1..i] is palindromic }

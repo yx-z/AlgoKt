@@ -3,12 +3,38 @@ package util
 import java.util.*
 import kotlin.Comparator
 
-// One-Indexed Array
+/**
+ * one-indexed fixed-length array implementation
+ *
+ * created since many algorithm questions use a one-indexed array system
+ * as their naming convention
+ */
 class OneArray<T>(val size: Int) {
+	/**
+	 * range of valid indices
+	 */
 	val indices = 1..size
+	/**
+	 * underlying array for holding values
+	 */
 	var container = arrayOfNulls<Any?>(size)
-	var getIndexOutOfBoundHandler: ((Int) -> T)? = null
-	var setIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
+	/**
+	 * a function that will be called when the array is being accessed
+	 * in an invalid index
+	 *
+	 * this function should be given an invalid array index as a parameter
+	 * of type Int and return an instance of <T> class
+	 */
+	var getterIndexOutOfBoundHandler: ((Int) -> T)? = null
+	/**
+	 * a function that will be called when the array is being modified
+	 * in an invalid index
+	 *
+	 * this function should be given an invalid array index as a paramter
+	 * of type Int as well as the value that is trying to be set in the array
+	 * and return Unit since setter method does not have a return value
+	 */
+	var setterIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
 
 	// constructing
 	constructor(array: Array<T>) : this(array.size) {
@@ -21,13 +47,13 @@ class OneArray<T>(val size: Int) {
 		}
 	}
 
-	// accessing
+	// accessing with ArrayIndexOutofBoundException handling
 	operator fun get(i: Int): T {
 		if (i in indices) {
 			return container[i - 1] as T
 		}
 
-		return getIndexOutOfBoundHandler?.invoke(i)
+		return getterIndexOutOfBoundHandler?.invoke(i)
 				?: throw ArrayIndexOutOfBoundsException()
 	}
 
@@ -35,14 +61,14 @@ class OneArray<T>(val size: Int) {
 		if (i in indices) {
 			container[i - 1] = v
 		} else {
-			setIndexOutOfBoundHandler?.invoke(i, v)
+			setterIndexOutOfBoundHandler?.invoke(i, v)
 					?: throw ArrayIndexOutOfBoundsException()
 		}
 	}
 
 	fun toArray() = Arrays.copyOf(container, size)
 
-	// printing
+	// printing, i.e. toString()
 	override fun toString() = Arrays.deepToString(container)
 
 	fun prettyPrintln(printIndex: Boolean = true) {
@@ -152,7 +178,7 @@ class OneArray<T>(val size: Int) {
 	fun isNotEmpty() = isEmpty().not()
 }
 
-// comparing
+// comparing elements in OneArray
 fun <T : Comparable<T>> OneArray<T>.max(): T? {
 	if (isEmpty()) {
 		return null
@@ -181,7 +207,7 @@ fun <T : Comparable<T>> OneArray<T>.min(): T? {
 	return min
 }
 
-// pretty-printing
+// pretty-printing as table(s)
 fun <T> OneArray<OneArray<T>>.prettyPrintTable(printIndex: Boolean = true) {
 	var maxLenEle = 0
 	var maxLenCol = 0
@@ -230,7 +256,7 @@ fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = 
 	}
 }
 
-// converting
+// converting other general arrays to OneArray
 fun IntArray.toOneArray() = toTypedArray().toOneArray()
 
 fun CharArray.toOneArray() = toTypedArray().toOneArray()
@@ -243,7 +269,7 @@ inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
 
-// numerical operating
+// numerical operating with broadcasting
 operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
 	if (size != other.size) {
 		throw TwoArrayNotAlignedException()
@@ -327,5 +353,7 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 	this[i1][i2][i3][i4] = v
 }
 
-// exceptioning
+/**
+ * Exception class that handles size mismatch while array broadcasting
+ */
 class TwoArrayNotAlignedException : Exception("size mismatches between two arrays")

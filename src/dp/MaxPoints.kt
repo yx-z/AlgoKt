@@ -1,6 +1,5 @@
 package dp
 
-import math.reverseIter
 import util.*
 
 // given an array of ints C[1..n], you want to play a game with your brother.
@@ -54,9 +53,9 @@ fun OneArray<Int>.maxPoints(): Int {
 
 	// base case:
 	// dp(i, j) = 0 if i > j or i, j !in 1..n
-//	dp.getIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+//	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		dp[i].getIndexOutOfBoundHandler = { 0 }
+		dp[i].getterIndexOutOfBoundHandler = { 0 }
 	}
 	// dp(i, i) = C[i]
 	for (i in 1..n) {
@@ -103,11 +102,11 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 
 	// base case:
 	// dp(i, j) = (0, 0) if i > j or i, j !in 1..n
-	dp.getIndexOutOfBoundHandler = { OneArray(n) { 0 to 0 } }
+	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 to 0 } }
 	// dp(i, i) = (i, C[i])
 	for (i in 1..n) {
 		dp[i, i] = i to C[i]
-		dp[i].getIndexOutOfBoundHandler = { 0 to 0 }
+		dp[i].getterIndexOutOfBoundHandler = { 0 to 0 }
 	}
 	// time complextiy: O(n)
 
@@ -148,8 +147,57 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 	return dp[1, n].second
 }
 
+// an alternative solution to 2
+fun OneArray<Int>.maxPointsPerfect2(): Int {
+	val C = this
+	val n = C.size
+
+	// self(i, j): max score I can get if I play first, given C[i..j]
+	// memoization structure: 2d array self[1..n, 1..n] : self[i, j] = self(i, j)
+	val self = OneArray(n) { OneArray(n) { 0 } }
+	// oppo(i, j): max score I can get if O play first, given C[i..j]
+	// memoization structure: 2d array oppo[1..n, 1..n] : oppo[i, j] = oppo(i, j)
+	val oppo = OneArray(n) { OneArray(n) { 0 } }
+	// space complexity: O(n^2)
+
+	// base case:
+	// self(i, j), oppo(i, j) = 0 if i, j !in 1..n or i > j
+	self.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	oppo.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	// self(i, i) = C[i]
+	// oppo(i, i) = 0
+	for (i in 1..n) {
+		self[i, i] = C[i]
+		oppo[i, i] = 0
+		self[i].getterIndexOutOfBoundHandler = { 0 }
+		oppo[i].getterIndexOutOfBoundHandler = { 0 }
+	}
+	// time complexity: O(n)
+
+	// recursive case:
+	// self(i, j) = max{ C[i] + oppo(i + 1, j), C[j] + oppo(i, j - 1) }
+	// oppo(i, j) = min{ self(i + 1, j ), self(i, j - 1) }
+	// dependency: self(i, j) depends on oppo(i + 1, j) and oppo(i, j - 1)
+	//             oppo(i, j) depends on self(i + 1, j) and self(i, j - 1)
+	//             that is entries below and to the left
+	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	for (i in n - 1 downTo 1) {
+		// inner loop for j from i + 1..n (left to right)
+		for (j in i + 1..n) {
+			self[i, j] = max(C[i] + oppo[i + 1, j], C[j] + oppo[i, j - 1])
+			oppo[i, j] = min(self[i + 1, j], C[j] + self[i, j - 1])
+		}
+	}
+	// time complexity: O(n^2)
+
+	// we want self(1, n) assuming I play first
+	return self[1, n]
+	// we may return oppo(1, n) if we know that O play first
+}
+
 fun main(args: Array<String>) {
 	val C = oneArrayOf(10, 20, 5, 5)
 //	println(C.maxPoints())
-	println(C.maxPointsPerfect())
+//	println(C.maxPointsPerfect())
+	println(C.maxPointsPerfect2())
 }
