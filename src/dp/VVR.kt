@@ -15,13 +15,14 @@ import util.*
 // given all instructions of one game as an array Arrows[1..n]
 // find the maximum number of points you can get in such vvr game
 fun main(args: Array<String>) {
-	val Arrows = oneArrayOf(Arrow.U, Arrow.U, Arrow.D, Arrow.D, Arrow.L, Arrow.R, Arrow.L, Arrow.R)
+	// it's so fun to use these symbols instead of enums
+	val Arrows = oneArrayOf('^', '^', 'v', 'v', '<', '>', '<', '>')
 //	println(Arrows.maxPoint())
 	println(Arrows.maxPoints())
 }
 
-fun OneArray<Arrow>.maxPoint(): Int {
-	val Arrows = this
+fun OneArray<Char>.maxPoint(): Int {
+	val Arrows = asSequence().map { it.toArrow() }.toList().toOneArray()
 	val n = Arrows.size
 
 	// dp(i): given Arrows[1..i], (max point I can get, [set of possible ending position])
@@ -72,8 +73,8 @@ fun OneArray<Arrow>.maxPoint(): Int {
 }
 
 // an alternative solution without set operation
-fun OneArray<Arrow>.maxPoints(): Int {
-	val Arrows = asSequence().map { it.toInt() }.toList().toOneArray()
+fun OneArray<Char>.maxPoints(): Int {
+	val Arrows = asSequence().map { it.toArrow().ordinal + 1 }.toList().toOneArray()
 	val n = size
 
 	// dp(i, p, q): max points I can get given A[1..i] standing on p, q in the end
@@ -127,16 +128,19 @@ fun OneArray<Arrow>.maxPoints(): Int {
 }
 
 enum class Arrow {
-	L, // < Left
-	R, // > Right
-	U, // ^ Up
-	D; // v Down
+	L, // 1 < Left
+	R, // 2 > Right
+	U, // 3 ^ Up
+	D; // 4 v Down
+}
 
-	fun toInt() = when (this) {
-		L -> 1
-		R -> 2
-		U -> 3
-		D -> 4
-	}
+class ArrowConversionException : Exception("cannot be converted to an Arrow")
+
+fun Char.toArrow() = when (this) {
+	'<' -> Arrow.L
+	'>' -> Arrow.R
+	'^' -> Arrow.U
+	'v' -> Arrow.D
+	else -> throw ArrowConversionException()
 }
 
