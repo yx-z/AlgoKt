@@ -72,8 +72,6 @@ class OneArray<T>(val size: Int) {
 		}
 	}
 
-	fun toArray() = Arrays.copyOf(container, size)
-
 	// printing, i.e. toString()
 	override fun toString() = Arrays.deepToString(container)
 
@@ -176,7 +174,10 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
+	// to **zero**-indexed data structures
 	fun asSequence() = (container as Array<T>).asSequence()
+
+	fun toArray() = Arrays.copyOf(container, size)
 
 	// sizing
 	fun isEmpty() = size <= 0

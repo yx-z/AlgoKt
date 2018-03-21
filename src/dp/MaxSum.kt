@@ -8,13 +8,14 @@ import util.max
 // find the largest sum of elements in a contiguous subarray
 fun main(args: Array<String>) {
 	val arr = intArrayOf(-6, 12, -7, 0, 14, -7, 5)
-	println(arr.largestSumN2())
-	println(arr.largestSumNlogN())
-	println(arr.largestSumN())
+//	println(arr.maxSumN2())
+//	println(arr.maxSumNLogN())
+	println(arr.maxSumN())
+	println(arr.maxSumKadane())
 }
 
 // brute force DP: O(N^2)
-fun IntArray.largestSumN2(): Int {
+fun IntArray.maxSumN2(): Int {
 	// dp[i, j] = sum of this[i..j]
 	// dp[i, j] = 0, if (i > j || i, j !in 0 until size)
 	//          = this[i], if (i == j)
@@ -40,7 +41,7 @@ fun IntArray.largestSumN2(): Int {
 }
 
 // better: O(n log n)
-fun IntArray.largestSumNlogN(s: Int = 0, e: Int = size - 1): Int {
+fun IntArray.maxSumNLogN(s: Int = 0, e: Int = size - 1): Int {
 	// the basic idea here is:
 	// there are three cases of the resulting subarray A[i..j]
 	// 1. j < n / 2 left of the middle line
@@ -66,8 +67,8 @@ fun IntArray.largestSumNlogN(s: Int = 0, e: Int = size - 1): Int {
 	}
 
 	val midIdx = s + (e - s) / 2
-	val left = largestSumNlogN(s, midIdx - 1)
-	val right = largestSumNlogN(midIdx + 1, e)
+	val left = maxSumNLogN(s, midIdx - 1)
+	val right = maxSumNLogN(midIdx + 1, e)
 
 	var mid = this[midIdx]
 	mid += prefixSum(midIdx + 1, e)
@@ -116,11 +117,11 @@ fun IntArray.suffixSum(s: Int = 0, e: Int = size - 1): Int {
 }
 
 // optimized: O(n)
-fun IntArray.largestSumN(): Int {
-	// dp[i] = util.max sum for this[i until size]
+fun IntArray.maxSumN(): Int {
+	// dp[i] = max sum for this[i until size]
 	// dp[i] = 0, if i !in 0 until size
 	//       = dp[i + 1], if this[i] < 0
-	//       = this[i] + util.max(0, tmpSum + dp[nex]), o/w
+	//       = this[i] + max(0, tmpSum + dp[nex]), o/w
 	//       , where nex is the next positive number
 	val dp = IntArray(size + 1)
 	dp[size] = 0
@@ -140,4 +141,16 @@ fun IntArray.largestSumN(): Int {
 		}
 	}
 	return dp.max() ?: 0
+}
+
+// Kadane's algorithm
+fun IntArray.maxSumKadane(): Int {
+	var maxEndingHere = 0
+	var maxSoFar = 0
+	forEach {
+		maxEndingHere += it
+		maxEndingHere = max(maxEndingHere, 0)
+		maxSoFar = max(maxSoFar, maxEndingHere)
+	}
+	return maxSoFar
 }
