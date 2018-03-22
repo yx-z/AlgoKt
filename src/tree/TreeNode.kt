@@ -9,3 +9,13 @@ class TreeNode(var data: Int) {
 		"$data -> $children"
 	}
 }
+
+class GenericTreeNode<T>(var data: T) {
+	val children = ArrayList<GenericTreeNode<T>>()
+
+	override fun toString() = if (children.isEmpty()) {
+		data.toString()
+	} else {
+		"$data -> $children"
+	}
+}
