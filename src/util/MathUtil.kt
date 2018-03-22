@@ -7,3 +7,9 @@ fun <T : Comparable<T>> max(vararg ts: T) = ts.max()
 
 fun <T : Comparable<T>> min(vararg ts: T) = ts.min()
 		?: throw NullPointerException("no minimum value")
+
+fun <T, R : Comparable<R>> maxBy(vararg ts: T, selector: (T) -> R) = ts.maxBy(selector)
+		?: throw NullPointerException("no maximum value")
+
+fun <T, R : Comparable<R>> minBy(vararg ts: T, selector: (T) -> R) = ts.minBy(selector)
+		?: throw NullPointerException("no minimum value")
