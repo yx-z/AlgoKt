@@ -17,7 +17,7 @@ import util.*
 fun main(args: Array<String>) {
 	// it's so fun to use these symbols instead of enums
 	val Arrows = "^^vv'<><>".toCharOneArray()
-//	println(Arrows.maxPoint())
+//	println(Arrows.maxPoint1())
 	println(Arrows.maxPoints())
 }
 
