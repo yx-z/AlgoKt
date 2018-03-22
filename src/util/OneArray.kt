@@ -334,29 +334,29 @@ operator fun OneArray<Int>.rem(other: OneArray<Int>): OneArray<Int> {
 	return indices.map { this[it] % other[it] }.toOneArray()
 }
 
-operator fun OneArray<Int>.plus(num: Int) = asSequence().map { it + num }.toList().toOneArray()
+operator fun OneArray<Int>.plus(num: Int) = map { it + num }.toList().toOneArray()
 
-operator fun OneArray<Double>.plus(num: Double) = asSequence().map { it + num }.toList().toOneArray()
+operator fun OneArray<Double>.plus(num: Double) = map { it + num }.toList().toOneArray()
 
-operator fun OneArray<Int>.minus(num: Int) = asSequence().map { it - num }.toList().toOneArray()
+operator fun OneArray<Int>.minus(num: Int) = map { it - num }.toList().toOneArray()
 
-operator fun OneArray<Double>.minus(num: Double) = asSequence().map { it - num }.toList().toOneArray()
+operator fun OneArray<Double>.minus(num: Double) = map { it - num }.toList().toOneArray()
 
-operator fun OneArray<Int>.times(mult: Int) = asSequence().map { it * mult }.toList().toOneArray()
+operator fun OneArray<Int>.times(mult: Int) = map { it * mult }.toList().toOneArray()
 
-operator fun OneArray<Double>.times(num: Double) = asSequence().map { it * num }.toList().toOneArray()
+operator fun OneArray<Double>.times(num: Double) = map { it * num }.toList().toOneArray()
 
-operator fun OneArray<Int>.div(num: Int) = asSequence().map { it / num }.toList().toOneArray()
+operator fun OneArray<Int>.div(num: Int) = map { it / num }.toList().toOneArray()
 
-operator fun OneArray<Double>.div(num: Double) = asSequence().map { it / num }.toList().toOneArray()
+operator fun OneArray<Double>.div(num: Double) = map { it / num }.toList().toOneArray()
 
-operator fun OneArray<Int>.rem(num: Int) = asSequence().map { it % num }.toList().toOneArray()
+operator fun OneArray<Int>.rem(num: Int) = map { it % num }.toList().toOneArray()
 
-operator fun OneArray<Double>.rem(num: Double) = asSequence().map { it % num }.toList().toOneArray()
+operator fun OneArray<Double>.rem(num: Double) = map { it % num }.toList().toOneArray()
 
-operator fun OneArray<Int>.inc() = asSequence().map { it + 1 }.toList().toOneArray()
+operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
-operator fun OneArray<Int>.dec() = asSequence().map { it - 1 }.toList().toOneArray()
+operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
 
 // python-like vararg indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
