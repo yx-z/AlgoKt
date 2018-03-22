@@ -16,7 +16,7 @@ import util.*
 // find the maximum number of points you can get in such vvr game
 fun main(args: Array<String>) {
 	// it's so fun to use these symbols instead of enums
-	val Arrows = oneArrayOf('^', '^', 'v', 'v', '<', '>', '<', '>')
+	val Arrows = "^^vv'<><>".toCharOneArray()
 //	println(Arrows.maxPoint())
 	println(Arrows.maxPoints())
 }

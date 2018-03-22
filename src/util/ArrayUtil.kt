@@ -9,6 +9,8 @@ inline operator fun <reified T> Array<T>.get(range: IntRange): Array<T> = Arrays
 
 operator fun IntArray.get(range: IntRange) = Arrays.copyOfRange(this, range.first, range.last + 1)
 
+operator fun CharArray.get(range: IntRange) = Arrays.copyOfRange(this, range.first, range.last + 1)
+
 operator fun <T> OneArray<T>.get(range: IntRange): OneArray<T> {
 	val start = range.start
 	val end = range.endInclusive
