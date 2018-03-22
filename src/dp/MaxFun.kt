@@ -59,7 +59,7 @@ fun TreeNode.maxFunPresident() = data + children.map { it.children.map { it.maxF
 // root may or may not be included
 fun TreeNode.maxFun(): Int {
 	if (children.isEmpty()) {
-		return data
+		return max(0, data)
 	}
 
 	val childrenFun = children.map { it.maxFun() }.sum()
