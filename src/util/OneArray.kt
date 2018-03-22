@@ -17,7 +17,7 @@ class OneArray<T>(val size: Int) {
 	/**
 	 * underlying array for holding values
 	 */
-	var container = arrayOfNulls<Any?>(size)
+	var container = arrayOfNulls<Any?>(size) as Array<T>
 	/**
 	 * a function that will be called when the array is being accessed
 	 * in an invalid index
@@ -41,22 +41,20 @@ class OneArray<T>(val size: Int) {
 	 * @param array array to be copied from, i.e. will not be used directly
 	 */
 	constructor(array: Array<T>) : this(array.size) {
-		container = Arrays.copyOf(array, size) as Array<Any?>
+		container = Arrays.copyOf(array, size)
 	}
 
 	/**
 	 * constructor that accepts an initialization method transforming index into <T>
 	 */
 	constructor(size: Int, init: (Int) -> T) : this(size) {
-		indices.forEach {
-			container[it - 1] = init(it)
-		}
+		indices.forEach { this[it] = init(it) }
 	}
 
 	// accessing with ArrayIndexOutofBoundException handling
 	operator fun get(i: Int): T {
 		if (i in indices) {
-			return container[i - 1] as T
+			return container[i - 1]
 		}
 
 		return getterIndexOutOfBoundHandler?.invoke(i)
@@ -125,7 +123,7 @@ class OneArray<T>(val size: Int) {
 
 	fun <R : Comparable<R>> sortBy(selector: (T) -> R) {
 		val com = Comparator { t1: T, t2: T -> selector(t1).compareTo(selector(t2)) }
-		Arrays.sort(container as Array<T>, com)
+		Arrays.sort(container, com)
 	}
 
 	fun <R : Comparable<R>> sortByDescending(selector: (T) -> R) {
@@ -174,15 +172,34 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
-	// to **zero**-indexed data structures
-	fun asSequence() = (container as Array<T>).asSequence()
-
+	// converting to **zero**-indexed data structures
 	fun toArray() = Arrays.copyOf(container, size)
 
 	// sizing
 	fun isEmpty() = size <= 0
 
 	fun isNotEmpty() = isEmpty().not()
+
+	// sequencing
+	// note that this sequence is **zero**-indexed
+	fun asSequence() = container.asSequence()
+
+	inline fun forEach(action: (T) -> Unit) = container.forEach(action)
+
+	inline fun forEachIndexed(action: (Int, T) -> Unit) = container.forEachIndexed { i, t -> action(i + 1, t) }
+
+	inline fun <R> map(transform: (T) -> R) = container.map(transform)
+
+	inline fun <R> mapIndexed(transform: (Int, T) -> R) = container.mapIndexed { i, t -> transform(i + 1, t) }
+
+	inline fun filter(predicate: (T) -> Boolean) = container.filter(predicate)
+
+	inline fun filterIndexed(predicate: (Int, T) -> Boolean) = container.filterIndexed { i, t -> predicate(i + 1, t) }
+
+	operator fun contains(element: T): Boolean = indexOf(element) >= 0
+
+	fun indexOf(element: T): Int =
+			indices.filter { this[it] == element }.firstOrNull() ?: -1
 }
 
 // comparing elements in OneArray
