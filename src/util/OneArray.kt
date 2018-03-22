@@ -294,45 +294,17 @@ inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 inline fun <reified T> oneArrayOf(vararg ts: T) = ts.toList().toOneArray()
 
 // numerical operating with broadcasting
-operator fun OneArray<Int>.plus(other: OneArray<Int>): OneArray<Int> {
-	if (size != other.size) {
-		throw TwoArrayNotAlignedException()
-	}
+// i.e. entry-wise operations
+// ex. [10, 20, 30, 40] + [1, 2] = [10 + 1, 20 + 2, 30 + 1, 40 + 2]
+operator fun OneArray<Int>.plus(that: OneArray<Int>) = indices.map { this[it] + that[it % that.size + 1] }.toOneArray()
 
-	return indices.map { this[it] + other[it] }.toOneArray()
-}
+operator fun OneArray<Int>.minus(that: OneArray<Int>) = indices.map { this[it] - that[it % that.size + 1] }.toOneArray()
 
-operator fun OneArray<Int>.minus(other: OneArray<Int>): OneArray<Int> {
-	if (size != other.size) {
-		throw TwoArrayNotAlignedException()
-	}
+operator fun OneArray<Int>.times(that: OneArray<Int>) = indices.map { this[it] * that[it % that.size + 1] }.toOneArray()
 
-	return indices.map { this[it] - other[it] }.toOneArray()
-}
+operator fun OneArray<Int>.div(that: OneArray<Int>) = indices.map { this[it] / that[it % that.size + 1] }.toOneArray()
 
-operator fun OneArray<Int>.times(other: OneArray<Int>): OneArray<Int> {
-	if (size != other.size) {
-		throw TwoArrayNotAlignedException()
-	}
-
-	return indices.map { this[it] * other[it] }.toOneArray()
-}
-
-operator fun OneArray<Int>.div(other: OneArray<Int>): OneArray<Int> {
-	if (size != other.size) {
-		throw TwoArrayNotAlignedException()
-	}
-
-	return indices.map { this[it] / other[it] }.toOneArray()
-}
-
-operator fun OneArray<Int>.rem(other: OneArray<Int>): OneArray<Int> {
-	if (size != other.size) {
-		throw TwoArrayNotAlignedException()
-	}
-
-	return indices.map { this[it] % other[it] }.toOneArray()
-}
+operator fun OneArray<Int>.rem(that: OneArray<Int>) = indices.map { this[it] % that[it % that.size + 1] }.toOneArray()
 
 operator fun OneArray<Int>.plus(num: Int) = map { it + num }.toList().toOneArray()
 
@@ -376,8 +348,3 @@ operator fun <T> OneArray<OneArray<OneArray<T>>>.set(i1: Int, i2: Int, i3: Int, 
 operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
 	this[i1][i2][i3][i4] = v
 }
-
-/**
- * Exception class that handles size mismatch while array broadcasting
- */
-class TwoArrayNotAlignedException : Exception("size mismatches between two arrays")
