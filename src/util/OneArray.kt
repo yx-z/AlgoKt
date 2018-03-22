@@ -25,6 +25,7 @@ class OneArray<T>(val size: Int) {
 	 * this function should be given an invalid array index as a parameter
 	 * of type Int and return an instance of <T> class
 	 */
+	// one-indexed
 	var getterIndexOutOfBoundHandler: ((Int) -> T)? = null
 	/**
 	 * a function that will be called when the array is being modified
@@ -34,6 +35,7 @@ class OneArray<T>(val size: Int) {
 	 * of type Int as well as the value that is trying to be set in the array
 	 * and return Unit since setter method does not have a return value
 	 */
+	// one-indexed
 	var setterIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
 
 	/**
@@ -172,7 +174,7 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
-	// converting to **zero**-indexed data structures
+	// note that this array is ZERO-indexed
 	fun toArray() = Arrays.copyOf(container, size)
 
 	// sizing
@@ -181,23 +183,27 @@ class OneArray<T>(val size: Int) {
 	fun isNotEmpty() = isEmpty().not()
 
 	// sequencing
-	// note that this sequence is **zero**-indexed
+	// note that this sequence is ZERO-indexed
 	fun asSequence() = container.asSequence()
 
 	inline fun forEach(action: (T) -> Unit) = container.forEach(action)
 
+	// one-indexed
 	inline fun forEachIndexed(action: (Int, T) -> Unit) = container.forEachIndexed { i, t -> action(i + 1, t) }
 
 	inline fun <R> map(transform: (T) -> R) = container.map(transform)
 
+	// one-indexed
 	inline fun <R> mapIndexed(transform: (Int, T) -> R) = container.mapIndexed { i, t -> transform(i + 1, t) }
 
 	inline fun filter(predicate: (T) -> Boolean) = container.filter(predicate)
 
+	// one-indexed
 	inline fun filterIndexed(predicate: (Int, T) -> Boolean) = container.filterIndexed { i, t -> predicate(i + 1, t) }
 
 	operator fun contains(element: T): Boolean = indexOf(element) >= 0
 
+	// one-indexed
 	fun indexOf(element: T): Int =
 			indices.filter { this[it] == element }.firstOrNull() ?: -1
 }
@@ -330,7 +336,7 @@ operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
 operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
 
-// python-like vararg indexing for multi-dimensional arrays
+// python-like indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
