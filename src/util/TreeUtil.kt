@@ -1,5 +1,6 @@
 package util
 
+import tree.bintree.BinTreeNode
 import java.util.ArrayList
 
 /**
@@ -117,3 +118,5 @@ fun prettyPrintBinTree(root: PrintableBinTreeNode) {
 		perpiece /= 2
 	}
 }
+
+fun <T> BinTreeNode<T>.prettyPrintTree() = util.prettyPrintBinTree(this)

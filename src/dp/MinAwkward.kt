@@ -1,7 +1,7 @@
 package dp
 
 import tree.bintree.BinTreeNode
-import tree.bintree.prettyPrintTree
+import util.prettyPrintTree
 import util.to
 
 // given a binary tree representing company hierarchy, with each edge containing
