@@ -1,5 +1,7 @@
 package str
 
+import util.times
+
 fun main(args: Array<String>) {
 	// test strings
 	val s1 = "abcde"
@@ -16,8 +18,6 @@ fun main(args: Array<String>) {
 // Cycle Detection
 // detect if 2 words are rotation (re-ordering) of each other
 fun isCycle(s1: String, s2: String) = s1.length == s2.length && (s1 * 2).contains(s2)
-
-operator fun String.times(i: Int) = this.repeat(i)
 
 /**
  * @return number of different cyclic words in the array

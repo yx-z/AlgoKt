@@ -1,5 +1,7 @@
 package str
 
+import util.times
+
 // rearrange string to a decreasing frequency of characters
 // use alphabetical order in case of a tie
 fun main(args: Array<String>) {
@@ -15,5 +17,3 @@ fun String.decFreq(): String {
 
 	return list.sortedWith(compareBy({ -it.value }, { it.key })).joinToString("") { it.key * it.value }
 }
-
-operator fun Char.times(i: Int) = toString().repeat(i)

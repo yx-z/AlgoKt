@@ -1,5 +1,6 @@
 package arr.sort
 
+import util.times
 import java.io.File
 import java.lang.reflect.Method
 import java.util.*
@@ -75,8 +76,6 @@ fun String.toLowerCamelCase() = this
 		.decapitalize()
 
 fun String.printAsTitle(length: Int = 5) = println("${"=" * length} $this ${"=" * length}")
-
-operator fun String.times(n: Int) = repeat(n)
 
 fun IntArray.printArray() = println(Arrays.toString(this))
 
