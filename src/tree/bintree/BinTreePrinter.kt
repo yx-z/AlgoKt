@@ -1,89 +1,131 @@
 package tree.bintree
 
+
 import util.max
-import util.times
 import java.util.ArrayList
 
+
 /**
+ * Binary Tree Printer
+ * @author MightyPork
+ *
  * Reference:
- * https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram
+ * https://stackoverflow.com/questions/4965335/how-to-prettyPrintTree-binary-tree-diagram
+ */
+/**
+ * Node that can be printed
  */
 
-
-fun <T> parse(root: BinTreeNode<T>): StringBuilder {
-	val maxLevel = maxLevel(root)
-	return parse(listOf(root), 1, maxLevel)
+interface PrintableNode {
+	val left: PrintableNode?
+	val right: PrintableNode?
+	val text: String
 }
 
-private fun <T> parse(nodes: List<BinTreeNode<T>?>,
-                      level: Int,
-                      maxLevel: Int): StringBuilder {
-	if (nodes.isEmpty() || isAllElementsNull(nodes)) {
-		return StringBuilder()
-	}
 
-	val sb = StringBuilder()
+/**
+ * Print a tree
+ *
+ * @param root tree root node
+ */
+fun prettyPrintTree(root: PrintableNode) {
+	val lines = ArrayList<List<String?>>()
 
-	val floor = maxLevel - level
-	val endgeLines = Math.pow(2.0, Math.max(floor - 1, 0).toDouble()).toInt()
-	val firstSpaces = Math.pow(2.0, floor.toDouble()).toInt() - 1
-	val betweenSpaces = Math.pow(2.0, (floor + 1).toDouble()).toInt() - 1
+	var level: MutableList<PrintableNode?> = ArrayList()
+	var next: MutableList<PrintableNode?> = ArrayList()
 
-	sb.append(whiteSpace(firstSpaces))
+	level.add(root)
+	var nn = 1
 
-	val newNodes = ArrayList<BinTreeNode<T>?>()
-	for (binTreeNode in nodes) {
-		if (binTreeNode != null) {
-			sb.append(binTreeNode.data)
-			newNodes.add(binTreeNode.left)
-			newNodes.add(binTreeNode.right)
-		} else {
-			newNodes.add(null)
-			newNodes.add(null)
-			sb.append(' ')
+	var widest = 0
+
+	while (nn != 0) {
+		val line = ArrayList<String?>()
+		nn = 0
+		for (n in level) {
+			if (n == null) {
+				line.add(null)
+				next.add(null)
+				next.add(null)
+			} else {
+				val aa = n.text
+				line.add(aa)
+				widest = max(widest, aa.length)
+
+				next.add(n.left)
+				next.add(n.right)
+
+				if (n.left != null) {
+					nn++
+				}
+				if (n.right != null) {
+					nn++
+				}
+			}
 		}
 
-		sb.append(whiteSpace(betweenSpaces))
-	}
-	sb.append('\n')
-
-	for (i in 1..endgeLines) {
-		for (j in nodes.indices) {
-			sb.append(whiteSpace(firstSpaces - i))
-			if (nodes[j] == null) {
-				sb.append(whiteSpace(endgeLines + endgeLines + i + 1))
-				continue
-			}
-
-			if (nodes[j]?.left != null) {
-				sb.append('/')
-			} else {
-				sb.append(whiteSpace(1))
-			}
-
-			sb.append(whiteSpace(i + i - 1))
-
-			if (nodes[j]?.right != null) {
-				sb.append(("\\"))
-			} else {
-				sb.append(whiteSpace(1))
-			}
-
-			sb.append(whiteSpace(endgeLines + endgeLines - i))
+		if (widest % 2 == 1) {
+			widest++
 		}
-		sb.append('\n')
+
+		lines.add(line)
+
+		val tmp = level
+		level = next
+		next = tmp
+		next.clear()
 	}
-	sb.append(parse(newNodes, level + 1, maxLevel))
 
-	return sb
+	var perpiece = lines[lines.size - 1].size * (widest + 4)
+	for (i in lines.indices) {
+		val line = lines[i]
+		val hpw = Math.floor((perpiece / 2f).toDouble()).toInt() - 1
+
+		if (i > 0) {
+			for (j in line.indices) {
+				var c = ' '
+				if (j % 2 == 1) {
+					if (line[j - 1] != null) {
+						c = if (line[j] != null) '┴' else '┘'
+					} else {
+						if (j < line.size && line[j] != null) c = '└'
+					}
+				}
+				print(c)
+
+				if (line[j] == null) {
+					for (k in 0 until perpiece - 1) {
+						print(" ")
+					}
+				} else {
+					for (k in 0 until hpw) {
+						print(if (j % 2 == 0) " " else "─")
+					}
+					print(if (j % 2 == 0) "┌" else "┐")
+					for (k in 0 until hpw) {
+						print(if (j % 2 == 0) "─" else " ")
+					}
+				}
+			}
+			println()
+		}
+
+		for (j in line.indices) {
+			var f: String? = line[j]
+			if (f == null) f = ""
+			val gap1 = Math.ceil((perpiece / 2f - f.length / 2f).toDouble()).toInt()
+			val gap2 = Math.floor((perpiece / 2f - f.length / 2f).toDouble()).toInt()
+
+			for (k in 0 until gap1) {
+				print(" ")
+			}
+			print(f)
+			for (k in 0 until gap2) {
+				print(" ")
+			}
+		}
+		println()
+
+		perpiece /= 2
+	}
 }
-
-private fun whiteSpace(count: Int) = " " * max(count, 0)
-
-private fun <T> maxLevel(binTreeNode: BinTreeNode<T>?): Int = if (binTreeNode == null) {
-	0
-} else {
-	max(maxLevel(binTreeNode.left), maxLevel(binTreeNode.right)) + 1
-}
-
-private fun <T> isAllElementsNull(list: List<T>) = list.all { it == null }

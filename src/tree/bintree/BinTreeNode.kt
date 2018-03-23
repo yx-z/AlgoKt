@@ -1,9 +1,10 @@
 package tree.bintree
 
-class BinTreeNode<T>(var data: T) {
-	var left: BinTreeNode<T>? = null
-	var right: BinTreeNode<T>? = null
-
-	override fun toString() = parse(this).toString()
+class BinTreeNode<T>(var data: T) : PrintableNode {
+	override val text: String
+		get() = data.toString()
+	override var left: BinTreeNode<T>? = null
+	override var right: BinTreeNode<T>? = null
 }
 
+fun <T> BinTreeNode<T>.prettyPrintTree() = prettyPrintTree(this)
