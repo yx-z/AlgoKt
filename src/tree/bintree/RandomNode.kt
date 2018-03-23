@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 	}
 }
 
-fun BinTreeNode.random(size: Int = 0): BinTreeNode {
+fun <T> BinTreeNode<T>.random(size: Int = 0): BinTreeNode<T> {
 	// idx from 0 .. (size - 1), still #size nodes
 	val randIdx = if (size != 0) {
 		(Math.random() * size).toInt()
@@ -35,7 +35,7 @@ fun BinTreeNode.random(size: Int = 0): BinTreeNode {
 		(Math.random() * getSize()).toInt()
 	}
 
-	val queue: Queue<BinTreeNode> = LinkedList<BinTreeNode>()
+	val queue: Queue<BinTreeNode<T>> = LinkedList<BinTreeNode<T>>()
 	queue.add(this)
 	var idx = -1
 
@@ -60,7 +60,7 @@ fun BinTreeNode.random(size: Int = 0): BinTreeNode {
 	return this
 }
 
-fun BinTreeNode?.getSize(): Int {
+fun <T> BinTreeNode<T>?.getSize(): Int {
 	if (this == null) {
 		return 0
 	}

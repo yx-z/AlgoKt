@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 	//      |
 	//      v
 	// . <- 2 <-> 4 <-> 7 <-> 10 <-> 15 <-> 21 -> .
-	var head: BinTreeNode? = testRoot.toDLL()
+	var head: BinTreeNode<Int>? = testRoot.toDLL()
 	while (head != null) {
 		print("${head.data} <-> ")
 		head = head.right
@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
 	println(".")
 }
 
-fun BinTreeNode.toDLL(): BinTreeNode {
+fun <T> BinTreeNode<T>.toDLL(): BinTreeNode<T> {
 	val head = left?.toDLL() ?: this
 
 	var predecessor = left

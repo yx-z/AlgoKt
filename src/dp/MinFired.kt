@@ -64,7 +64,6 @@ fun GenericTreeNode<OneArray<Int>>.minFired(): Int {
 		return 0
 	}
 
-	//
 	children.forEach { it.minFired() }
 
 	data[1] = children.map { min(it.data[2], it.data[3]) }.sum()

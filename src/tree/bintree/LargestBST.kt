@@ -19,9 +19,9 @@ fun main(args: Array<String>) {
 }
 
 // given a Binary Tree find the size of the largest Binary Search Tree among all its subtrees
-fun BinTreeNode.largestBSTSize(): Int = largestBST().size
+fun BinTreeNode<Int>.largestBSTSize(): Int = largestBST().size
 
-fun BinTreeNode?.largestBST(): Ret {
+fun BinTreeNode<Int>?.largestBST(): Ret {
 	if (this === null) {
 		return Ret(true, 0)
 	}

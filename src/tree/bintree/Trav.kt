@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
 }
 
 // In-Order Recursive Traversal
-fun BinTreeNode?.inOrderRecursive() {
+fun <T> BinTreeNode<T>?.inOrderRecursive() {
 	if (this === null) {
 		return
 	}
@@ -47,10 +47,10 @@ fun BinTreeNode?.inOrderRecursive() {
 }
 
 // In-Order Iterative Traversal
-fun inOrderIterative(root: BinTreeNode) {
-	var node: BinTreeNode? = root
+fun <T> inOrderIterative(root: BinTreeNode<T>) {
+	var node: BinTreeNode<T>? = root
 
-	val stack = Stack<BinTreeNode>()
+	val stack = Stack<BinTreeNode<T>>()
 	stack.push(node)
 
 	while (node!!.left !== null) {
@@ -75,13 +75,13 @@ fun inOrderIterative(root: BinTreeNode) {
 }
 
 // Post-Order Iterative Traversal w/ 2 Stacks
-fun BinTreeNode.postOrderIterative2Stacks() {
+fun <T> BinTreeNode<T>.postOrderIterative2Stacks() {
 	var node = this
 
-	val s1 = Stack<BinTreeNode>()
+	val s1 = Stack<BinTreeNode<T>>()
 	s1.push(node)
 
-	val s2 = Stack<BinTreeNode>()
+	val s2 = Stack<BinTreeNode<T>>()
 
 	while (s1.isNotEmpty()) {
 		node = s1.pop()
@@ -103,9 +103,9 @@ fun BinTreeNode.postOrderIterative2Stacks() {
 }
 
 // Post-Order Iterative w/ 1 Stack
-fun BinTreeNode.postOrderIterative1Stack() {
-	var node: BinTreeNode? = this
-	val stack = Stack<BinTreeNode>()
+fun <T> BinTreeNode<T>.postOrderIterative1Stack() {
+	var node: BinTreeNode<T>? = this
+	val stack = Stack<BinTreeNode<T>>()
 
 	while (node !== null || stack.isNotEmpty()) {
 		if (node !== null) {
@@ -131,8 +131,8 @@ fun BinTreeNode.postOrderIterative1Stack() {
 }
 
 // Level-Order Traversal (Always Iterative)
-fun BinTreeNode.levelOrder() {
-	val queue: Queue<BinTreeNode> = LinkedList<BinTreeNode>()
+fun <T> BinTreeNode<T>.levelOrder() {
+	val queue: Queue<BinTreeNode<T>> = LinkedList<BinTreeNode<T>>()
 	queue.add(this)
 
 	while (queue.isNotEmpty()) {

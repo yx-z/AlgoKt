@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 }
 
 // binary tree
-fun BinTreeNode.btLCA(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
+fun BinTreeNode<Int>.btLCA(t1: BinTreeNode<Int>, t2: BinTreeNode<Int>): BinTreeNode<Int>? {
 	if (this == t1 || this == t2) {
 		return this
 	}
@@ -29,7 +29,7 @@ fun BinTreeNode.btLCA(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
 }
 
 // binary search tree
-fun BinTreeNode.bstLCARecur(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
+fun BinTreeNode<Int>.bstLCARecur(t1: BinTreeNode<Int>, t2: BinTreeNode<Int>): BinTreeNode<Int>? {
 	if (this.data > t1.data && this.data > t2.data) {
 		return this.left?.bstLCARecur(t1, t2)
 	}
@@ -41,8 +41,8 @@ fun BinTreeNode.bstLCARecur(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
 	return this
 }
 
-fun BinTreeNode.bstLCAIter(t1: BinTreeNode, t2: BinTreeNode): BinTreeNode? {
-	var node: BinTreeNode? = this
+fun BinTreeNode<Int>.bstLCAIter(t1: BinTreeNode<Int>, t2: BinTreeNode<Int>): BinTreeNode<Int>? {
+	var node: BinTreeNode<Int>? = this
 	while (node != null) {
 		node = if (node.data < t1.data && node.data < t2.data) {
 			node.left

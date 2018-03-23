@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 	println(root.isBST())
 }
 
-fun BinTreeNode?.isBST(): Boolean {
+fun BinTreeNode<Int>?.isBST(): Boolean {
 	if (this == null || (this.left == null && this.right == null)) {
 		return true
 	}

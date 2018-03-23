@@ -24,11 +24,11 @@ fun main(args: Array<String>) {
 	println(root.vertical())
 }
 
-fun BinTreeNode.vertical(): List<List<Int>> {
-	val list = ArrayList<List<Int>>()
+fun <T> BinTreeNode<T>.vertical(): List<List<T>> {
+	val list = ArrayList<List<T>>()
 	val map = getVerticalOrder()
 	map.forEach {
-		val col = ArrayList<Int>()
+		val col = ArrayList<T>()
 		it.value.forEach { col.add(it.data) }
 		list.add(col)
 	}
@@ -36,8 +36,8 @@ fun BinTreeNode.vertical(): List<List<Int>> {
 	return list
 }
 
-fun BinTreeNode.getVerticalOrder(map: TreeMap<Int, ArrayList<BinTreeNode>> = TreeMap(),
-                                 curr: Int = 0): TreeMap<Int, ArrayList<BinTreeNode>> {
+fun <T> BinTreeNode<T>.getVerticalOrder(map: TreeMap<Int, ArrayList<BinTreeNode<T>>> = TreeMap(),
+                                 curr: Int = 0): TreeMap<Int, ArrayList<BinTreeNode<T>>> {
 	map[curr]?.add(this) ?: map.put(curr, arrayListOf(this))
 	this.left?.getVerticalOrder(map, curr - 1)
 	this.right?.getVerticalOrder(map, curr + 1)

@@ -1,8 +1,8 @@
 package tree.bintree
 
-class BinTreeNode(var data: Int) {
-	var left: BinTreeNode? = null
-	var right: BinTreeNode? = null
+class BinTreeNode<T>(var data: T) {
+	var left: BinTreeNode<T>? = null
+	var right: BinTreeNode<T>? = null
 
 	override fun toString() = if (left == null && right == null) {
 		data.toString()
@@ -11,3 +11,10 @@ class BinTreeNode(var data: Int) {
 	}
 }
 
+fun main(args: Array<String>) {
+	val root = BinTreeNode(2)
+	root.left = BinTreeNode(3)
+	root.right = BinTreeNode(4)
+	root.right!!.right = BinTreeNode(5)
+	BinTreePrinter.printNode(root)
+}
