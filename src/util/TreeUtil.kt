@@ -1,7 +1,6 @@
-package tree.bintree
+package util
 
 
-import util.max
 import java.util.ArrayList
 
 
@@ -16,23 +15,22 @@ import java.util.ArrayList
  * Node that can be printed
  */
 
-interface PrintableNode {
-	val left: PrintableNode?
-	val right: PrintableNode?
+interface PrintableBinTreeNode {
+	val left: PrintableBinTreeNode?
+	val right: PrintableBinTreeNode?
 	val text: String
 }
-
 
 /**
  * Print a tree
  *
  * @param root tree root node
  */
-fun prettyPrintTree(root: PrintableNode) {
+fun prettyPrintTree(root: PrintableBinTreeNode) {
 	val lines = ArrayList<List<String?>>()
 
-	var level: MutableList<PrintableNode?> = ArrayList()
-	var next: MutableList<PrintableNode?> = ArrayList()
+	var level: MutableList<PrintableBinTreeNode?> = ArrayList()
+	var next: MutableList<PrintableBinTreeNode?> = ArrayList()
 
 	level.add(root)
 	var nn = 1
