@@ -1,18 +1,13 @@
 package util
 
-
 import java.util.ArrayList
-
 
 /**
  * Binary Tree Printer
  * @author MightyPork
  *
  * Reference:
- * https://stackoverflow.com/questions/4965335/how-to-prettyPrintTree-binary-tree-diagram
- */
-/**
- * Node that can be printed
+ * https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram
  */
 
 interface PrintableBinTreeNode {
@@ -21,12 +16,7 @@ interface PrintableBinTreeNode {
 	val text: String
 }
 
-/**
- * Print a tree
- *
- * @param root tree root node
- */
-fun prettyPrintTree(root: PrintableBinTreeNode) {
+fun prettyPrintBinTree(root: PrintableBinTreeNode) {
 	val lines = ArrayList<List<String?>>()
 
 	var level: MutableList<PrintableBinTreeNode?> = ArrayList()

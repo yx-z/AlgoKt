@@ -9,4 +9,4 @@ class BinTreeNode<T>(var data: T) : PrintableBinTreeNode {
 	override var right: BinTreeNode<T>? = null
 }
 
-fun <T> BinTreeNode<T>.prettyPrintTree() = util.prettyPrintTree(this)
+fun <T> BinTreeNode<T>.prettyPrintTree() = util.prettyPrintBinTree(this)
