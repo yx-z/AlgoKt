@@ -1,8 +1,8 @@
 package dp
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import tree.bintree.BinTreeNode
-import util.prettyPrintTree
-import util.to
+import util.*
 
 // given a binary tree representing company hierarchy, with each edge containing
 // a number, either positive, 0, or negative, also remembering that
@@ -25,4 +25,72 @@ fun main(args: Array<String>) {
 	root.right!!.right = rr
 
 	root.prettyPrintTree()
+	println(root.minAwkward(3))
+}
+
+fun BinTreeNode<Tuple2<Int?, Int?>>.minAwkward(k: Int): Int {
+	// dp[node][k][0] = min awkwardness for a tree rooted @ node
+	//                  , inviting k people, and NOT including the root
+	// dp[node][k][1] = min awkwardness for a tree rooted @ node
+	//                  , inviting k people, and including the root
+	val dp = HashMap<BinTreeNode<Tuple2<Int?, Int?>>, OneArray<Array<Int>>>()
+
+	init(dp, k)
+	minAwkwardRecur(dp, k)
+//	for ((k, v) in dp) {
+//		println("$k: $v")
+//	}
+
+	return dp[this]!![k].min() ?: 0
+}
+
+val INF = Int.MAX_VALUE / 100
+fun BinTreeNode<Tuple2<Int?, Int?>>.init(
+		dp: HashMap<BinTreeNode<Tuple2<Int?, Int?>>, OneArray<Array<Int>>>,
+		k: Int) {
+	dp[this] = OneArray(k) { Array(2) { INF } }
+	dp[this]!!.getterIndexOutOfBoundHandler = { Array(2) { 0 } }
+	left?.init(dp, k)
+	right?.init(dp, k)
+}
+
+
+fun BinTreeNode<Tuple2<Int?, Int?>>.minAwkwardRecur(
+		dp: HashMap<BinTreeNode<Tuple2<Int?, Int?>>, OneArray<Array<Int>>>,
+		k: Int) {
+	if (k <= 1) {
+		dp[this]!![1][1] = 0
+		return
+	}
+
+	// k >= 2
+
+	left?.minAwkwardRecur(dp, k - 1)
+	right?.minAwkwardRecur(dp, k - 1)
+	minAwkwardRecur(dp, k - 1)
+
+	when {
+		left == null && right == null -> {
+			dp[this]!![k][0] = INF
+			dp[this]!![k][1] = INF
+		}
+		left != null && right == null -> {
+			dp[this]!![k][0] = min(dp[left!!]!![k][0], dp[left!!]!![k][1])
+			dp[this]!![k][1] = min(dp[left!!]!![k - 1][0], dp[left!!]!![k - 1][1] + data.first!!)
+		}
+		left == null && right != null -> {
+			dp[this]!![k][0] = min(dp[right!!]!![k][0], dp[right!!]!![k][1])
+			dp[this]!![k][1] = min(dp[right!!]!![k - 1][0], dp[right!!]!![k - 1][1] + data.second!!)
+		}
+		else -> { // left != null && right != null
+			dp[this]!![k][0] = (0..k).map { j ->
+				min(dp[left!!]!![j][0], dp[left!!]!![j][1]) +
+						min(dp[right!!]!![k - j][0], dp[right!!]!![k - j][1])
+			}.min() ?: INF
+			dp[this]!![k][1] = (0 until k).map { j ->
+				min(dp[left!!]!![j][0], dp[left!!]!![j][1] + data.first!!) +
+						min(dp[right!!]!![k - 1 - j][0], dp[right!!]!![k - 1 - j][1] + data.second!!)
+			}.min() ?: INF
+		}
+	}
 }
