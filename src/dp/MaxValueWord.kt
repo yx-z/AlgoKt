@@ -1,5 +1,6 @@
 package dp
 
+import util.OneArray
 import util.toCharOneArray
 
 // consider a solitaire game described as follows
@@ -17,6 +18,34 @@ import util.toCharOneArray
 // and the Value lookup also costs O(1) time
 fun main(args: Array<String>) {
 	val Letter = "adogbookalgorithm".toCharOneArray()
-	val Value = Array(26) { it + 1 }
-	TODO()
+	val Value = HashMap<Char, Int>(26)
+	('a'..'z').forEach { Value.put(it, it - 'a' + 1) }
+	println(Letter.maxPoint(Value))
+}
+
+fun OneArray<Char>.maxPoint(Value: Map<Char, Int>): Int {
+	val Letter = this
+	val n = size
+	// dp(s, i): max points when we are given A[i..n], and with s as a set of
+	//           characters currently in hand
+	// memoization structure: HashMap<Set<Char>, Int> dp[1..26C7, 1..n + 1] :
+	//                        (dp[s])[i] = dp(s, i)
+	val dp = HashMap<Set<Char>, OneArray<Int>>()
+	// space complexity: O(n) since 26C7 = 26! / (7! * (26 - 7)!) ~ O(1) still
+
+	// base case:
+	// dp(s, i) = score(s), i > n
+
+	// recursive case:
+	// dp(s, i) = max_s{ score(s) + dp(s', i') }
+	// where s', i' is determined by which subset of characters we have used
+	// dependency: dp(s, i) depends on dp(s', i') where i' > i
+	// evaluation order: outer loop for i from n + 1 down to 1
+	for (i in n + 1 downTo 1) {
+		// inner loop for s has no specific order
+
+	}
+
+	// we want max_s { dp(s, 1) }
+	return dp.map { (_, v) -> v[1] }.max() ?: 0
 }

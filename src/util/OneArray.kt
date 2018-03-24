@@ -43,7 +43,7 @@ class OneArray<T>(val size: Int) {
 	 * @param array array to be copied from, i.e. will not be used directly
 	 */
 	constructor(array: Array<T>) : this(array.size) {
-		container = Arrays.copyOf(array, size)
+		container = Arrays.copyOf(array, size) as Array<T>
 	}
 
 	/**
