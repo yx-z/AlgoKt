@@ -6,7 +6,8 @@ class Vertex<V>(var data: V? = null)
 
 open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>)
 
-class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, var data: E? = null) : Edge<V>(start, end)
+class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, var data: E? = null)
+	: Edge<V>(start, end)
 
 abstract class Graph<V> {
 	abstract var vertices: Collection<Vertex<V>>
@@ -28,6 +29,8 @@ class AdjListGraph<V>(var adjList: List<Tuple2<Vertex<V>, List<Vertex<V>>>>)
 					Edge(startVertex, endVertex)
 				}
 			}.flatten()
+
+	fun getEdgesOf(vertex: Vertex<V>) = edges.filter { it.start === vertex }
 }
 
 class WeighedAdjListGraph<V, E>(var adjList: List<Tuple2<Vertex<V>, List<Tuple2<E, Vertex<V>>>>>)
