@@ -17,6 +17,7 @@ import util.toCharOneArray
 // assume you can find all English words in a set of size <= 7 in O(1) time
 // and the Value lookup also costs O(1) time
 fun main(args: Array<String>) {
+	genSets('a', 7).forEach(::println)
 	val Letter = "adogbookalgorithm".toCharOneArray()
 	val Value = HashMap<Char, Int>(26)
 	('a'..'z').forEach { Value.put(it, it - 'a' + 1) }
@@ -36,6 +37,12 @@ fun OneArray<Char>.maxPoint(Value: Map<Char, Int>): Int {
 	// base case:
 	// dp(s, i) = score(s), i > n
 
+	// how can we enumerate 26C7 sets of characters?
+	// see genSets below
+	// due to such a large constant (as a brute force method)
+	// i cannot actually run the code and get the result...
+	// better idea is appreciated
+
 	// recursive case:
 	// dp(s, i) = max_s{ score(s) + dp(s', i') }
 	// where s', i' is determined by which subset of characters we have used
@@ -48,4 +55,20 @@ fun OneArray<Char>.maxPoint(Value: Map<Char, Int>): Int {
 
 	// we want max_s { dp(s, 1) }
 	return dp.map { (_, v) -> v[1] }.max() ?: 0
+}
+
+fun genSets(start: Char, num: Int): Set<HashSet<Char>> {
+	if (start > 'z' || num <= 0) {
+		return emptySet()
+	}
+
+	if (num == 1) {
+		return (start..'z').map { hashSetOf(it) }.toSet()
+	}
+
+	val notIncludeStart = genSets(start + 1, num)
+	val includeStart = genSets(start + 1, num - 1)
+	includeStart.filter { it.isNotEmpty() }.forEach { it.add(start) }
+
+	return includeStart + notIncludeStart
 }
