@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 
 // O(size * n)
 fun IntArray.subsetSum(n: Int): Boolean {
-	// dp[i][j] = whether any subset of this[i..size - 1] can sum up tu j
+	// dp[i][j] = whether any subset of this[i..size - 1] can sum up to j
 	// dp[i][j] = false, if j <= 0 or i >= size
 	//          = true, if arr[i] == j
 	//          = dp[i + 1][j - this[i]] || dp[i + 1][j], o/w
