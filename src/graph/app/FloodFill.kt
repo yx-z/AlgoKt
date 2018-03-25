@@ -128,5 +128,5 @@ fun Array<Array<Int>>.paintAt(r: Int,
 	}
 
 	visited[r, c] = true
-	A[r, c] = n
+	A[r, c] = num
 }
