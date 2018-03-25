@@ -22,7 +22,7 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 	val bag = ArrayList<Vertex<V>>()
 	bag.add(start)
 	while (bag.isNotEmpty()) {
-		// we use random number here tu emphasize Whatever First
+		// we use random number here to emphasize Whatever First
 		val vertex = bag.removeAt(random.nextInt(bag.size))
 
 		if (marked[vertex] == false) {
