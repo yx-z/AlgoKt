@@ -17,7 +17,7 @@ fun BinTreeNode<Int>.minRounds(): Int {
 	}
 
 	// compute minRounds for the current node depends on both of its children
-	// so we will do a "post order traversal"
+	// so we will do a "post-order traversal"
 	left?.minRounds()
 	right?.minRounds()
 
@@ -43,8 +43,8 @@ fun BinTreeNode<Int>.minRounds(): Int {
 }
 
 // but the above strategy is greedy! a more dp-ish idea is that:
-// compute # of rounds if i deliver msg to left,
-// compute # of rounds if i deliver msg to right,
+// compute # of rounds if i deliver msg to left first,
+// compute # of rounds if i deliver msg to right first,
 // compare and take the min between these 2
 fun BinTreeNode<Tuple2<Int, Int>>.minRound(): Int {
 	if (left == null && right == null) {
@@ -52,6 +52,7 @@ fun BinTreeNode<Tuple2<Int, Int>>.minRound(): Int {
 		return 0
 	}
 
+	// we are still doing post-order traversal
 	left?.minRound()
 	right?.minRound()
 
@@ -67,8 +68,12 @@ fun BinTreeNode<Tuple2<Int, Int>>.minRound(): Int {
 		return min(data.first, data.second)
 	}
 
-	data.first = max(1 + min(left!!.data.first, left!!.data.second), 2 + min(right!!.data.first, right!!.data.second))
-	data.second = max(1 + min(right!!.data.first, right!!.data.second), 2 + min(left!!.data.first, left!!.data.second))
+	data.first = max(
+			1 + min(left!!.data.first, left!!.data.second),
+			2 + min(right!!.data.first, right!!.data.second))
+	data.second = max(
+			1 + min(right!!.data.first, right!!.data.second),
+			2 + min(left!!.data.first, left!!.data.second))
 
 	return min(data.first, data.second)
 }
@@ -94,6 +99,7 @@ fun main(args: Array<String>) {
 
 	println()
 
+	// a Tuple2<Int, Int>, ex. 0 tu 0 version of the tree in the last example
 	val root2 = BinTreeNode(0 tu 0)
 	root2.left = BinTreeNode(0 tu 0)
 	root2.left!!.left = BinTreeNode(0 tu 0)
