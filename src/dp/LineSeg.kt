@@ -173,6 +173,9 @@ fun OneArray<Line>.everySegIntersect2(): Set<Line> {
 	// dp(1) = { L[1] }
 	dp[1].add(L[1])
 
+	// we see that if L'[k]_1 is an increasing sequence then L'[k]_2 decreases
+	// if every segment in L' intersects with each other
+
 	// recursive case:
 	// dp(i) = max_k { dp(k) + if (L[i]_1 > dp(i)[-1]_1 && L[i]_2 < dp(i)[-1]_2 }
 	// dependency: dp[i] depends on dp[k] where k < i
