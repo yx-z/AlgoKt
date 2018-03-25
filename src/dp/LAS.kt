@@ -43,7 +43,7 @@ fun las(A: IntArray): Int {
 
 	// we see that inc(i) depends on dec(k), k > i
 	// , and dec(i) depends on inc(k), k > i
-	// so the evaluation order should be from right to left, i.e. i from n down to 1
+	// so the evaluation order should be from right tu left, i.e. i from n down tu 1
 	for (i in n - 2 downTo 0) {
 		inc[i] = 1 + (dec
 				.filterIndexed { k, _ -> k in i + 1 until n && A[k] > A[i] }

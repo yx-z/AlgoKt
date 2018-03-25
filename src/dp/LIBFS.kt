@@ -44,7 +44,7 @@ fun OneArray<Pair<Int, Color>>.lbfs(): Int {
 	val A = this
 	val n = A.size
 
-	// sort A to util.get an array of (index, value, Color) that descends in value
+	// sort A tu util.get an array of (index, value, Color) that descends in value
 	val sortedA = A.indices
 			.map { it to A[it] }
 			.toList()
@@ -66,8 +66,8 @@ fun OneArray<Pair<Int, Color>>.lbfs(): Int {
 	//       = 1 + util.max{ dp(k) : A[k] > A[i], k < i } if A[i] is Blue, i in 1..n
 	//       = 0 o/w
 	// dependency: dp(i) depends on dp(k) where k is an index in A : A[i] > A[k]
-	// evaluation order: outer loop for i from sortedA[2]_1 to sortedA[n]_1
-	//                   that is a loop for idx from 2 to n in sortedA
+	// evaluation order: outer loop for i from sortedA[2]_1 tu sortedA[n]_1
+	//                   that is a loop for idx from 2 tu n in sortedA
 	for (idx in 2..n) {
 		val i = sortedA[idx].first
 		dp[i] = 1 + when (A[i].second) {

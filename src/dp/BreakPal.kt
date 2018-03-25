@@ -3,7 +3,7 @@ package dp
 import util.*
 import kotlin.math.pow
 
-// given a palindrome S[1..n], find # of ways to break its palindromicity
+// given a palindrome S[1..n], find # of ways tu break its palindromicity
 // by removing arbitrary characters from it
 
 fun main(args: Array<String>) {
@@ -17,8 +17,8 @@ fun OneArray<Char>.breakPal(): Int {
 
 	// my strategy is that:
 	// after removing some characters, the string left is either palindomic or not
-	// since we need to find # of ways breaking its palindromicity,
-	// it suffices to find # of ways of removing characters
+	// since we need tu find # of ways breaking its palindromicity,
+	// it suffices tu find # of ways of removing characters
 	// that preserves its palindromicity
 	// then we may subtract it from the total number of ways removing characters
 
@@ -40,8 +40,8 @@ fun OneArray<Char>.breakPal(): Int {
 	// if S[i] != S[j]
 	//     dp(i, j) -= dp(i + 1, j - 1)
 	// dependency: dp(i, j) depends on dp(i + 1, j), dp(i, j - 1) and dp(i + 1, j - 1)
-	//             that is entry below, to the left, and to the lower-left
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	//             that is entry below, tu the left, and tu the lower-left
+	// evaluation order: outer loop for i from n down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
 		for (j in i + 1..n) {
 			dp[i, j] = dp[i + 1, j] + dp[i, j - 1]

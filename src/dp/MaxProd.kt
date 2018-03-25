@@ -2,7 +2,7 @@ package dp
 
 import util.*
 
-// similar to `MaxSum`,
+// similar tu `MaxSum`,
 // given an array of numbers,
 // find the largest product in any contiguous subarray.
 // note that two negative numbers produce a positive result, ex. (-2) * (-4) = 8
@@ -37,7 +37,7 @@ fun IntArray.maxProdInt(): Int {
 	// since we are here, there is no 0 in the array
 	// multiply all numbers up!
 	val total = this.reduce { acc, it -> acc * it }
-	// extra work to be done if the result is negative
+	// extra work tu be done if the result is negative
 	if (total < 0) {
 		var leftMax = total
 		var leftIdx = 0
@@ -45,7 +45,7 @@ fun IntArray.maxProdInt(): Int {
 			leftMax /= this[leftIdx]
 			leftIdx++
 		}
-		// first negative number from left to right
+		// first negative number from left tu right
 		leftMax /= this[leftIdx]
 
 		var rightMax = total
@@ -54,7 +54,7 @@ fun IntArray.maxProdInt(): Int {
 			rightMax /= this[rightIdx]
 			rightIdx--
 		}
-		// first negative number from right to left
+		// first negative number from right tu left
 		rightMax /= this[rightIdx]
 		return max(leftMax, rightMax)
 	}
@@ -87,14 +87,14 @@ fun OneArray<Double>.maxProd(): Double {
 
 	// dp(i): (max product of A[1..i] that ends in A[i], min of such product)
 	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)
-	val dp = OneArray(n) { 0.0 to 0.0 }
+	val dp = OneArray(n) { 0.0 tu 0.0 }
 	// space complexity: O(n)
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.getterIndexOutOfBoundHandler = { 0.0 to 0.0 }
+	dp.getterIndexOutOfBoundHandler = { 0.0 tu 0.0 }
 	// dp(1) = max(0, A[1])
-	dp[1] = max(0.0, A[1]) to min(0.0, A[1])
+	dp[1] = max(0.0, A[1]) tu min(0.0, A[1])
 
 	// recursive case:
 	// dp(i) = (max{ dp(k)_1 : k < i } * A[i], min{ dp(k)_2 : k < i } * A[i]) if A[i] > 0
@@ -103,9 +103,9 @@ fun OneArray<Double>.maxProd(): Double {
 		val maxPre = (1 until i).map { dp[it].first }.max() ?: 0.0
 		val minPre = (1 until i).map { dp[it].second }.min() ?: 0.0
 		dp[i] = if (A[i] > 0) {
-			maxPre * A[i] to minPre * A[i]
+			maxPre * A[i] tu minPre * A[i]
 		} else {
-			minPre * A[i] to maxPre * A[i]
+			minPre * A[i] tu maxPre * A[i]
 		}
 	}
 	// time complexity: O(n^2)
@@ -127,7 +127,7 @@ fun OneArray<Double>.maxProdShort(): Double {
 // O(n) time
 // assume input has no 0s, o/w we can wrap it as the methods above do
 fun OneArray<Double>.maxProdKadane(): Double {
-	// similar to Kadane's algorithm described in MaxSum
+	// similar tu Kadane's algorithm described in MaxSum
 	var maxEndingHere = 1.0
 	var minEndingHere = 1.0
 	var maxSoFar = 1.0

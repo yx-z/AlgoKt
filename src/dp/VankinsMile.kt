@@ -5,7 +5,7 @@ import util.*
 // given an n by n 2d array of ints, i.e. G[1..n, 1..n]
 // a player can start at any entry but only move either right
 // while standing on an entry, s/he can collect points in that entry
-// the game ends when s/he decides to move off the grid from any edge
+// the game ends when s/he decides tu move off the grid from any edge
 // find the maximum points one can get
 fun main(args: Array<String>) {
 	val grid = oneArrayOf(
@@ -42,10 +42,10 @@ fun OneArray<OneArray<Int>>.maxPoint1(): Int {
 	// recursive case:
 	// dp(i, j) = G[i, j] + max{ dp(i + 1, j), dp(i, j + 1) }
 	// dependency: dp(i, j) depends on dp(i + 1, j) and dp(i, j + 1)
-	//             that is entries below and to the right
-	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	//             that is entries below and tu the right
+	// evaluation order: outer loop for i from n - 1 down tu 1 (bottom up)
 	for (i in n downTo 1) {
-		// inner loop for j from n - 1 down to 1 (right to left)
+		// inner loop for j from n - 1 down tu 1 (right tu left)
 		for (j in n downTo 1) {
 			dp[i, j] = G[i, j] + max(dp[i + 1, j], dp[i, j + 1])
 			max = max(max, dp[i, j])
@@ -96,25 +96,25 @@ fun OneArray<OneArray<Int>>.maxPoint2(): Int {
 	// dependency: D[i, j] depends on D[i + 1, j], L[i + 1, j], and R[i + 1, j]
 	//             that is entries below in D, L, R
 	//             L[i, j] depends on D[i, j - 1] and L[i, j - 1]
-	//             that is entries to the left in D, L
+	//             that is entries tu the left in D, L
 	//             R[i, j] depends on D[i, j + 1] and R[i, j + 1]
-	//             that is entries to the right in D, R
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	//             that is entries tu the right in D, R
+	// evaluation order: outer loop for i from n down tu 1 (bottom up)
 	for (i in n downTo 1) {
 		// inner loop for D_j is a no-care
-		// let's pick 1 to n (left to right)
+		// let's pick 1 tu n (left tu right)
 		for (j in 1..n) {
 			D[i, j] = G[i, j] + max(D[i + 1, j], L[i + 1, j], R[i + 1, j])
 			max = max(max, D[i, j])
 		}
 
-		// inner loop for L_j from 1 to n (left to right)
+		// inner loop for L_j from 1 tu n (left tu right)
 		for (j in 1..n) {
 			L[i, j] = G[i, j] + max(D[i, j - 1], L[i, j - 1])
 			max = max(max, L[i, j])
 		}
 
-		// inner loop for R_j from n down to 1 (right to left)
+		// inner loop for R_j from n down tu 1 (right tu left)
 		for (j in n downTo 1) {
 			R[i, j] = G[i, j] + max(D[i, j + 1], R[i, j + 1])
 			max = max(max, R[i, j])

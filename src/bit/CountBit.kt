@@ -11,7 +11,7 @@ fun Int.countBit(): Int {
 	var sum = 0
 	while (int != 0) {
 		sum++
-		// update int by setting its least significant bit (LSB) (with value 1) to 0
+		// update int by setting its least significant bit (LSB) (with value 1) tu 0
 		// n         = .....(no care)...100000...0
 		//                              ^
 		//                              |

@@ -8,7 +8,7 @@ import util.oneArrayOf
 // you can dance multiple songs in a total number of n songs
 // score for each song is stored in Score[1..n]
 // but if you dance the i-th song, you cannot dance the next Wait[i](s) songs
-// find the maximum score you can get after cleverly deciding which song to dance
+// find the maximum score you can get after cleverly deciding which song tu dance
 
 fun main(args: Array<String>) {
 	// ignore standard Java naming conventions here
@@ -34,8 +34,8 @@ fun maxScore(Score: OneArray<Int>, Wait: OneArray<Int>): Int {
 
 	// recursive case:
 	// dp(i) = max{ dp(i + 1), Score[i] + dp(i + 1 + Wait[i]) }
-	// dependency: dp[i] depends on dp[j] where j > i, that is entries to the right
-	// evaluation order: i from n - 1 down to 1 (right to left)
+	// dependency: dp[i] depends on dp[j] where j > i, that is entries tu the right
+	// evaluation order: i from n - 1 down tu 1 (right tu left)
 	for (i in n - 1 downTo 1) {
 		dp[i] = max(dp[i + 1], Score[i] + dp[i + 1 + Wait[i]])
 	}

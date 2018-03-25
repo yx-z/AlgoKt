@@ -40,8 +40,8 @@ fun wis(A: IntArray): Int {
 	}
 
 	// dp(i, j) depends on dp(j, k) for all k > j
-	// so the evaluation order should be i from bottom up, i.e. n to 1
-	// , and j from right to left, i.e. n to i + 1
+	// so the evaluation order should be i from bottom up, i.e. n tu 1
+	// , and j from right tu left, i.e. n tu i + 1
 	// time complexity: O(n^2 * n) = O(n^3)
 	for (i in n - 3 downTo 0) {
 		for (j in n - 2 downTo i + 1) {

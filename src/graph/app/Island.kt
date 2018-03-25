@@ -1,4 +1,4 @@
-package graph
+package graph.app
 
 import java.util.*
 

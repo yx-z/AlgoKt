@@ -8,7 +8,7 @@ import java.util.*
 
 // find the length of los of A[1..n]
 fun main(args: Array<String>) {
-	val A = intArrayOf(-1 /* ignored value to be one-indexed */, 1, 25, 9, 20, 5)
+	val A = intArrayOf(-1 /* ignored value tu be one-indexed */, 1, 25, 9, 20, 5)
 	println(los(A))
 }
 

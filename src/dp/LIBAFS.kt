@@ -3,8 +3,8 @@ package dp
 // given an array of (int, boolean) pair, find the length of longest increasing
 // back-and-forth subsequence which is defined as
 // the subsequence is increasing
-// when boolean == true, find the next element to the right
-// o/w, find the next element to the left
+// when boolean == true, find the next element tu the right
+// o/w, find the next element tu the left
 fun main(args: Array<String>) {
 	// ex. length of LIBAFS should be nine in that it is (val @ idx):
 	// 0 @ 20, 1 @ 1, 2 @ 16, 3 @ 17, 4 @ 9, 6 @ 8, 7 @ 13, 8 @ 11, 9 @ 12

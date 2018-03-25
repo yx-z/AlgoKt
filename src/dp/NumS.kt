@@ -5,7 +5,7 @@ import util.get
 
 fun main(args: Array<String>) {
 	// given two arrays L(ong)[1..m], S(hort)[1..n]
-	// find the number of subsequences in L that equals to S
+	// find the number of subsequences in L that equals tu S
 	val L = intArrayOf(3, 1, 2, 2, 3, 3, 4, 4)
 	val S = intArrayOf(2, 3, 4)
 	println(numSubseq(L, S)) // 8 since there are 2 ways of picking 2, 2 of 4, and 2 of 3
@@ -15,7 +15,7 @@ fun numSubseq(L: IntArray, S: IntArray): Int {
 	val m = L.size
 	val n = S.size
 
-	// dp(i, j): # of subsequences in L[1..i] that equals to S[1..j]
+	// dp(i, j): # of subsequences in L[1..i] that equals tu S[1..j]
 	// use 2d array dp[0..m, 0..n] : dp[i, j] = dp(i, j)
 	// dp(i, j) = 0 if i < j
 	val dp = Array(m + 1) { IntArray(n + 1) }
@@ -30,8 +30,8 @@ fun numSubseq(L: IntArray, S: IntArray): Int {
 	//          = dp(i - 1, j) o/w
 	// dependency: dp[i, j] depends on dp[i - 1, j], and dp[i - 1, j - 1], i.e.
 	//             dp[i, j] depends on the upper entry and the upper-left entry
-	// evaluation order: outer loop for j from left to right (1..n)
-	//                   and inner loop for i from top to bottom (1..m)
+	// evaluation order: outer loop for j from left tu right (1..n)
+	//                   and inner loop for i from top tu bottom (1..m)
 	for (j in 1..n) {
 		for (i in 1..m) {
 			dp[i, j] = dp[i - 1, j]

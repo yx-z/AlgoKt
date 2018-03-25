@@ -1,7 +1,7 @@
 package dp
 
 // given an array of positive integers and an integer, determine if any subset of the array can sum
-// up to the integer
+// up tu the integer
 fun main(args: Array<String>) {
 	val arr = intArrayOf(1, 6, 4)
 	val ints = intArrayOf(7, // true
@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 
 // O(size * n)
 fun IntArray.subsetSum(n: Int): Boolean {
-	// dp[i][j] = whether any subset of this[i..size - 1] can sum up to j
+	// dp[i][j] = whether any subset of this[i..size - 1] can sum up tu j
 	// dp[i][j] = false, if j <= 0 or i >= size
 	//          = true, if arr[i] == j
 	//          = dp[i + 1][j - this[i]] || dp[i + 1][j], o/w

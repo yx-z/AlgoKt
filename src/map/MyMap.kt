@@ -1,7 +1,7 @@
 package map
 
 /**
- * MyHashMap is a simple hash map implementation for linking a String key to a generic class
+ * MyHashMap is a simple hash map implementation for linking a String key tu a generic class
  *
  * @constructor creates an empty fixed-size hash map with given size
  * @param size define the size of the fixed-size map
@@ -23,7 +23,7 @@ open class MyHashMap<T>(val size: Int) {
 	 * put the key value pair into the map
 	 * @param key the String key for the pair
 	 * @param value the corresponding value
-	 * @return true if the operation completes successfully, false if operation failed due to size overflow etc.
+	 * @return true if the operation completes successfully, false if operation failed due tu size overflow etc.
 	 */
 	fun set(key: String, value: T): Boolean {
 		if (indexCollision(key)) {
@@ -48,7 +48,7 @@ open class MyHashMap<T>(val size: Int) {
 
 	/**
 	 * delete a key value pair in the given map
-	 * @param key the String key for the key value pair to be deleted
+	 * @param key the String key for the key value pair tu be deleted
 	 * @return the deleted value if the key value pair exists in the current map, null if not found
 	 */
 	fun delete(key: String): T? {
@@ -71,7 +71,7 @@ open class MyHashMap<T>(val size: Int) {
 	fun load() = numberOfElements.toFloat() / size
 
 	/**
-	 * @return the index for the container to place the key value pair
+	 * @return the index for the container tu place the key value pair
 	 */
 	private fun getIndex(key: String) = key.hashCode() % size
 
@@ -94,7 +94,7 @@ open class MyHashMap<T>(val size: Int) {
 }
 
 fun main(args: Array<String>) {
-	// create a map linking String to Int of size 10
+	// create a map linking String tu Int of size 10
 	val map = MyHashMap<Int>(10)
 	// put values 0 - 9
 	map.set("zero", 0)

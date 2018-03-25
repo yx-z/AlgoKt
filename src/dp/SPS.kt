@@ -32,16 +32,16 @@ fun OneArray<Char>.sps(): Int {
 
 	// recursive case:
 	// dp(i, j) = dp(i + 1, j - 1) +  2 if S[i] == S[j]
-	//            since we need to wrap S[i] and S[j] as the first and the last
+	//            since we need tu wrap S[i] and S[j] as the first and the last
 	//            character in the sps
 	//          = util.min{ dp(i + 1, j), dp(i, j - 1) } + 2
 	//            find the minimum and either wrap two S[i] around SPS or two S[j]
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 1, j ),
 	//             and dp(i, j - 1)
-	//             that is entries below, to the left, and to the lower-left
-	// evaluation order: outer loop for i from n to 1 (bottom up)
+	//             that is entries below, tu the left, and tu the lower-left
+	// evaluation order: outer loop for i from n tu 1 (bottom up)
 	for (i in n downTo 1) {
-		// inner loop for j from i + 1 to n (left to right)
+		// inner loop for j from i + 1 tu n (left tu right)
 		for (j in i + 1..n) {
 			dp[i, j] = if (S[i] == S[j]) {
 				dp[i + 1, j - 1] + 2

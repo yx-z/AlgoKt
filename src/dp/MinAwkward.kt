@@ -1,6 +1,5 @@
 package dp
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import tree.bintree.BinTreeNode
 import util.*
 
@@ -11,12 +10,12 @@ import util.*
 // find a subset of exactly k nodes with the smallest sum of awkwardness
 
 fun main(args: Array<String>) {
-	val root = BinTreeNode(2 as Int? to 4 as Int?)
-	val l = BinTreeNode(-1 as Int? to -2 as Int?)
-	val ll = BinTreeNode(null as Int? to null as Int?)
-	val lr = BinTreeNode(null as Int? to null as Int?)
-	val r = BinTreeNode(null as Int? to 3 as Int?)
-	val rr = BinTreeNode(null as Int? to null as Int?)
+	val root = BinTreeNode(2 as Int? tu 4 as Int?)
+	val l = BinTreeNode(-1 as Int? tu -2 as Int?)
+	val ll = BinTreeNode(null as Int? tu null as Int?)
+	val lr = BinTreeNode(null as Int? tu null as Int?)
+	val r = BinTreeNode(null as Int? tu 3 as Int?)
+	val rr = BinTreeNode(null as Int? tu null as Int?)
 
 	root.left = l
 	root.left!!.left = ll

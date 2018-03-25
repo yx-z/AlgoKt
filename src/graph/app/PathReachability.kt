@@ -1,11 +1,11 @@
-package graph
+package graph.app
 
 import java.util.*
 import kotlin.collections.HashSet
 
-// given a directed graph
+// given a isDirected graph
 // and two nodes in the graph
-// find if there exists a valid (directed) path between them
+// find if there exists a valid (isDirected) path between them
 fun main(args: Array<String>) {
 	// a -> b -> e
 	// |    ^    |
@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
 	println(adjList.pathDFS("e", "a"))
 }
 
-// bfs to see if start -> end
+// bfs tu see if start -> end
 fun Array<Pair<String, String>>.pathBFS(start: String, end: String): Boolean {
 	val visitedSet = HashSet<String>()
 	val visitedQueue: Queue<String> = LinkedList<String>()

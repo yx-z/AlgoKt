@@ -39,8 +39,8 @@ fun OneArray<Char>.lfbs(): Int {
 
 	// dp(i, j) = 0 if T[i] != T[j] or i >= j
 	// dp(i, j) = 1 + dp(i + 1, j - 1) o/w
-	// dependency: dp(i, j) depends on dp(i + 1, j - 1) that is entry to the lower left
-	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	// dependency: dp(i, j) depends on dp(i + 1, j - 1) that is entry tu the lower left
+	// evaluation order: outer loop for i from n - 1 down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
 		// inner loop for j from i + 1..n
 		for (j in i + 1..n) {

@@ -14,7 +14,7 @@ fun OneArray<OneArray<Int>>.squareSolidBlock(): Int {
 
 	// row(i, j): maximum pixels including and below the i-th row
 	//            , in the j-th column that have the same bit as M[i, j]
-	// col(i, j): maximum pixels including and to the right of j-th column
+	// col(i, j): maximum pixels including and tu the right of j-th column
 	//            , in the i-th row that have the same bit as M[i, j]
 	// ssb(i, j): maximum length of a square solid block with the
 	//           top-left corner at M[i, j]
@@ -52,12 +52,12 @@ fun OneArray<OneArray<Int>>.squareSolidBlock(): Int {
 	//             else
 	//                 1
 	// dependency: row(i, j) depends on row(i + 1, j) that is entry below
-	//             col(i, j) depends on col(i, j + 1) that is entry to the right
+	//             col(i, j) depends on col(i, j + 1) that is entry tu the right
 	//             ssb(i, j) depends on row(i, j), col(i, j)
-	//             , and ssb(i + 1, j + 1) that is entry to the bottom right
-	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	//             , and ssb(i + 1, j + 1) that is entry tu the bottom right
+	// evaluation order: outer loop for i from n - 1 down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
-		// inner loop for j from n - 1 down to 1 (right to left)
+		// inner loop for j from n - 1 down tu 1 (right tu left)
 		for (j in n - 1 downTo 1) {
 			// evaluate row(i, j) and col(i, j) before ssb(i, j)
 			row[i, j] = if (M[i, j] == M[i + 1, j]) 1 + row[i + 1, j] else 1
@@ -91,8 +91,8 @@ fun OneArray<OneArray<Int>>.squareSolidBlock(): Int {
 // I can do O(n^3) with the following strategy
 // for a given point M[i, j],
 // traverse rows including and below it as M[i + k, j], k in 0 until row[i, j]
-// find the min # of pixels that is identical to M[i, j] by row[i + k, j]
-// and use this to compute the area of the a solid block as min * (k + 1)
+// find the min # of pixels that is identical tu M[i, j] by row[i + k, j]
+// and use this tu compute the area of the a solid block as min * (k + 1)
 // find the max of such area
 
 // I can do O(n^2 log n) with the following strategy
@@ -105,12 +105,12 @@ fun OneArray<OneArray<Int>>.squareSolidBlock(): Int {
 // it with the third then find the maximum
 // In each level of recursion, if we can only do O(n^2) work, then the
 // overall time complexity will be O(n^2 log n)
-// similar to finding the col table, we can find another table col2[1..n, 1..n]
-// where col2[i, j] represents the max # of pixels to the left of M[i, j] that
+// similar tu finding the col table, we can find another table col2[1..n, 1..n]
+// where col2[i, j] represents the max # of pixels tu the left of M[i, j] that
 // are also in the same row and have identical bits
 // then we may only traverse along the middle line M[k, m / 2], k in 1..n
-// and follow the algorithm in O(n^3) version (but don't forget to also include
-// col2[k, m / 2] to get the left expansion of M[k, m / 2]
+// and follow the algorithm in O(n^3) version (but don't forget tu also include
+// col2[k, m / 2] tu get the left expansion of M[k, m / 2]
 // and then get the maximum area
 
 // I am still thinking about doing the O(n^2) strategy

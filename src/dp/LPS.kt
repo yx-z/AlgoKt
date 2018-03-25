@@ -34,8 +34,8 @@ fun lps(A: IntArray): Int {
 	//          = util.max{ dp(i + 1, j - 1), dp(i + 1, j), dp(i, j - 1) } o/w
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 1, j), and dp(i, j - 1)
 	//             that is, left, lower-left, and lower entry
-	// evaluation order: outer loop for i: bottom to top, i.e. n down to 1,
-	//                   inner loop for j: left to right, i.e. 1 to n
+	// evaluation order: outer loop for i: bottom tu top, i.e. n down tu 1,
+	//                   inner loop for j: left tu right, i.e. 1 tu n
 	for (i in n - 1 downTo 0) {
 		// the following has been evaluated as base cases above
 		// dp[i, j] = 0 for all j < i

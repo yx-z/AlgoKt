@@ -43,14 +43,14 @@ fun ldis(A: IntArray): Int {
 	// recursive case:
 	// dp(i, j) = util.max{2, 1 + util.max{ dp(j, k) } : where i < j < k and A[i] < A[k]}
 	// dependency: dp(i, j) depends on dp(j, k) where j > i and k > j
-	//             i.e. all entries on a row below and to right of current entry
+	//             i.e. all entries on a row below and tu right of current entry
 
-	// evaluation order: outer loop for i from down to top (n - 2 down to 0)
+	// evaluation order: outer loop for i from down tu top (n - 2 down tu 0)
 	for (i in n - 2 downTo 0) {
-		// inner loop for j from right to left (n down to i + 1)
+		// inner loop for j from right tu left (n down tu i + 1)
 		for (j in n - 2 downTo i + 1) {
 			var maxLen = 2
-			// innermost loop for k from left to right (j + 1..n)
+			// innermost loop for k from left tu right (j + 1..n)
 			for (k in j + 1 until n) {
 				if (A[i] < A[k]) {
 					maxLen = max(maxLen, 1 + dp[j, k])

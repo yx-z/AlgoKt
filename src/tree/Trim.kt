@@ -3,7 +3,7 @@ package tree
 import java.util.*
 
 // given a tree that can have any number of child nodes
-// trim the tree up to a given level
+// trim the tree up tu a given level
 // the trimmed level nodes now have the sum of all their child nodes
 
 fun main(args: Array<String>) {
@@ -39,8 +39,8 @@ fun TreeNode.trim(level: Int) {
 			currNode.children.forEach { queue.add(it to currLv + 1) }
 		} else {
 			// currLv >= level
-			// stop pushing to queue, i.e. stop main level order traversal
-			// update self value to sum of children and remove children
+			// stop pushing tu queue, i.e. stop main level order traversal
+			// update self value tu sum of children and remove children
 			currNode.data = if (currNode.children.isEmpty()) {
 				0
 			} else {

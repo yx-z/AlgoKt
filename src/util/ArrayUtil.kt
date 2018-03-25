@@ -30,6 +30,12 @@ operator fun Array<IntArray>.get(i1: Int, i2: Int) = this[i1][i2]
 
 operator fun <T> Array<Array<T>>.get(i1: Int, i2: Int) = this[i1][i2]
 
+operator fun <T> List<List<T>>.get(i1: Int, i2: Int) = this[i1][i2]
+
+operator fun <T, R> Map<T, List<R>>.get(i1: T, i2: Int) = this[i1]?.get(i2)
+
+operator fun <T, R, S> Map<T, Map<R, S>>.get(i1: T, i2: R) = this[i1]?.get(i2)
+
 operator fun Array<Array<IntArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
 
 operator fun <T> Array<Array<Array<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]

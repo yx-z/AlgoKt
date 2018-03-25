@@ -2,7 +2,7 @@ package dp
 
 import util.*
 
-// given an array of ints C[1..n], you want to play a game with your brother.
+// given an array of ints C[1..n], you want tu play a game with your brother.
 // the rule is in each turn, a player can either take the leftmost or rightmost
 // int, earn its point and remove it from the array
 // after all ints are taken, the player with more points wins
@@ -66,10 +66,10 @@ fun OneArray<Int>.maxPoints(): Int {
 	// dp(i, j) = max{ C[i] + if (C[i + 1] > C[j]) dp(i + 2, j) else dp(i + 1, j - 1),
 	//                 C[j] + if (C[i] > C[j - 1]) dp(i + 1, j - 1) else dp(i, j - 2) }
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 2, j) and dp(i, j - 2)
-	//             that is entries below, to the left, and to the lower-left
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	//             that is entries below, tu the left, and tu the lower-left
+	// evaluation order: outer loop for i from n down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
-		// inner loop for j from 1 to n (left to right)
+		// inner loop for j from 1 tu n (left tu right)
 		for (j in i + 1..n) {
 			dp[i, j] = max(
 					C[i] + if (C[i + 1] > C[j]) dp[i + 2, j] else dp[i + 1, j - 1],
@@ -97,16 +97,16 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 	// we would always do the same choice
 	// so oppo(i, j) = dp(i, j)
 	// memoization structure: 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)
-	val dp = OneArray(n) { OneArray(n) { 0 to 0 } }
+	val dp = OneArray(n) { OneArray(n) { 0 tu 0 } }
 	// space complexity: O(n^2)
 
 	// base case:
 	// dp(i, j) = (0, 0) if i > j or i, j !in 1..n
-	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 to 0 } }
+	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 tu 0 } }
 	// dp(i, i) = (i, C[i])
 	for (i in 1..n) {
-		dp[i, i] = i to C[i]
-		dp[i].getterIndexOutOfBoundHandler = { 0 to 0 }
+		dp[i, i] = i tu C[i]
+		dp[i].getterIndexOutOfBoundHandler = { 0 tu 0 }
 	}
 	// time complextiy: O(n)
 
@@ -116,9 +116,9 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 	//       pJ = C[j] + if (dp(i, j - 1)_1 == i) dp(i + 1, j - 1)_2 else dp(i, j - 2)_2
 	// dependency: dp(i, j) depends on dp(i + 1, j), dp(i + 2, j), dp(i + 1, j - 1),
 	//             dp(i, j - 1) and dp(i, j - 2)
-	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	// evaluation order: outer loop for i from n - 1 down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
-		// inner loop for j from i + 1 to n (left to right)
+		// inner loop for j from i + 1 tu n (left tu right)
 		for (j in i + 1..n) {
 			val pI = C[i] + if (dp[i + 1, j].first == i + 1) {
 				dp[i + 2, j].second
@@ -133,9 +133,9 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 			}
 
 			dp[i, j] = if (pI > pJ) {
-				i to pI
+				i tu pI
 			} else {
-				j to pJ
+				j tu pJ
 			}
 		}
 	}
@@ -147,7 +147,7 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 	return dp[1, n].second
 }
 
-// an alternative solution to 2
+// an alternative solution tu 2
 fun OneArray<Int>.maxPointsPerfect2(): Int {
 	val C = this
 	val n = C.size
@@ -179,10 +179,10 @@ fun OneArray<Int>.maxPointsPerfect2(): Int {
 	// oppo(i, j) = min{ self(i + 1, j ), self(i, j - 1) }
 	// dependency: self(i, j) depends on oppo(i + 1, j) and oppo(i, j - 1)
 	//             oppo(i, j) depends on self(i + 1, j) and self(i, j - 1)
-	//             that is entries below and to the left
-	// evaluation order: outer loop for i from n - 1 down to 1 (bottom up)
+	//             that is entries below and tu the left
+	// evaluation order: outer loop for i from n - 1 down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
-		// inner loop for j from i + 1..n (left to right)
+		// inner loop for j from i + 1..n (left tu right)
 		for (j in i + 1..n) {
 			self[i, j] = max(C[i] + oppo[i + 1, j], C[j] + oppo[i, j - 1])
 			oppo[i, j] = min(self[i + 1, j], C[j] + self[i, j - 1])
@@ -222,10 +222,10 @@ fun OneArray<Int>.maxPointsExpected(): Double {
 	// dp(i, j) = max{ C[i] + 1/2 dp(i + 2, j) + 1/2 dp(i + 1, j - 1),
 	//                 C[j] + 1/2 dp(i + 1, j - 1) + 1/2 dp(i, j - 2) }
 	// dependency: dp(i, j) depends on dp(i + 1, j - 1), dp(i + 2, j) and dp(i, j - 2)
-	//             that is entries below, to the left, and to the lower-left
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	//             that is entries below, tu the left, and tu the lower-left
+	// evaluation order: outer loop for i from n down tu 1 (bottom up)
 	for (i in n - 1 downTo 1) {
-		// inner loop for j from 1 to n (left to right)
+		// inner loop for j from 1 tu n (left tu right)
 		for (j in i + 1..n) {
 			dp[i, j] = max(
 					C[i] + dp[i + 2, j] / 2.0 + dp[i + 1, j - 1].toDouble() / 2.0,

@@ -22,7 +22,7 @@ fun OneArray<Char>.minSplitInPal(): Int {
 	val n = S.size
 //	S.prettyPrintln(true)
 
-	// preprocess to util.get isPal[i..j] that determines if S[i, j] is palindromic
+	// preprocess tu util.get isPal[i..j] that determines if S[i, j] is palindromic
 	val isPal = isPal()
 //	isPal.util.prettyPrintTable(true)
 
@@ -40,10 +40,10 @@ fun OneArray<Char>.minSplitInPal(): Int {
 	// recursive case:
 	// dp(i) = min_k{ dp(k - 1) } + 1 where S[k..i] is a palindrome, 1 <= k <= i
 	// dependency: dp[i] depends on dp(j) where j < i
-	//             , that is entries to the left
-	// evaluation order: outer loop for i from 2 to n (top down)
+	//             , that is entries tu the left
+	// evaluation order: outer loop for i from 2 tu n (top down)
 	for (i in 2..n) {
-		// inner loop for k from 1 until i (left to right)
+		// inner loop for k from 1 until i (left tu right)
 		dp[i] = (1..i)
 				.filter { k -> isPal[k, i] }
 				.map { k -> dp[k - 1] }.min()!! + 1
@@ -82,13 +82,13 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	//       = max_k{ dp(k) : 1 <= k < i,
 	//                and S[k + 1..i] is palindromic,
 	//                and i - k >= dp(k) } o/w
-	// dependency: dp(i) depends on dp(k) : k < i, that is entries to the left
-	// evaluation order: outer loop for i from 2 to n (top down)
+	// dependency: dp(i) depends on dp(k) : k < i, that is entries tu the left
+	// evaluation order: outer loop for i from 2 tu n (top down)
 	for (i in 2..n) {
 		dp[i] = if (isPal[1, i]) {
 			i
 		} else {
-			// inner loop for k from 1 until i (left to right)
+			// inner loop for k from 1 until i (left tu right)
 			((1 until i)
 					.filter { k -> isPal[k + 1, i] && i - k >= dp[k] }
 					.map { k -> dp[k] }
@@ -105,7 +105,7 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	// overall time complexity: O(n^2)
 }
 
-// 3. find the total number of ways to split S into palindromes
+// 3. find the total number of ways tu split S into palindromes
 fun OneArray<Char>.numSplitInPal(): Int {
 	val S = this
 	val n = S.size
@@ -115,7 +115,7 @@ fun OneArray<Char>.numSplitInPal(): Int {
 	// time complexity: O(n^2)
 	val isPal = isPal()
 
-	// dp(i): # of ways to split S[1..i] into palindromes
+	// dp(i): # of ways tu split S[1..i] into palindromes
 	// memoization structure: 1d array dp[0..n] : dp[i] = dp(i)
 	val dp = OneArray(n) { 1 }
 
@@ -125,10 +125,10 @@ fun OneArray<Char>.numSplitInPal(): Int {
 
 	// recursive case:
 	// dp(i) = sum{ dp(k) : 0 <= k < i and S[k + 1..i] is palindromic }
-	// dependency: dp(i) depends on dp(k) : k < i, that is entries to the left
-	// evaluation order: outer loop for i from 2 to n (top down)
+	// dependency: dp(i) depends on dp(k) : k < i, that is entries tu the left
+	// evaluation order: outer loop for i from 2 tu n (top down)
 	for (i in 1..n) {
-		// inner loop for k from 1 until i (left to right)
+		// inner loop for k from 1 until i (left tu right)
 		dp[i] = (0 until i)
 				.filter { k -> isPal[k + 1, i] }
 				.map { k -> dp[k] }
@@ -144,7 +144,7 @@ fun OneArray<Char>.numSplitInPal(): Int {
 	// overall time complexity: O(n^2)
 }
 
-// util fun to return a table isPal[i, j] indicating if S[i..j] is palindromic
+// util fun tu return a table isPal[i, j] indicating if S[i..j] is palindromic
 fun OneArray<Char>.isPal(): OneArray<OneArray<Boolean>> {
 	val S = this
 	val n = S.size
@@ -161,10 +161,10 @@ fun OneArray<Char>.isPal(): OneArray<OneArray<Boolean>> {
 	// recursive case:
 	// isPal(i, j) = isPal(i + 1, j - 1) && S[i] == S[j]
 	// dependency: isPal[i, j] depends on isPal[i + 1, j - 1]
-	//             , that is entry to the lower-left
-	// evaluation order: outer loop for i from n down to 1 (bottom up)
+	//             , that is entry tu the lower-left
+	// evaluation order: outer loop for i from n down tu 1 (bottom up)
 	for (i in n downTo 1) {
-		// inner loop for j from i + 1 to n (left to right)
+		// inner loop for j from i + 1 tu n (left tu right)
 		for (j in i + 1..n) {
 			if (i != j) {
 				isPal[i, j] = isPal[i + 1, j - 1] && S[i] == S[j]

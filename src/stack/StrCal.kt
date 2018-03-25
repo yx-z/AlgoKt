@@ -4,7 +4,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// parse command line calculations such as 1+2*3
-	// to answer -> 1+6 -> 7
+	// tu answer -> 1+6 -> 7
 	// only +, -, *, /, no `.`, `^`, `(`, `)`, etc.
 	// assume input string is always valid and formatted (no spaces, tabs, etc.)
 

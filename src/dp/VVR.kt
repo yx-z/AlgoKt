@@ -8,14 +8,14 @@ import util.*
 // for example the instruction would be <, ^, v, >
 // your two feet initially stand on arrow < and >
 // if you already stand on an arrow which is the same as the current instruction
-// you can earn a point if you choose to not move either of your feet in this round
+// you can earn a point if you choose tu not move either of your feet in this round
 // but if neither of your feet is standing on the correct arrow in the round
 // you lose immediately
 // and in each round, you can move either of your feet, but only once (in total)
 // given all instructions of one game as an array Arrows[1..n]
 // find the maximum number of points you can get in such vvr game
 fun main(args: Array<String>) {
-	// it's so fun to use these symbols instead of enums
+	// it's so fun tu use these symbols instead of enums
 	val Arrows = "^^vv'<><>".toCharOneArray()
 //	println(Arrows.maxPoint1())
 	println(Arrows.maxPoints())
@@ -29,16 +29,16 @@ fun OneArray<Char>.maxPoint(): Int {
 	// ex. dp(i) = (12, [(L, R), (R, D)]) represents given Arrows[1..i], I can
 	//     earn 12 points at most and my feet are standing on either (L and R) or (R and D)
 	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)
-	val dp = Array(n + 1) { 0 to HashSet<Tuple2<Arrow, Arrow>>() }
+	val dp = Array(n + 1) { 0 tu HashSet<Tuple2<Arrow, Arrow>>() }
 	// the size of the set is at most 4 * 3 so the space complexity: O((2 * 4 * 3 + 1) * n) = O(n)
 
 	// base case:
 	// dp(i) = (0, []) if i !in 1..n
 	// dp(0) = (0, [(L, R)]
-	dp[0] = 0 to hashSetOf(Arrow.L to Arrow.R)
+	dp[0] = 0 tu hashSetOf(Arrow.L tu Arrow.R)
 
 	// recursive case:
-	// consider dp(i), we need to find dp(i)_1 and dp(i)_2:
+	// consider dp(i), we need tu find dp(i)_1 and dp(i)_2:
 	// dp(i)_1 = if any pair in dp(i - 1)_2 is standing on Arrows[i]
 	//               mark move as false
 	//               1 + dp(i - 1)
@@ -48,9 +48,9 @@ fun OneArray<Char>.maxPoint(): Int {
 	// dp(i)_2 = if move is false
 	//               copy dp[i - 1]_2 and remove pairs that don't contain Arrows[i]
 	//           else
-	//               copy dp[i - 1]_2 and transform all pairs (p1, p2) to (Arrows[i], p2), (p1, Arrows[i])
-	// dependency: dp(i) depends on dp(i - 1), that is entry to the left
-	// evaluation order: i from 2 to n (left to right)
+	//               copy dp[i - 1]_2 and transform all pairs (p1, p2) tu (Arrows[i], p2), (p1, Arrows[i])
+	// dependency: dp(i) depends on dp(i - 1), that is entry tu the left
+	// evaluation order: i from 2 tu n (left tu right)
 	for (i in 1..n) {
 		val add = dp[i - 1].second.any { (p1, p2) -> p1 == Arrows[i] || p2 == Arrows[i] }
 		dp[i].first = dp[i - 1].first + if (add) 1 else 0
@@ -61,8 +61,8 @@ fun OneArray<Char>.maxPoint(): Int {
 		} else {
 			dp[i - 1].second
 					.forEach { (p1, p2) ->
-						dp[i].second.add(p1 to Arrows[i])
-						dp[i].second.add(Arrows[i] to p2)
+						dp[i].second.add(p1 tu Arrows[i])
+						dp[i].second.add(Arrows[i] tu p2)
 					}
 		}
 	}
@@ -97,7 +97,7 @@ fun OneArray<Char>.maxPoints(): Int {
 	//               else if neither p nor q = Arrows[i]
 	//                   -inf
 	// dependency: dp(i, p , q) depends on dp(i - 1, m, n) that is entries in the table before
-	// evaluation order: outer loop for i from 2 to n (left to right)
+	// evaluation order: outer loop for i from 2 tu n (left tu right)
 	for (i in 2..n) {
 		// inner loop for p, q is arbitrary
 		for (p in 1..4) {
@@ -134,7 +134,7 @@ enum class Arrow {
 	D; // 4 v Down
 }
 
-class ArrowConversionException : Exception("cannot be converted to an Arrow")
+class ArrowConversionException : Exception("cannot be converted tu an Arrow")
 
 fun Char.toArrow() = when (this) {
 	'<' -> Arrow.L

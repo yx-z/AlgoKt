@@ -37,10 +37,10 @@ fun String.isShuffle(A: String, B: String): Boolean {
 	//          = dp(a, b - 1) if C[a + b] = B[b]
 	//          = false o/w
 	// dependency: dp(a, b) depends on dp(a - 1, b) and dp(a, b - 1)
-	//             that is the entry above and entry to the left
-	// evaluation order: outer loop for a from 1 to m (top down)
+	//             that is the entry above and entry tu the left
+	// evaluation order: outer loop for a from 1 tu m (top down)
 	for (a in 1..m) {
-		// inner loop for b from 1 to n (left to right)
+		// inner loop for b from 1 tu n (left tu right)
 		for (b in 1..n) {
 			dp[a, b] = when {
 				C[a + b - 1] == A[a - 1] && A[a - 1] == B[b - 1] -> dp[a - 1, b] || dp[a, b - 1]
@@ -60,7 +60,7 @@ fun String.isShuffle(A: String, B: String): Boolean {
 // that never uses more than two consecutive strings of either string
 // ex. "abcd" smoothShuffle "1234" -> "ab12cd34", "a12b3cd4", ...
 //     but not "abc12d34" since "abc", has length more than two
-//     neither is "ab1234cd" (due to "1234")
+//     neither is "ab1234cd" (due tu "1234")
 // 2. given X[1..m], Y[1..n], and Z[1..m + n], determine if Z is a smooth shuffle of X and Y
 fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 	// follow naming conventions in the problem statement
@@ -70,7 +70,7 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 
 	// ss(i, j) = null if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
 	//          = util.set of pairs of possible combination of sources of last two characters
-	//            that make Z[1..i + j] to be a smooth shuffle of X[1..i] and Y[1..j] o/w
+	//            that make Z[1..i + j] tu be a smooth shuffle of X[1..i] and Y[1..j] o/w
 	// ex. ss(i, j) = [(X, Y), (Y, Y)] means Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
 	//     and the last two characters of Z can be from EITHER (X then Y) OR (Y then Y)
 	// memoization structure: 2d array dp[0..m, 0..n]: dp[i, j] = ss(i, j)
@@ -107,16 +107,16 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 
 	// recursive case:
 	// ss(i, j) = [do both of the following] if Z[i + j] = X[i] = Y[j]
-	//          = [copy ss(i - 1, j), remove (X, X) if it exists, then transform (A, B) to (B, X)]
+	//          = [copy ss(i - 1, j), remove (X, X) if it exists, then transform (A, B) tu (B, X)]
 	//            if Z[i + j] = X[i] != Y[j]
-	//          = [copy ss(i, j - 1), remove (Y, Y) if it exists, then transform (A, B) to (B, Y)]
+	//          = [copy ss(i, j - 1), remove (Y, Y) if it exists, then transform (A, B) tu (B, Y)]
 	//            if Z[i + j] = Y[j] != X[i]
 	//          = [] o/w i.e. Z[i + j] != X[i] and Z[i + j] != Y[j]
 	// dependency: ss(i, j) depends on ss(i - 1, j) and ss(j, i - 1)
-	//             that is, entries to the left and entries above
-	// evaluation order: outer loop for i from 1 to m (top down)
+	//             that is, entries tu the left and entries above
+	// evaluation order: outer loop for i from 1 tu m (top down)
 	for (i in 1..m) {
-		// inner loop for j from 1 to n (left to right)
+		// inner loop for j from 1 tu n (left tu right)
 		for (j in 1..n) {
 			when {
 				Z[i + j - 1] == X[i - 1] && X[i - 1] == Y[j - 1] -> {
@@ -180,7 +180,7 @@ fun main(args: Array<String>) {
 	val exCounterY = "xxxxxxxxxxx"
 	val exCounterZ = exCounterX + exCounterY
 	println(exCounterZ.isShuffle(exCounterX, exCounterY)) // true
-	// length of two strings are too different to be separated properly in any shuffle
+	// length of two strings are too different tu be separated properly in any shuffle
 	println(exCounterZ.isSmoothShuffle(exCounterX, exCounterY)) // false
 }
 
