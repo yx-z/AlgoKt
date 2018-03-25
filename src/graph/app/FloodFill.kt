@@ -99,6 +99,8 @@ fun Array<Array<Int>>.paintAt(r: Int,
 	val n = size
 	val i = A[r, c]
 
+	// not only do we use an implicit graph
+	// we also use recursion for an implicit stack and DFS
 	if (r - 1 >= 0 && visited[r - 1, c].not()) {
 		visited[r - 1, c] = true
 		if (A[r - 1, c] == i) {
