@@ -1,8 +1,7 @@
 package dp
 
 import tree.bintree.BinTreeNode
-import util.max
-import util.prettyPrintTree
+import util.*
 
 // given a binary tree, only the root knows a message at first,
 // in each round, a node can deliver the message to one of its children
@@ -43,6 +42,37 @@ fun BinTreeNode<Int>.minRounds(): Int {
 	return data
 }
 
+// but the above strategy is greedy! a more dp-ish idea is that:
+// compute # of rounds if i deliver msg to left,
+// compute # of rounds if i deliver msg to right,
+// compare and take the min between these 2
+fun BinTreeNode<Tuple2<Int, Int>>.minRound(): Int {
+	if (left == null && right == null) {
+		data = 0 tu 0
+		return 0
+	}
+
+	left?.minRound()
+	right?.minRound()
+
+	if (left == null) {
+		data.first = 2 + min(right!!.data.first, right!!.data.second)
+		data.second = 1 + min(right!!.data.first, right!!.data.second)
+		return min(data.first, data.second)
+	}
+
+	if (right == null) {
+		data.second = 2 + min(left!!.data.first, left!!.data.second)
+		data.first = 1 + min(left!!.data.first, left!!.data.second)
+		return min(data.first, data.second)
+	}
+
+	data.first = max(1 + min(left!!.data.first, left!!.data.second), 2 + min(right!!.data.first, right!!.data.second))
+	data.second = max(1 + min(right!!.data.first, right!!.data.second), 2 + min(left!!.data.first, left!!.data.second))
+
+	return min(data.first, data.second)
+}
+
 fun main(args: Array<String>) {
 	// we want to compute a tree with the same structure as the given one,
 	// and set every node value to the minRounds required for that subtree
@@ -59,7 +89,20 @@ fun main(args: Array<String>) {
 	root.right!!.left!!.left = BinTreeNode(0)
 	root.right!!.left!!.right = BinTreeNode(0)
 	root.prettyPrintTree()
-
 	println(root.minRounds())
 	root.prettyPrintTree()
+
+	println()
+
+	val root2 = BinTreeNode(0 tu 0)
+	root2.left = BinTreeNode(0 tu 0)
+	root2.left!!.left = BinTreeNode(0 tu 0)
+	root2.right = BinTreeNode(0 tu 0)
+	root2.right!!.right = BinTreeNode(0 tu 0)
+	root2.right!!.left = BinTreeNode(0 tu 0)
+	root2.right!!.left!!.left = BinTreeNode(0 tu 0)
+	root2.right!!.left!!.right = BinTreeNode(0 tu 0)
+	root2.prettyPrintTree()
+	println(root2.minRound())
+	root2.prettyPrintTree()
 }
