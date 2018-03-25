@@ -17,11 +17,23 @@ fun main(args: Array<String>) {
 			arrayOf(3, 2, 1, 1, 2))
 
 	A.paintAt(0 tu 2, 5)
-	A.forEach {
-		println(Arrays.toString(it))
-	}
+	A.prettyPrint()
+
+	println()
+
+	A.paintAt(2, 2, 7)
+	A.prettyPrint()
 }
 
+// well the following is actually an example of a "bad use" of graph
+// we convert 2d array to a graph, run some graph algorithm, and convert
+// it back to 2d array... yuck!
+
+// the only good thing is that we might be able to call abstract methods
+// without modification, but it really depends on the specific question
+
+// what we really should do is to perform the core graph algorithm directly
+// onto the 2d array as an implicit graph
 fun Array<Array<Int>>.paintAt(P: Tuple2<Int, Int>, i: Int) {
 	val A = this
 	val n = size
@@ -35,30 +47,31 @@ fun Array<Array<Int>>.paintAt(P: Tuple2<Int, Int>, i: Int) {
 	indices.forEach { row ->
 		A[row].indices.forEach { col ->
 			val curr = indexedVertices[row, col]
-			if (row - 1>= 0) {
+			val num = curr.data.third
+			if (row - 1 >= 0) {
 				val up = indexedVertices[row - 1, col]
-				if (curr.data.third == up.data.third) {
+				if (num == up.data.third) {
 					edges.add(Edge(curr, up))
 				}
 			}
 
 			if (row + 1 <= n - 1) {
 				val down = indexedVertices[row + 1, col]
-				if (curr.data.third == down.data.third) {
+				if (num == down.data.third) {
 					edges.add(Edge(curr, down))
 				}
 			}
 
 			if (col - 1 >= 0) {
 				val left = indexedVertices[row, col - 1]
-				if (curr.data.third == left.data.third) {
+				if (num == left.data.third) {
 					edges.add(Edge(curr, left))
 				}
 			}
 
 			if (col + 1 <= n - 1) {
 				val right = indexedVertices[row, col + 1]
-				if (curr.data.third == right.data.third) {
+				if (num == right.data.third) {
 					edges.add(Edge(curr, right))
 				}
 			}
@@ -72,4 +85,48 @@ fun Array<Array<Int>>.paintAt(P: Tuple2<Int, Int>, i: Int) {
 		val (row, col, _) = it.data
 		A[row, col] = i
 	}
+}
+
+// implicit graph used here
+// i just played around with parameter types for basically the same thing
+// because i am bad at coming up with another method name...
+fun Array<Array<Int>>.paintAt(r: Int,
+                              c: Int,
+                              num: Int,
+                              visited: Array<Array<Boolean>> = Array(size) { Array(size) { false } }
+) {
+	val A = this
+	val n = size
+	val i = A[r, c]
+
+	if (r - 1 >= 0 && visited[r - 1, c].not()) {
+		visited[r - 1, c] = true
+		if (A[r - 1, c] == i) {
+			paintAt(r - 1, c, num, visited)
+		}
+	}
+
+	if (r + 1 <= n - 1 && visited[r + 1, c].not()) {
+		visited[r + 1, c] = true
+		if (A[r + 1, c] == i) {
+			paintAt(r + 1, c, num, visited)
+		}
+	}
+
+	if (c - 1 >= 0 && visited[r, c - 1].not()) {
+		visited[r, c - 1] = true
+		if (A[r, c - 1] == i) {
+			paintAt(r, c - 1, num, visited)
+		}
+	}
+
+	if (c + 1 <= n - 1 && visited[r, c + 1].not()) {
+		visited[r, c + 1] = true
+		if (A[r, c + 1] == i) {
+			paintAt(r, c + 1, num, visited)
+		}
+	}
+
+	visited[r, c] = true
+	A[r, c] = n
 }

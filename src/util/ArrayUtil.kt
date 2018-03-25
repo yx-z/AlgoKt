@@ -68,3 +68,5 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 	this[i1][i2][i3][i4] = v
 }
 
+// pretty-print
+fun <T> Array<Array<T>>.prettyPrint() = forEach { println(Arrays.toString(it)) }
