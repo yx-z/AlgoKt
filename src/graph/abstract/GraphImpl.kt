@@ -17,6 +17,7 @@ class Vertex<V>(var data: V) {
 open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>, var isDirected: Boolean = false) {
 	operator fun component1() = start
 	operator fun component2() = end
+	operator fun component3() = isDirected
 
 	override fun toString() = if (isDirected) {
 		"$start ------> $end"
@@ -53,8 +54,10 @@ open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>, var isDirected: Boo
 	}
 }
 
-class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, var data: E? = null, isDirected: Boolean = false)
+class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
 	: Edge<V>(start, end, isDirected) {
+	operator fun component4() = data
+
 	override fun toString() = if (data == null) {
 		super.toString()
 	} else {
@@ -149,7 +152,7 @@ class WeighedAdjListGraph<V, E>(var adjList: List<Tuple2<Vertex<V>, List<Tuple2<
 		adjList.map { it.first },
 		adjList.map { (startVertex, endVertexList) ->
 			endVertexList.map { (data, endVertex) ->
-				WeighedEdge(startVertex, endVertex, data)
+				WeighedEdge(startVertex, endVertex, data = data)
 			}
 		}.flatten()) {
 	fun updateVertices() = adjList.map { it.first }
@@ -157,7 +160,7 @@ class WeighedAdjListGraph<V, E>(var adjList: List<Tuple2<Vertex<V>, List<Tuple2<
 	fun updateWeighedEdges() =
 			adjList.map { (startVertex, endVertexList) ->
 				endVertexList.map { (data, endVertex) ->
-					WeighedEdge(startVertex, endVertex, data)
+					WeighedEdge(startVertex, endVertex, data = data)
 				}
 			}.flatten()
 }
@@ -170,7 +173,7 @@ class WeighedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 			endVertexMap
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeighedEdge(startVertex, endVertex, data)
+						WeighedEdge(startVertex, endVertex, data = data)
 					}
 		}.flatten()) {
 	fun updateVertices() = adjMat.keys
@@ -180,7 +183,7 @@ class WeighedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 				endVertexMap
 						.filterValues { it != null }
 						.map { (endVertex, data) ->
-							WeighedEdge(startVertex, endVertex, data)
+							WeighedEdge(startVertex, endVertex, data = data)
 						}
 			}.flatten()
 }
