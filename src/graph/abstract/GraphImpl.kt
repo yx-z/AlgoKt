@@ -15,6 +15,9 @@ class Vertex<V>(var data: V) {
 }
 
 open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>, var isDirected: Boolean = false) {
+	operator fun component1() = start
+	operator fun component2() = end
+
 	override fun toString() = if (isDirected) {
 		"$start ------> $end"
 	} else {
@@ -86,7 +89,14 @@ class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, var data: E? = null, i
 }
 
 open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<Edge<V>>) {
-	fun getEdgesOf(startVertex: Vertex<V>) = edges.filter { it.start == startVertex }
+	fun getEdgesOf(vertex: Vertex<V>) =
+			edges.filter {
+				if (it.isDirected) {
+					it.start == vertex
+				} else {
+					it.start == vertex || it.end == vertex
+				}
+			}
 }
 
 open class WeighedGraph<V, E>(vertices: Collection<Vertex<V>>,
