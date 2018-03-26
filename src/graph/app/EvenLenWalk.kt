@@ -49,8 +49,8 @@ fun Graph<Int>.shortestEvenLen(s: Vertex<Int>, e: Vertex<Int>): List<Vertex<Int>
 	val list = ArrayList<Vertex<Int>>()
 	var curr: Vertex<Tuple2<Vertex<Int>, Boolean>>? = Vertex(e tu false)
 	while (curr != null && curr != start) {
-		list.add(curr!!.data.first)
-		curr = map[curr]!!
+		list.add(curr.data.first)
+		curr = map[curr]
 	}
 	return list.reversed()
 }
