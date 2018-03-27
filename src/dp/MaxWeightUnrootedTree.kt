@@ -1,5 +1,6 @@
 package dp
 
+import graph.abstract.Graph
 import graph.abstract.Vertex
 import graph.abstract.WeighedEdge
 import graph.abstract.WeighedGraph
@@ -10,7 +11,7 @@ import util.max
 // 1. let the edges in T be weighed (either > 0, 0, or < 0)
 //    find a path with largest weight
 fun WeighedGraph<Int, Int>.maxWeight() =
-		vertices.map { dfs(it, init()) }.max() ?: 0
+		vertices.map { maxWeight(it, init()) }.max() ?: 0
 
 fun WeighedGraph<Int, Int>.init(): HashMap<Vertex<Int>, Boolean> {
 	val map = HashMap<Vertex<Int>, Boolean>()
@@ -18,18 +19,24 @@ fun WeighedGraph<Int, Int>.init(): HashMap<Vertex<Int>, Boolean> {
 	return map
 }
 
-fun WeighedGraph<Int, Int>.dfs(v: Vertex<Int>,
-                               map: HashMap<Vertex<Int>, Boolean>): Int {
+fun WeighedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
+                                     map: HashMap<Vertex<Int>, Boolean>): Int {
 	map[v] = true
 	var max = 0
 	getWeigedEdgesOf(v).forEach { edge ->
 		val (s, e) = edge
 		val u = if (s === v) e else s
 		if (map[u] == false) {
-			max = max(max, dfs(u, map) + (edge.data ?: 0))
+			max = max(max, this.maxWeight(u, map) + (edge.data ?: 0))
 		}
 	}
 	return max
+}
+
+// 2. let the weight be in vertices (unweighed edges)
+//    find a path with max weight
+fun Graph<Int>.maxWeight(): Int {
+	TODO()
 }
 
 fun main(args: Array<String>) {
