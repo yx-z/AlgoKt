@@ -39,15 +39,15 @@ fun Array<Char>.maxPlusMinus(): Int {
 	// min[i, j] = min(min[i, k] + min[k + 1, j], min[i, l] - max[l + 1, j])
 	// , where k, l in i until j, and this[2k + 1] == '+', this[2l + 1] == '-'
 
-	// now suppose we want tu figure out max[i, j], we need
+	// now suppose we want to figure out max[i, j], we need
 	// max[i, k], i.e. in the max table, in the same row, left of col j
 	// max[k + 1, j], i.e. in the max table, in the same col, below row i
 	// min[l + 1, j], i.e. in the min table, in the same col, below row i
 
 	// therefore the evaluation order can be
-	// outer loop: bottom tu top
+	// outer loop: bottom to top
 	for (i in cap downTo 0) {
-		// inner loop: left tu right
+		// inner loop: left to right
 		for (j in i + 1..cap) {
 			// linear searching: no specific order
 			for (k in i until j) {

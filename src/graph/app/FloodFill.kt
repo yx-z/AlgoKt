@@ -5,8 +5,8 @@ import util.*
 import java.util.*
 
 // given a bitmap as a 2d array of Int A[1..n, 1..n], a pixel P @ A[i, j], and
-// another Int i, you goal is tu fill all adjacent pixels of P that
-// have the same Int as P tu value i (assuming valid input)
+// another Int i, you goal is to fill all adjacent pixels of P that
+// have the same Int as P to value i (assuming valid input)
 
 fun main(args: Array<String>) {
 	val A = arrayOf(

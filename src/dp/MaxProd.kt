@@ -2,7 +2,7 @@ package dp
 
 import util.*
 
-// similar tu `MaxSum`,
+// similar to `MaxSum`,
 // given an array of numbers,
 // find the largest product in any contiguous subarray.
 // note that two negative numbers produce a positive result, ex. (-2) * (-4) = 8
@@ -37,7 +37,7 @@ fun IntArray.maxProdInt(): Int {
 	// since we are here, there is no 0 in the array
 	// multiply all numbers up!
 	val total = this.reduce { acc, it -> acc * it }
-	// extra work tu be done if the result is negative
+	// extra work to be done if the result is negative
 	if (total < 0) {
 		var leftMax = total
 		var leftIdx = 0
@@ -45,7 +45,7 @@ fun IntArray.maxProdInt(): Int {
 			leftMax /= this[leftIdx]
 			leftIdx++
 		}
-		// first negative number from left tu right
+		// first negative number from left to right
 		leftMax /= this[leftIdx]
 
 		var rightMax = total
@@ -54,7 +54,7 @@ fun IntArray.maxProdInt(): Int {
 			rightMax /= this[rightIdx]
 			rightIdx--
 		}
-		// first negative number from right tu left
+		// first negative number from right to left
 		rightMax /= this[rightIdx]
 		return max(leftMax, rightMax)
 	}
@@ -127,7 +127,7 @@ fun OneArray<Double>.maxProdShort(): Double {
 // O(n) time
 // assume input has no 0s, o/w we can wrap it as the methods above do
 fun OneArray<Double>.maxProdKadane(): Double {
-	// similar tu Kadane's algorithm described in MaxSum
+	// similar to Kadane's algorithm described in MaxSum
 	var maxEndingHere = 1.0
 	var minEndingHere = 1.0
 	var maxSoFar = 1.0

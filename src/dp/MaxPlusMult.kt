@@ -3,7 +3,7 @@ package dp
 import util.*
 import java.util.*
 
-// similar tu MaxPlusMinus
+// similar to MaxPlusMinus
 // but this time, the input array contains only numbers, +, and *
 // find the maximum value of expression by adding parenthesis
 // also with different constraints as the folowing
@@ -57,10 +57,10 @@ fun CharArray.maxPlusMult2(): Int {
 	//                       dp(s, k - 1) * dp(k, e)
 	//                 } for all s < k <= e
 	// dependency: dp(s, e) depends on dp(s, k), and dp(k + 1, e), s < k < e
-	//             that is entries below and tu the left
-	// evalutaion order: outer loop for s from h down tu 0 (bottom up)
+	//             that is entries below and to the left
+	// evalutaion order: outer loop for s from h down to 0 (bottom up)
 	for (s in h downTo 0) {
-		// inner loop for e from s + 1 tu h (left tu right)
+		// inner loop for e from s + 1 to h (left to right)
 		for (e in s + 1..h) {
 			dp[s, e] = (s + 1..e).map { k ->
 				if (E[2 * k - 1] == '+') {

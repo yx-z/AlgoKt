@@ -2,7 +2,7 @@ package str
 
 import util.times
 
-// rearrange string tu a decreasing frequency of characters
+// rearrange string to a decreasing frequency of characters
 // use alphabetical order in case of a tie
 fun main(args: Array<String>) {
 	println("abbccddd".decFreq()) // dddbbcca

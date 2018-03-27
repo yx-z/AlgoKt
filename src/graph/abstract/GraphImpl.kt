@@ -14,15 +14,15 @@ class Vertex<V>(var data: V) {
 	override fun hashCode() = data?.hashCode() ?: 0
 }
 
-open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>, var isDirected: Boolean = false) {
-	operator fun component1() = start
-	operator fun component2() = end
+open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirected: Boolean = false) {
+	operator fun component1() = vertex1
+	operator fun component2() = vertex2
 	operator fun component3() = isDirected
 
 	override fun toString() = if (isDirected) {
-		"$start ------> $end"
+		"$vertex1 ------> $vertex2"
 	} else {
-		"$start <-------> $end"
+		"$vertex1 <-------> $vertex2"
 	}
 
 	override fun equals(other: Any?): Boolean {
@@ -39,16 +39,16 @@ open class Edge<V>(var start: Vertex<V>, var end: Vertex<V>, var isDirected: Boo
 		}
 
 		return if (isDirected) {
-			start == other.start && end == other.end
+			vertex1 == other.vertex1 && vertex2 == other.vertex2
 		} else {
-			(start == other.start && end == other.end) ||
-					(start == other.end && end == other.start)
+			(vertex1 == other.vertex1 && vertex2 == other.vertex2) ||
+					(vertex1 == other.vertex2 && vertex2 == other.vertex1)
 		}
 	}
 
 	override fun hashCode(): Int {
-		var result = start.hashCode()
-		result = 31 * result + end.hashCode()
+		var result = vertex1.hashCode()
+		result = 31 * result + vertex2.hashCode()
 		result = 31 * result + isDirected.hashCode()
 		return result
 	}
@@ -62,9 +62,9 @@ class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = 
 		super.toString()
 	} else {
 		if (isDirected) {
-			"$start ---($data)---> $end"
+			"$vertex1 ---($data)---> $vertex2"
 		} else {
-			"$start <---($data)---> $end"
+			"$vertex1 <---($data)---> $vertex2"
 		}
 	}
 
@@ -95,9 +95,9 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<E
 	fun getEdgesOf(vertex: Vertex<V>) =
 			edges.filter {
 				if (it.isDirected) {
-					it.start == vertex
+					it.vertex1 == vertex
 				} else {
-					it.start == vertex || it.end == vertex
+					it.vertex1 == vertex || it.vertex2 == vertex
 				}
 			}
 }
@@ -109,9 +109,9 @@ open class WeighedGraph<V, E>(vertices: Collection<Vertex<V>>,
 	fun getWeigedEdgesOf(vertex: Vertex<V>) =
 			weighedEdges.filter {
 				if (it.isDirected) {
-					it.start == vertex
+					it.vertex1 == vertex
 				} else {
-					it.start == vertex || it.end == vertex
+					it.vertex1 == vertex || it.vertex2 == vertex
 				}
 			}
 }

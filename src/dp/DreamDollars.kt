@@ -3,7 +3,7 @@ package dp
 // given a util.set of bills with the following values
 val bills = intArrayOf(365, 91, 52, 28, 13, 7, 4, 1)
 
-// a greedy algorithm tu make up target money is always taking the largest bill that does not exceed
+// a greedy algorithm to make up target money is always taking the largest bill that does not exceed
 // the remaining amound. ex. $122 = $91 + $28 + $1 + $1 + $1 -> 5
 fun billsGreedy(k: Int): Int {
 	var rem = k
@@ -17,7 +17,7 @@ fun billsGreedy(k: Int): Int {
 	return count
 }
 
-// 1. describe a recursive algorithm that computes the minimum number of bills needed tu make up $k
+// 1. describe a recursive algorithm that computes the minimum number of bills needed to make up $k
 fun billsRec(k: Int): Int {
 	if (k == 0) {
 		return 0
@@ -27,7 +27,7 @@ fun billsRec(k: Int): Int {
 
 // 2. a DP algorithm of the above
 fun billsDP(k: Int): Int {
-	// dp[i] = minimum number of bills tu make up i
+	// dp[i] = minimum number of bills to make up i
 	// dp[i] = 0, if i == 0
 	// dp[i] = util.min(dp[i - bill]) + 1 for bill : i - bill >= 0
 	val dp = IntArray(k + 1)
@@ -43,7 +43,7 @@ fun main(args: Array<String>) {
 //	prettyPrintln(billsRec(21))
 //	prettyPrintln(billsDP(122))
 
-// 3. give an example that such algorithm fails tu be the option with least number of bills used
+// 3. give an example that such algorithm fails to be the option with least number of bills used
 	var amount = 1
 	while (billsGreedy(amount) == billsDP(amount)) {
 		amount++

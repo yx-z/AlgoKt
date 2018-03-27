@@ -43,14 +43,14 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	//             = util.max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
 
 	// dependency: dp(i, j, k) depends on entries in the previous table,
-	//             and entries tu the left and tu the upper-left
+	//             and entries to the left and to the upper-left
 
-	// evaluation order: outermost loop for k from 1 tu l
+	// evaluation order: outermost loop for k from 1 to l
 	for (k in 0 until l) {
-		// middle loop for i from 1 tu m (top tu down)
-		// no need tu touch i = 0 or j = 0 since they are covered in the base case
+		// middle loop for i from 1 to m (top to down)
+		// no need to touch i = 0 or j = 0 since they are covered in the base case
 		for (i in 1..m) {
-			//innermost loop for i from 1 tu n (left tu right)
+			//innermost loop for i from 1 to n (left to right)
 			for (j in 1..n) {
 				dp[i, j, k] = max(dp[i - 1, j, k], dp[i, j - 1, k])
 

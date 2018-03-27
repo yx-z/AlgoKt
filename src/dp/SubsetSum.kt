@@ -1,7 +1,7 @@
 package dp
 
 // given an array of positive integers and an integer, determine if any subset of the array can sum
-// up tu the integer
+// up to the integer
 fun main(args: Array<String>) {
 	val arr = intArrayOf(1, 6, 4)
 	val ints = intArrayOf(7, // true

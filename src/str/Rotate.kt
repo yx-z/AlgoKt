@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 	val s1 = arrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g')
 
 	// should be: abc + cdefg -> defg + abc
-	s1.rotate(2) // rotate up tu index 2 (0..2)
+	s1.rotate(2) // rotate up to index 2 (0..2)
 	println(Arrays.toString(s1))
 }
 

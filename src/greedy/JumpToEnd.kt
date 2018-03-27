@@ -1,7 +1,7 @@
 package greedy
 
 // arr[i] is the util.max length we can jump from index i
-// starting from arr[0], see if we can jump tu the end index
+// starting from arr[0], see if we can jump to the end index
 fun main(args: Array<String>) {
 	val testArr1 = intArrayOf(1, 3, 2, 0, 3, 0)
 	println(testArr1.canJumpToEnd())

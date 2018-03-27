@@ -4,7 +4,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 	// given path strings such as /abc/../bcd/../cde
-	// compress it tu the simplest form
+	// compress it to the simplest form
 
 	println("/abc/def/.././".compress()) // -> /abc
 	println("/../".compress()) // -> /

@@ -32,7 +32,7 @@ class OneArray<T>(val size: Int) {
 	 * in an invalid index
 	 *
 	 * this function should be given an invalid array index as a paramter
-	 * of type Int as well as the value that is trying tu be set in the array
+	 * of type Int as well as the value that is trying to be set in the array
 	 * and return Unit since setter method does not have a return value
 	 */
 	// one-indexed
@@ -40,7 +40,7 @@ class OneArray<T>(val size: Int) {
 
 	/**
 	 * constructor that constructs from a given array
-	 * @param array array tu be copied from, i.e. will not be used directly
+	 * @param array array to be copied from, i.e. will not be used directly
 	 */
 	constructor(array: Array<T>) : this(array.size) {
 		container = Arrays.copyOf(array, size) as Array<T>
@@ -286,7 +286,7 @@ fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = 
 	}
 }
 
-// converting other general arrays tu OneArray
+// converting other general arrays to OneArray
 fun IntArray.toOneArray() = toTypedArray().toOneArray()
 
 fun CharArray.toOneArray() = toTypedArray().toOneArray()

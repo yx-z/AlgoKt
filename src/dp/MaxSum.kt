@@ -48,7 +48,7 @@ fun IntArray.maxSumNLogN(s: Int = 0, e: Int = size - 1): Int {
 	// 2. i > n / 2 right of the middle line
 	// 3. i < n / 2 < j crossing the middle line
 	// we may recursively solve 1 and 2
-	// and do O(n) tu find 3: util.max prefix sum of A[n / 2 + 1..n] + util.max suffix sum of A[1..n / 2 - 1]
+	// and do O(n) to find 3: util.max prefix sum of A[n / 2 + 1..n] + util.max suffix sum of A[1..n / 2 - 1]
 	// finally compare 1, 2, and 3 and util.get the biggest one as solution
 
 	// runtime analysis
@@ -92,8 +92,8 @@ fun IntArray.prefixSum(s: Int = 0, e: Int = size - 1): Int {
 
 	// recursive case:
 	// dp(i) = dp(i - 1) + this[s + i] o/w
-	// dependency: dp(i) depends on dp(i - 1), that is the entry tu the left
-	// evaluation order: loop for i from 1 until size - s (left tu right)
+	// dependency: dp(i) depends on dp(i - 1), that is the entry to the left
+	// evaluation order: loop for i from 1 until size - s (left to right)
 	for (i in 1..e - s) {
 		dp[i] = dp[i - 1] + this[s + i]
 		max = max(max, dp[i])

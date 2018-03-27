@@ -20,9 +20,9 @@ fun <V> Graph<V>.bfs(start: Vertex<V>): Map<Vertex<V>, Vertex<V>?> {
 		if (marked[vertex] == false) {
 			marked[vertex] = true
 			getEdgesOf(vertex).forEach {
-				queue.add(it.end)
-				if (parent[it.end] == null) {
-					parent[it.end] = vertex
+				queue.add(it.vertex2)
+				if (parent[it.vertex2] == null) {
+					parent[it.vertex2] = vertex
 				}
 			}
 		}

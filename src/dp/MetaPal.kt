@@ -41,8 +41,8 @@ fun OneArray<Char>.metaPal(): Int {
 	//         util.min{ dp(k + 1) + 2 } : i <= k < lM,
 	//         S[i..k] and S[s..j] are both palindromic
 	//         where lM - i = j - rM and k - i = j - s
-	// dependency: dp(i) depends on dp(k) : k > i, that is entries tu the right
-	// evaluation order: outer loop for i from lM - 1 down tu 1 (right tu left)
+	// dependency: dp(i) depends on dp(k) : k > i, that is entries to the right
+	// evaluation order: outer loop for i from lM - 1 down to 1 (right to left)
 	for (i in lM - 1 downTo 1) {
 		// lM - i = j - rM -> j = lM - i + rM
 		val j = lM - i + rM

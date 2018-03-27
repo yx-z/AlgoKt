@@ -32,14 +32,14 @@ fun IntArray.lbs(): Int {
 	// assume util.max{ } = 0
 	// inc(i) = util.max{ inc(k) } + 1 for k in 1 until i and A[k] < A[i]
 	// dec(i) = util.max{ dec(k) } + 1 for k in i + 1..n and A[k] < A[i]
-	// dependency: inc(i) depends on inc(k) where k < i, i.e. entries tu the left
-	//             dec(i) depends on dec(k) where k > i, i.e. entries tu the right
-	// evaluation order: for inc(i), iterate i,k from 1 tu n (left tu right)
+	// dependency: inc(i) depends on inc(k) where k < i, i.e. entries to the left
+	//             dec(i) depends on dec(k) where k > i, i.e. entries to the right
+	// evaluation order: for inc(i), iterate i,k from 1 to n (left to right)
 	for (i in 1 until n) {
 		inc[i] = (inc.filterIndexed { k, _ -> k < i && A[k] < A[i]}.max() ?: 0) + 1
 	}
 
-	// for dec(i), iterate i, k from n down tu 1 (right tu left)
+	// for dec(i), iterate i, k from n down to 1 (right to left)
 	for (i in n - 2 downTo 0) {
 		dec[i] = (dec.filterIndexed { k, _ -> k > i && A[k] < A[i]}.max() ?: 0) + 1
 	}

@@ -33,8 +33,8 @@ fun OneArray<Char>.maxQ(quality: (OneArray<Char>) -> Int): Int {
 
 	// recursive case:
 	// dp(i) = util.max{ dp(k) + S[k + 1..i] }, 1 <= k < i
-	// dependency: dp(i) depends on dp[k] : k < i, that is entries tu the left
-	// evaluation order: outer loop for i from 2 tu n (left tu right)
+	// dependency: dp(i) depends on dp[k] : k < i, that is entries to the left
+	// evaluation order: outer loop for i from 2 to n (left to right)
 	for (i in 2..n) {
 		// inner loop for k from 1 until i
 		dp[i] = (1 until i)

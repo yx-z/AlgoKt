@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
 	println(adjList.pathDFS("e", "a"))
 }
 
-// bfs tu see if start -> end
+// bfs to see if start -> end
 fun Array<Pair<String, String>>.pathBFS(start: String, end: String): Boolean {
 	val visitedSet = HashSet<String>()
 	val visitedQueue: Queue<String> = LinkedList<String>()

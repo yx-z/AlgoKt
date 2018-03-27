@@ -28,7 +28,7 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 		if (marked[vertex] == false) {
 			marked[vertex] = true
 			reachableVertices.add(vertex)
-			bag.addAll(getEdgesOf(vertex).map { it.end })
+			bag.addAll(getEdgesOf(vertex).map { it.vertex2 })
 		}
 	}
 

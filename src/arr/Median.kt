@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 
 	println(merged.getMedian())
 
-	// merge up tu middle
+	// merge up to middle
 	println(getMedianByMerging(test1, test2))
 
 	// find kth smallest by removing half of elements in each time

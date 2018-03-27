@@ -4,11 +4,11 @@ import util.*
 import kotlin.math.pow
 
 // given a sequence of n words and their corresponding length stored in l[1..n]
-// we want tu break it into L lines
+// we want to break it into L lines
 // in each line, the first char starts at the left and except the last line,
 // the last character ends in the right
 // define the slop as the sum over line 1 until L
-// each line containing word i tu j as (L - j + i - sum(l[i..j]))^3
+// each line containing word i to j as (L - j + i - sum(l[i..j]))^3
 // find the minimum total slop for n words
 
 fun main(args: Array<String>) {
@@ -20,7 +20,7 @@ fun OneArray<Int>.minTotalSlop(L: Int): Int {
 	val n = size
 	val INF = Int.MAX_VALUE / 2
 
-	// dp(l, i, j): sum of slop of 1..l where line l contains word i tu j
+	// dp(l, i, j): sum of slop of 1..l where line l contains word i to j
 	// memoization structure: 3d array dp[1 until L, 1..n, 1..n] : dp[l, i, j] = dp(l, i, j)
 	val dp = OneArray(L - 1) { OneArray(n) { OneArray(n) { INF } } }
 

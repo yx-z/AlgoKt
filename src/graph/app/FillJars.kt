@@ -69,7 +69,7 @@ fun minSteps(A: Int, B: Int, C: Int, k: Int): Int {
 //
 //	for (a in 0..A) {
 //		for (b in 0..B) {
-//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(a tu b tu k)
+//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(a to b to k)
 //			var count = 0
 //			while (parentMap[maybe] != null && parentMap[maybe] != start) {
 //				maybe = parentMap[maybe]!!
@@ -84,7 +84,7 @@ fun minSteps(A: Int, B: Int, C: Int, k: Int): Int {
 //
 //	for (b in 0..B) {
 //		for (c in 0..C) {
-//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(k tu b tu c)
+//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(k to b to c)
 //			var count = 0
 //			while (parentMap[maybe] != null && parentMap[maybe] != start) {
 //				maybe = parentMap[maybe]!!
@@ -99,7 +99,7 @@ fun minSteps(A: Int, B: Int, C: Int, k: Int): Int {
 //
 //	for (a in 0..A) {
 //		for (c in 0..C) {
-//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(a tu k tu c)
+//			var maybe: Vertex<Tuple3<Int, Int, Int>>? = Vertex(a to k to c)
 //			var count = 0
 //			while (parentMap[maybe] != null && parentMap[maybe] != start) {
 //				maybe = parentMap[maybe]!!
@@ -131,7 +131,7 @@ fun minSteps(A: Int, B: Int, C: Int, k: Int): Int {
 		if (marked[vertex] == false) {
 			marked[vertex] = true
 			graph.getEdgesOf(vertex).forEach {
-				queue.add(it.end tu level + 1)
+				queue.add(it.vertex2 tu level + 1)
 			}
 		}
 	}

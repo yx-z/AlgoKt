@@ -98,7 +98,7 @@ fun main(args: Array<String>) {
 
 	println()
 
-	// a Tuple2<Int, Int>, i.e. 0 tu 0, version of the tree in the last example
+	// a Tuple2<Int, Int>, i.e. 0 to 0, version of the tree in the last example
 	val root2 = BinTreeNode(0 tu 0)
 	root2.left = BinTreeNode(0 tu 0)
 	root2.left!!.left = BinTreeNode(0 tu 0)

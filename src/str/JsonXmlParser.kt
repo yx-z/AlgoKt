@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 }
 
 /**
- * internal data structure tu preserve the hierarchical ordering for both xml and json file
+ * internal data structure to preserve the hierarchical ordering for both xml and json file
  * i.e. abstraction of the markup file
  */
 data class Node(var key: String,

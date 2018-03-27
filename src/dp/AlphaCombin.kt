@@ -3,7 +3,7 @@ package dp
 import util.get
 
 // given a = 1, b = 2, c = 3, ..., z = 26
-// and a number (as a string), determine the number of ways tu interpret this number into alphabets
+// and a number (as a string), determine the number of ways to interpret this number into alphabets
 
 // ex. 123 == [12, 3] -> lc
 //         == [1, 2, 3] -> abc
@@ -36,7 +36,7 @@ fun alphaCombin(n: String): Int {
 	val dp = IntArray(len + 1) { 1 }
 
 	// time complexity: O(n)
-	// evaluation order: i from len down tu 0, i.e. right tu left
+	// evaluation order: i from len down to 0, i.e. right to left
 	for (i in len - 2 downTo 0) {
 		// dependency: dp[i] depends on later two terms dp[i + 1] and dp[i + 2]
 		dp[i] = if (isValid(n[i..i]) && isValid(n[i..i + 1])) {

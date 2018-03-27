@@ -33,10 +33,10 @@ infix fun IntArray.isSubsequenceOf(Y: IntArray): Boolean {
 	// isSub(i, j) = isSub(i - 1, j - 1) if X[i] = Y[j]
 	//             = isSub(i, j - 1) o/w
 	// dependency: isSub(i, j) depends on isSub(i, j - 1) and isSub(i - 1, j - 1)
-	//             that is, entries tu the left and tu the upper-left
-	// evaluation order: outer loop for i from 1 tu k (top down)
+	//             that is, entries to the left and to the upper-left
+	// evaluation order: outer loop for i from 1 to k (top down)
 	for (i in 1..k) {
-		// inner loop for j from 1 tu n (left tu right)
+		// inner loop for j from 1 to n (left to right)
 		for (j in 1..n) {
 			dp[i, j] = if (X[i - 1] == Y[j - 1]) {
 				dp[i - 1, j - 1]
@@ -73,7 +73,7 @@ infix fun IntArray.isSubseqOf(Y: IntArray): Boolean {
 //    , X is no longer a subsequence of Y
 //    , you can also find the longest subsequence of Y that is not a supersequence of X
 // let me find the length of such subsequence = l
-// and we can know the minimum number of elements tu be removed as n - l
+// and we can know the minimum number of elements to be removed as n - l
 fun OneArray<Int>.subseqNotSuperseq(X: OneArray<Int>): Int {
 	val Y = this
 	val k = X.size
@@ -164,7 +164,7 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 	val k = X.size
 	val n = Y.size
 
-	// dp(i, j): minimum cost of a subseq in Y[1..j] that ends in Y[j] and equals tu X[1..i]
+	// dp(i, j): minimum cost of a subseq in Y[1..j] that ends in Y[j] and equals to X[1..i]
 	// memoization structure: dp[1..k, 1..n] : dp[i, j] = dp(i, j)
 	val dp = OneArray<OneArray<Int>>(k)
 	// space complexity: O(k * n)
@@ -177,7 +177,7 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 	for (i in 1..k) {
 		dp[i] = OneArray(n)
 		for (j in 1..n) {
-			// assume +inf = Int.MAX_VALUE / 2 (so as tu avoid overflow)
+			// assume +inf = Int.MAX_VALUE / 2 (so as to avoid overflow)
 			dp[i, j] = Int.MAX_VALUE / 2
 		}
 	}
@@ -186,10 +186,10 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 	// assume util.min{ } = +inf
 	// dp(i, j) = min_l{ dp(i - 1, l) : l < j } + C[j] if X[i] = Y[j]
 	//          = +inf o/w
-	// dependency: dp(i, j) depends on entries on the row above and tu the left
-	// evaluation order: outer loop for i from 1 tu k (top down)
+	// dependency: dp(i, j) depends on entries on the row above and to the left
+	// evaluation order: outer loop for i from 1 to k (top down)
 	for (i in 1..k) {
-		// inner loop for j from 1 tu n (left tu right)
+		// inner loop for j from 1 to n (left to right)
 		for (j in 1..n) {
 			if (X[i] == Y[j]) {
 				dp[i, j] = if (i == 1) {

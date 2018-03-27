@@ -1,7 +1,7 @@
 import util.min
 
 // Edit Distance between 2 Strings
-// count of add/remove/replace modifications tu match 2 Strings
+// count of add/remove/replace modifications to match 2 Strings
 fun main(args: Array<String>) {
 	// test strings
 	val s1 = "algorithm"
@@ -47,7 +47,7 @@ fun editDistDP(s1: String, s2: String): Int {
 	//          = j, if i == 0
 	//          = util.min(dp[i - 1][j], dp[j - 1][i]) + 1, if s1[i] != s2[j]
 	//          = util.min(dp[i - 1][j] + 1, dp[j - 1][i] + 1, dp[i - 1][j - 1]), if s1[i] == s2[j]
-	//            *this case can be optimized tu just dp[i - 1][j - 1] in that if two characters are
+	//            *this case can be optimized to just dp[i - 1][j - 1] in that if two characters are
 	//            the same, we can leave them unchanged
 	val dp = Array(l1 + 1) { Array(l2 + 1) { 0 } }
 

@@ -5,10 +5,10 @@ import util.OneArray
 import util.min
 
 // given a tree as a company hierarchy
-// you may assign values tu nodes as 1, 2, 3
+// you may assign values to nodes as 1, 2, 3
 // however one node cannot have the same value as its parent
 // a node will be fired if it has a smaller value than its parent
-// find the minimum possible # of nodes tu be fired
+// find the minimum possible # of nodes to be fired
 
 fun main(args: Array<String>) {
 	val manager1 = GenericTreeNode(OneArray(3) { 0 })

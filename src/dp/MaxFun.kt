@@ -5,7 +5,7 @@ import util.max
 
 // given a tree as a company hierarchy
 // each node contains a 'fun' value as an int
-// you want tu invite people in the company tu your party with max 'fun' value
+// you want to invite people in the company to your party with max 'fun' value
 // however if one node is invited, its children cannot be invited
 // and the root must be invited
 

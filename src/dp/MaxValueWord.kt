@@ -12,7 +12,7 @@ import util.toCharOneArray
 // then we repeatedly draw next tuple in the array until EITHER we have seven
 // tuples in our hand OR the input array is empty (using up all the tuples)
 // find the maximum points we can get given input Letter[1..n] containing
-// letters from 'a' tu 'z' and Value['a'..'z'] represents the value for them
+// letters from 'a' to 'z' and Value['a'..'z'] represents the value for them
 
 // assume you can find all English words in a set of size <= 7 in O(1) time
 // and the Value lookup also costs O(1) time
@@ -39,7 +39,7 @@ fun OneArray<Char>.maxPoint(Value: Map<Char, Int>): Int {
 
 	// how can we enumerate 26C7 sets of characters?
 	// see genSets below
-	// due tu such a large constant (as a brute force method)
+	// due to such a large constant (as a brute force method)
 	// i cannot actually run the code and get the result...
 	// better idea is appreciated
 
@@ -47,7 +47,7 @@ fun OneArray<Char>.maxPoint(Value: Map<Char, Int>): Int {
 	// dp(s, i) = max_s{ score(s) + dp(s', i') }
 	// where s', i' is determined by which subset of characters we have used
 	// dependency: dp(s, i) depends on dp(s', i') where i' > i
-	// evaluation order: outer loop for i from n + 1 down tu 1
+	// evaluation order: outer loop for i from n + 1 down to 1
 	for (i in n + 1 downTo 1) {
 		// inner loop for s has no specific order
 

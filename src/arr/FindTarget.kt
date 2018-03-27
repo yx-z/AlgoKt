@@ -5,7 +5,7 @@ fun main(args: Array<String>) {
 
 	// (1, 5) since 1 + 5 = 6
 	println(a1.pairClosestTo(6))
-	// (9, 30) since 9 + 30 = 39 which is closest tu 40
+	// (9, 30) since 9 + 30 = 39 which is closest to 40
 	println(a2.pairClosestTo(40))
 
 	// (5, 30) one from a1 and the other from a2 and 5 + 30 = 35
