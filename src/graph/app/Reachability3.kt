@@ -60,21 +60,18 @@ fun Graph<Int>.reachability3(a: Vertex<Int>,
 	}
 
 	val newEdges = HashSet<Edge<Tuple3<Vertex<Int>, Vertex<Int>, Vertex<Int>>>>()
-	vertices.forEach { v1 ->
-		vertices.forEach { v2 ->
-			vertices.forEach { v3 ->
-				if (v1 !== v2 && v2 !== v3 && v1 !== v3) {
-					getEdgesOf(v1).forEach { (s1, e1) ->
-						val u1 = if (s1 === v1) e1 else s1
-						getEdgesOf(v2).forEach { (s2, e2) ->
-							val u2 = if (s2 === v2) e2 else s2
-							getEdgesOf(v3).forEach { (s3, e3) ->
-								val u3 = if (s3 === v3) e3 else s3
+	newVertices.forEach {
+		val (v1, v2, v3) = it.data
+		if (v1 !== v2 && v2 !== v3 && v1 !== v3) {
+			getEdgesOf(v1).forEach { (s1, e1) ->
+				val u1 = if (s1 === v1) e1 else s1
+				getEdgesOf(v2).forEach { (s2, e2) ->
+					val u2 = if (s2 === v2) e2 else s2
+					getEdgesOf(v3).forEach { (s3, e3) ->
+						val u3 = if (s3 === v3) e3 else s3
 
-								if (u1 !== u2 && u2 !== u3 && u1 !== u3) {
-									newEdges.add(Edge(Vertex(v1 tu v2 tu v3), Vertex(u1 tu u2 tu u3)))
-								}
-							}
+						if (u1 !== u2 && u2 !== u3 && u1 !== u3) {
+							newEdges.add(Edge(Vertex(v1 tu v2 tu v3), Vertex(u1 tu u2 tu u3)))
 						}
 					}
 				}
