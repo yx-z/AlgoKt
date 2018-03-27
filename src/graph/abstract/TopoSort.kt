@@ -1,21 +1,20 @@
 package graph.abstract
 
+import graph.abstract.Status.*
 import util.OneArray
 import util.toOneArray
 
 // topological sort of a directed acyclic graph (dag)
 fun <V> Graph<V>.topoSort(): OneArray<Vertex<V>> {
-	val V = vertices.size
-
-	val sorted = ArrayList<Vertex<V>>(V)
+	val sorted = ArrayList<Vertex<V>>()
 
 	val status = HashMap<Vertex<V>, Status>()
-	vertices.forEach { status[it] = Status.NEW }
+	vertices.forEach { status[it] = NEW }
 
-	var clock = V
+	var clock = vertices.size
 
 	vertices.forEach {
-		if (status[it] == Status.NEW) {
+		if (status[it] == NEW) {
 			clock = topoSort(it, status, clock, sorted)
 		}
 	}
@@ -28,16 +27,15 @@ fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
                           clock: Int,
                           list: ArrayList<Vertex<V>>): Int {
 	var counter = clock
-	status[vertex] = Status.ACTIVE
+	status[vertex] = ACTIVE
 	getEdgesOf(vertex).forEach { (s, e) ->
 		val u = if (s === vertex) e else s
-		if (status[u] == Status.NEW) {
-			counter = topoSort(u, status, counter, list)
-		} else if (status[u] == Status.ACTIVE) {
-			throw CycleDetectedException()
+		when (status[u]) {
+			NEW -> counter = topoSort(u, status, counter, list)
+			ACTIVE -> throw CycleDetectedException()
 		}
 	}
-	status[vertex] = Status.FINISHED
+	status[vertex] = FINISHED
 	list.add(0, vertex)
 	return counter - 1
 }
