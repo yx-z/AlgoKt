@@ -15,13 +15,13 @@ fun main(args: Array<String>) {
 fun los(A: IntArray): Int {
 	val n = A.size - 1
 	// los(i): len of los for A[i..n] starting at A[i]
-	// we want util.max{ los(i) : i in 1..n }
+	// we want max{ los(i) : i in 1..n }
 	// define lo's(i): len of lo's for A[i..n] starting at A[i], lo's is the longest oscillating'
 	// subsequence where X[i] < X[i +1] for odd i, and X[i] > X[i + 1] for even i
 	// los(i), los'(i) = 0 i > n
-	// assume util.max {} = 0
-	// los(i) = util.max { lo's(k) : i < k <= n && A[k] > A[i] } + 1
-	// lo's(i) = util.max { los(k) : i < k <= n && A[k] < A[i] } + 1
+	// assume max {} = 0
+	// los(i) = max { lo's(k) : i < k <= n && A[k] > A[i] } + 1
+	// lo's(i) = max { los(k) : i < k <= n && A[k] < A[i] } + 1
 
 	val los = IntArray(n + 1)
 	val loos = IntArray(n + 1)

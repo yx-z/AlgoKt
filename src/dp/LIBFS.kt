@@ -61,9 +61,9 @@ fun OneArray<Pair<Int, Color>>.lbfs(): Int {
 	dp[sortedA[1].first] = 1
 
 	// recursive case:
-	// assume util.max{ } = 0
-	// dp(i) = 1 + util.max{ dp(k) : A[k] > A[i], k > i } if A[i] is Red, i in 1..n
-	//       = 1 + util.max{ dp(k) : A[k] > A[i], k < i } if A[i] is Blue, i in 1..n
+	// assume max{ } = 0
+	// dp(i) = 1 + max{ dp(k) : A[k] > A[i], k > i } if A[i] is Red, i in 1..n
+	//       = 1 + max{ dp(k) : A[k] > A[i], k < i } if A[i] is Blue, i in 1..n
 	//       = 0 o/w
 	// dependency: dp(i) depends on dp(k) where k is an index in A : A[i] > A[k]
 	// evaluation order: outer loop for i from sortedA[2]_1 to sortedA[n]_1

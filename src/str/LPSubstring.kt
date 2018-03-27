@@ -14,7 +14,7 @@ fun lenLPS(s: String): Int {
 	for (i in s.length - 1 downTo 1) {
 		sb = sb.insert(i, '_')
 	}
-	// util.max of the length of palindrome substring centered at s[i]
+	// max of the length of palindrome substring centered at s[i]
 	var max = Int.MIN_VALUE
 	sb.indices.forEach {
 		var len = 1

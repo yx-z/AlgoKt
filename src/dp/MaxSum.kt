@@ -20,7 +20,7 @@ fun IntArray.maxSumN2(): Int {
 	// dp[i, j] = 0, if (i > j || i, j !in 0 until size)
 	//          = this[i], if (i == j)
 	//          = dp[i, j - 1]  + this[j], o/w
-	// we want util.max(dp[i, j])
+	// we want max(dp[i, j])
 	val dp = Array(size) { IntArray(size) }
 	var max = Int.MIN_VALUE
 	for (i in 0 until size) {
@@ -48,7 +48,7 @@ fun IntArray.maxSumNLogN(s: Int = 0, e: Int = size - 1): Int {
 	// 2. i > n / 2 right of the middle line
 	// 3. i < n / 2 < j crossing the middle line
 	// we may recursively solve 1 and 2
-	// and do O(n) to find 3: util.max prefix sum of A[n / 2 + 1..n] + util.max suffix sum of A[1..n / 2 - 1]
+	// and do O(n) to find 3: max prefix sum of A[n / 2 + 1..n] + max suffix sum of A[1..n / 2 - 1]
 	// finally compare 1, 2, and 3 and util.get the biggest one as solution
 
 	// runtime analysis

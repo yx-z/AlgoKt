@@ -29,9 +29,9 @@ fun IntArray.lbs(): Int {
 	dec[n - 1] = 1
 
 	// recursive case:
-	// assume util.max{ } = 0
-	// inc(i) = util.max{ inc(k) } + 1 for k in 1 until i and A[k] < A[i]
-	// dec(i) = util.max{ dec(k) } + 1 for k in i + 1..n and A[k] < A[i]
+	// assume max{ } = 0
+	// inc(i) = max{ inc(k) } + 1 for k in 1 until i and A[k] < A[i]
+	// dec(i) = max{ dec(k) } + 1 for k in i + 1..n and A[k] < A[i]
 	// dependency: inc(i) depends on inc(k) where k < i, i.e. entries to the left
 	//             dec(i) depends on dec(k) where k > i, i.e. entries to the right
 	// evaluation order: for inc(i), iterate i,k from 1 to n (left to right)

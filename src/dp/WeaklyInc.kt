@@ -22,12 +22,12 @@ fun wis(A: IntArray): Int {
 	}
 
 	// dp(i, j): len of lwis of A with first two elements A[i] and A[j]
-	// assume util.max{ } = 0
+	// assume max{ } = 0
 	// dp(i, j) = 0 if i, j !in 0 until n || i >= j
 	//          = 2 if j = n
-	//          = 1 + util.max{ dp(j, k) } where k in j + 1 until n and 2 * A[k] > A[j] + A[i] o/w
+	//          = 1 + max{ dp(j, k) } where k in j + 1 until n and 2 * A[k] > A[j] + A[i] o/w
 
-	// we want util.max{ dp(i, j) }
+	// we want max{ dp(i, j) }
 	var max = Int.MIN_VALUE
 
 	// use a 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)

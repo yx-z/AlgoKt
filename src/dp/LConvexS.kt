@@ -18,13 +18,13 @@ fun lcs(arr: IntArray): Int {
 	}
 
 	// dp[i][j] = length of lcs with first two elements arr[i] and arr[j], i < j
-	// dp[i][j] = 1 + util.max(dp[j][k]) : k in j + 1 until len && arr[k] - arr[j] > arr[j] - arr[i]
+	// dp[i][j] = 1 + max(dp[j][k]) : k in j + 1 until len && arr[k] - arr[j] > arr[j] - arr[i]
 	val dp = Array(len) { IntArray(len) }
 	for (i in 0 until len) {
 		dp[i, len - 1] = 2
 	}
 
-	// keep track of util.max(dp[i][j])
+	// keep track of max(dp[i][j])
 	var max = 0
 
 	for (i in len - 2 downTo 0) {

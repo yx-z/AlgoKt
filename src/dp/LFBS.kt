@@ -34,7 +34,7 @@ fun OneArray<Char>.lfbs(): Int {
 	val dp = OneArray(n) { OneArray(n) { 0 } }
 	// space complexity: O(n^2)
 
-	// we want util.max{ dp(i, j) }
+	// we want max{ dp(i, j) }
 	var max = 0
 
 	// dp(i, j) = 0 if T[i] != T[j] or i >= j

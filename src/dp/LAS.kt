@@ -23,9 +23,9 @@ fun las(A: IntArray): Int {
 	// dec(i): len of las that decreases first (X[2] < X[1]) and starts at A[i]
 	// inc(i), dec(i) = 0 if i !in 1..n
 	// inc(i), dec(i) = 1 if i = n
-	// assume util.max{ } = 0
-	// inc(i) = 1 + util.max{ dec(k) : k in i + 1..n && A[k] > A[i] } o/w
-	// dec(i) = 1 + util.max{ inc(k) : k in i + 1..n && A[k] < A[i] } o/w
+	// assume max{ } = 0
+	// inc(i) = 1 + max{ dec(k) : k in i + 1..n && A[k] > A[i] } o/w
+	// dec(i) = 1 + max{ inc(k) : k in i + 1..n && A[k] < A[i] } o/w
 
 	// we want max_i { inc(i), dec(i) }
 	var max = Int.MIN_VALUE

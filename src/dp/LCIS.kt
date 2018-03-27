@@ -35,12 +35,12 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	val dp = Array(m + 1) { Array(n + 1) { IntArray(l) } }
 	// space complexity: O(l + m * n * l) = O(m * n * (m + n))
 
-	// assume util.max{ } = 0
+	// assume max{ } = 0
 	// dp(i, j, k) = 0 if i !in 1..m or j !in 1..n or k !in 1..l
-	//             = util.max{ 1 + max_p{ dp(i - 1, j - 1, p) : p < k },
+	//             = max{ 1 + max_p{ dp(i - 1, j - 1, p) : p < k },
 	//                    dp(i - 1, j, k),
 	//                    dp(i, j - 1, k) } if A[i] = B[j] = M[k]
-	//             = util.max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
+	//             = max { dp(i - 1, j, k), dp(i, j - 1, k) } o/w
 
 	// dependency: dp(i, j, k) depends on entries in the previous table,
 	//             and entries to the left and to the upper-left

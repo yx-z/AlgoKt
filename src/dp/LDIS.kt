@@ -35,13 +35,13 @@ fun ldis(A: IntArray): Int {
 		dp[i, n - 1] = 2
 	}
 
-	// we want util.max dp(i, j)
+	// we want max dp(i, j)
 	// which is at least 2 considering the base case
 	var max = 2
 
-	// assume util.max{ } = 0
+	// assume max{ } = 0
 	// recursive case:
-	// dp(i, j) = util.max{2, 1 + util.max{ dp(j, k) } : where i < j < k and A[i] < A[k]}
+	// dp(i, j) = max{2, 1 + max{ dp(j, k) } : where i < j < k and A[i] < A[k]}
 	// dependency: dp(i, j) depends on dp(j, k) where j > i and k > j
 	//             i.e. all entries on a row below and to right of current entry
 

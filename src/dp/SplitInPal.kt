@@ -58,7 +58,7 @@ fun OneArray<Char>.minSplitInPal(): Int {
 	// overall time complexity: O(n^2)
 }
 
-// 2. find the util.max int k : S can be split into palindromes of len at least k
+// 2. find the max int k : S can be split into palindromes of len at least k
 fun OneArray<Char>.maxSplitLen(): Int {
 	val S = this
 	val n = S.size
@@ -68,7 +68,7 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	// time complexity: O(n^2)
 	val isPal = isPal()
 
-	// dp(i): util.max int k : S[1..i] can be split into palindroms of len at least k
+	// dp(i): max int k : S[1..i] can be split into palindroms of len at least k
 	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)
 	val dp = OneArray(n) { 1 }
 	// space complexity: O(n)
@@ -77,7 +77,7 @@ fun OneArray<Char>.maxSplitLen(): Int {
 	// dp(1) = 1
 
 	// recursive case:
-	// assume util.max{ } = 1
+	// assume max{ } = 1
 	// dp(i) = i if S[1..i] is palindromic
 	//       = max_k{ dp(k) : 1 <= k < i,
 	//                and S[k + 1..i] is palindromic,
