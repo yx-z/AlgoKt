@@ -118,7 +118,8 @@ class Tuple5<A, B, C, D, E>(var first: A,
 	}
 }
 
-// `to` is a custom name for `to`, so that we can distinguish between Tuple and Pair
+// `tu` is a custom name for `to`, so that we can distinguish between Tuple and Pair
+// `tu` sounds similar to `to` but actually represents TUple
 infix fun <A, B> A.tu(second: B) = Tuple2(this, second)
 
 infix fun <A, B, C> Tuple2<A, B>.tu(third: C) = Tuple3(first, second, third)
