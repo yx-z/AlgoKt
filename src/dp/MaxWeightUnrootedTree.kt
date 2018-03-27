@@ -6,7 +6,7 @@ import graph.abstract.WeightedEdge
 import graph.abstract.WeightedGraph
 import util.max
 
-// given an unroted tree T, that is, connected acyclic undirected graphs,
+// given an unrooted tree T, that is, connected acyclic undirected graphs,
 
 // 1. let the edges in T be weighed (either > 0, 0, or < 0)
 //    find a path with largest weight
@@ -23,19 +23,19 @@ fun WeightedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
                                       map: HashMap<Vertex<Int>, Boolean>): Int {
 	map[v] = true
 	var max = 0
-	getWeightedEdgesOf(v).forEach { edge ->
-		val (s, e) = edge
+	getWeightedEdgesOf(v).forEach { (s, e, _, data) ->
 		val u = if (s === v) e else s
 		if (map[u] == false) {
-			max = max(max, this.maxWeight(u, map) + (edge.data ?: 0))
+			max = max(max, this.maxWeight(u, map) + (data ?: 0))
 		}
 	}
 	return max
 }
 
-// 2. let the weight be in vertices (unweighed edges)
+// 2. let the weight be in vertices (unweighted edges)
 //    find a path with max weight
 fun Graph<Int>.maxWeight(): Int {
+
 	TODO()
 }
 
