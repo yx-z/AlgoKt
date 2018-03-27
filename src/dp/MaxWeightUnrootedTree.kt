@@ -2,25 +2,25 @@ package dp
 
 import graph.abstract.Graph
 import graph.abstract.Vertex
-import graph.abstract.WeighedEdge
-import graph.abstract.WeighedGraph
+import graph.abstract.WeightedEdge
+import graph.abstract.WeightedGraph
 import util.max
 
-// given an unrroted tree T, that is, connected acylic undirected graphs,
+// given an unroted tree T, that is, connected acyclic undirected graphs,
 
 // 1. let the edges in T be weighed (either > 0, 0, or < 0)
 //    find a path with largest weight
-fun WeighedGraph<Int, Int>.maxWeight() =
+fun WeightedGraph<Int, Int>.maxWeight() =
 		vertices.map { maxWeight(it, init()) }.max() ?: 0
 
-fun WeighedGraph<Int, Int>.init(): HashMap<Vertex<Int>, Boolean> {
+fun WeightedGraph<Int, Int>.init(): HashMap<Vertex<Int>, Boolean> {
 	val map = HashMap<Vertex<Int>, Boolean>()
 	vertices.forEach { map[it] = false }
 	return map
 }
 
-fun WeighedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
-                                     map: HashMap<Vertex<Int>, Boolean>): Int {
+fun WeightedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
+                                      map: HashMap<Vertex<Int>, Boolean>): Int {
 	map[v] = true
 	var max = 0
 	getWeigedEdgesOf(v).forEach { edge ->
@@ -42,11 +42,11 @@ fun Graph<Int>.maxWeight(): Int {
 fun main(args: Array<String>) {
 	val vertices = (1..6).map { Vertex(it) }
 	val edges = setOf(
-			WeighedEdge(vertices[0], vertices[1], data = -1),
-			WeighedEdge(vertices[1], vertices[2], data = 3),
-			WeighedEdge(vertices[2], vertices[3], data = -2),
-			WeighedEdge(vertices[3], vertices[4], data = 3),
-			WeighedEdge(vertices[3], vertices[5], data = 0))
-	val T = WeighedGraph(vertices, edges)
+			WeightedEdge(vertices[0], vertices[1], data = -1),
+			WeightedEdge(vertices[1], vertices[2], data = 3),
+			WeightedEdge(vertices[2], vertices[3], data = -2),
+			WeightedEdge(vertices[3], vertices[4], data = 3),
+			WeightedEdge(vertices[3], vertices[5], data = 0))
+	val T = WeightedGraph(vertices, edges)
 	println(T.maxWeight())
 }

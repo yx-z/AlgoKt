@@ -54,7 +54,7 @@ open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirecte
 	}
 }
 
-class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
+class WeightedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
 	: Edge<V>(start, end, isDirected) {
 	operator fun component4() = data
 
@@ -73,7 +73,7 @@ class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = 
 			return true
 		}
 
-		if (other !is WeighedEdge<*, *>) {
+		if (other !is WeightedEdge<*, *>) {
 			return false
 		}
 
@@ -92,7 +92,7 @@ class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = 
 }
 
 open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<Edge<V>>) {
-	fun getEdgesOf(vertex: Vertex<V>) =
+	open fun getEdgesOf(vertex: Vertex<V>) =
 			edges.filter {
 				if (it.isDirected) {
 					it.vertex1 == vertex
@@ -102,12 +102,12 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<E
 			}
 }
 
-open class WeighedGraph<V, E>(vertices: Collection<Vertex<V>>,
-                              var weighedEdges: Collection<WeighedEdge<V, E>>,
-                              edges: Collection<Edge<V>> = weighedEdges)  // maintained only for inheritance
+open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
+                               var weightedEdges: Collection<WeightedEdge<V, E>>,
+                               edges: Collection<Edge<V>> = weightedEdges)  // maintained only for inheritance
 	: Graph<V>(vertices, edges) {
 	fun getWeigedEdgesOf(vertex: Vertex<V>) =
-			weighedEdges.filter {
+			weightedEdges.filter {
 				if (it.isDirected) {
 					it.vertex1 == vertex
 				} else {
@@ -116,22 +116,30 @@ open class WeighedGraph<V, E>(vertices: Collection<Vertex<V>>,
 			}
 }
 
-class AdjListGraph<V>(var adjList: List<Tuple2<Vertex<V>, List<Vertex<V>>>>)
+class AdjListGraph<V>(var adjList: Map<Vertex<V>, List<Vertex<V>>>)
 	: Graph<V>(
-		adjList.map { it.first },
+		adjList.keys,
 		adjList.map { (startVertex, endVertexList) ->
 			endVertexList.map { endVertex ->
 				Edge(startVertex, endVertex)
 			}
 		}.flatten()) {
-	fun updateVertices() = adjList.map { it.first }
+	fun updateVertices() {
+		vertices = adjList.keys
+	}
 
-	fun updateEdges() =
-			adjList.map { (startVertex, endVertexList) ->
-				endVertexList.map { endVertex ->
-					Edge(startVertex, endVertex)
-				}
-			}.flatten()
+	fun updateEdges() {
+		edges = adjList.map { (startVertex, endVertexList) ->
+			endVertexList.map { endVertex ->
+				Edge(startVertex, endVertex)
+			}
+		}.flatten()
+	}
+
+	override fun getEdgesOf(vertex: Vertex<V>) =
+			adjList[vertex]!!.map {
+				Edge(vertex, it)
+			}.toList()
 }
 
 class AdjMatGraph<V>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, Boolean>>)
@@ -144,55 +152,83 @@ class AdjMatGraph<V>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, Boolean>>)
 						Edge(startVertex, endVertex)
 					}
 		}.flatten()) {
-	fun updateVertices() = adjMat.keys
+	fun updateVertices() {
+		vertices = adjMat.keys
+	}
 
-	fun updateEdges() =
-			adjMat.map { (startVertex, endVertexMap) ->
-				endVertexMap
-						.filterValues { it }
-						.map { (endVertex, _) ->
-							Edge(startVertex, endVertex)
-						}
-			}.flatten()
+	fun updateEdges() {
+		edges = adjMat.map { (startVertex, endVertexMap) ->
+			endVertexMap
+					.filterValues { it }
+					.map { (endVertex, _) ->
+						Edge(startVertex, endVertex)
+					}
+		}.flatten()
+	}
+
+	override fun getEdgesOf(vertex: Vertex<V>) =
+			adjMat[vertex]!!
+					.filterValues { it }
+					.map { (endVertex, _) ->
+						Edge(vertex, endVertex)
+					}
 }
 
-class WeighedAdjListGraph<V, E>(var adjList: List<Tuple2<Vertex<V>, List<Tuple2<E, Vertex<V>>>>>)
-	: WeighedGraph<V, E>(
-		adjList.map { it.first },
+class WeightedAdjListGraph<V, E>(var adjList: Map<Vertex<V>, List<Tuple2<E, Vertex<V>>>>)
+	: WeightedGraph<V, E>(
+		adjList.keys,
 		adjList.map { (startVertex, endVertexList) ->
 			endVertexList.map { (data, endVertex) ->
-				WeighedEdge(startVertex, endVertex, data = data)
+				WeightedEdge(startVertex, endVertex, data = data)
 			}
 		}.flatten()) {
-	fun updateVertices() = adjList.map { it.first }
+	fun updateVertices() {
+		vertices = adjList.keys
+	}
 
-	fun updateWeighedEdges() =
-			adjList.map { (startVertex, endVertexList) ->
-				endVertexList.map { (data, endVertex) ->
-					WeighedEdge(startVertex, endVertex, data = data)
-				}
-			}.flatten()
+	fun updateWeighedEdges() {
+		weightedEdges = adjList.map { (startVertex, endVertexList) ->
+			endVertexList.map { (data, endVertex) ->
+				WeightedEdge(startVertex, endVertex, data = data)
+			}
+		}.flatten()
+	}
+
+	override fun getEdgesOf(vertex: Vertex<V>) =
+			adjList[vertex]!!.map { (data, endVertex) ->
+				WeightedEdge(vertex, endVertex, data = data)
+			}
 }
 
 
-class WeighedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
-	: WeighedGraph<V, E>(
+class WeightedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
+	: WeightedGraph<V, E>(
 		adjMat.keys,
 		adjMat.map { (startVertex, endVertexMap) ->
 			endVertexMap
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeighedEdge(startVertex, endVertex, data = data)
+						WeightedEdge(startVertex, endVertex, data = data)
 					}
 		}.flatten()) {
-	fun updateVertices() = adjMat.keys
+	fun updateVertices() {
+		vertices = adjMat.keys
+	}
 
-	fun updateWeighedEdges() =
-			adjMat.map { (startVertex, endVertexMap) ->
-				endVertexMap
-						.filterValues { it != null }
-						.map { (endVertex, data) ->
-							WeighedEdge(startVertex, endVertex, data = data)
-						}
-			}.flatten()
+	fun updateWeighedEdges() {
+		weightedEdges = adjMat.map { (startVertex, endVertexMap) ->
+			endVertexMap
+					.filterValues { it != null }
+					.map { (endVertex, data) ->
+						WeightedEdge(startVertex, endVertex, data = data)
+					}
+		}.flatten()
+	}
+
+	override fun getEdgesOf(vertex: Vertex<V>) =
+			adjMat[vertex]!!
+					.filterValues { it != null }
+					.map { (endVertex, data) ->
+						WeightedEdge(vertex, endVertex, data = data)
+					}
 }
