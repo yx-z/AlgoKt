@@ -47,14 +47,14 @@ fun <V> Graph<V>.whateverFirstSearchAll() {
 
 fun main(args: Array<String>) {
 	val vs = Array(5) { Vertex(it) }
-	val graph = AdjListGraph(listOf(
-			vs[0] tu listOf(vs[1], vs[2]),
-			vs[1] tu listOf(vs[0], vs[2]),
-			vs[2] tu listOf(vs[0], vs[1]),
-			vs[3] tu listOf(vs[4]),
-			vs[4] tu listOf(vs[3])
+	val graph = AdjListGraph(mapOf(
+			vs[0] to listOf(vs[1], vs[2]),
+			vs[1] to listOf(vs[0], vs[2]),
+			vs[2] to listOf(vs[0], vs[1]),
+			vs[3] to listOf(vs[4]),
+			vs[4] to listOf(vs[3])
 	))
-	println(graph.whateverFirstSearch(vs[0]))
+//	println(graph.whateverFirstSearch(vs[0]))
 
 	println(graph.whateverFirstSearchAll())
 }
