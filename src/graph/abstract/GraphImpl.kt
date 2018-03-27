@@ -106,7 +106,10 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
                                var weightedEdges: Collection<WeightedEdge<V, E>>,
                                edges: Collection<Edge<V>> = weightedEdges)  // maintained only for inheritance
 	: Graph<V>(vertices, edges) {
-	fun getWeigedEdgesOf(vertex: Vertex<V>) =
+
+	override fun getEdgesOf(vertex: Vertex<V>) = getWeightedEdgesOf(vertex)
+
+	fun getWeightedEdgesOf(vertex: Vertex<V>) =
 			weightedEdges.filter {
 				if (it.isDirected) {
 					it.vertex1 == vertex

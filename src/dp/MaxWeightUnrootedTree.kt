@@ -23,7 +23,7 @@ fun WeightedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
                                       map: HashMap<Vertex<Int>, Boolean>): Int {
 	map[v] = true
 	var max = 0
-	getWeigedEdgesOf(v).forEach { edge ->
+	getWeightedEdgesOf(v).forEach { edge ->
 		val (s, e) = edge
 		val u = if (s === v) e else s
 		if (map[u] == false) {
