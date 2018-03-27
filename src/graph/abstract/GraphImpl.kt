@@ -3,7 +3,7 @@ package graph.abstract
 import util.Tuple2
 
 class Vertex<V>(var data: V) {
-	override fun toString() = data.toString()
+	override fun toString() = "(${data.toString()})"
 
 	override fun equals(other: Any?) = if (other is Vertex<*>) {
 		data == other.data
@@ -62,9 +62,9 @@ class WeighedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = 
 		super.toString()
 	} else {
 		if (isDirected) {
-			"$start ---$data---> $end"
+			"$start ---($data)---> $end"
 		} else {
-			"$start <---$data---> $end"
+			"$start <---($data)---> $end"
 		}
 	}
 
@@ -103,9 +103,18 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<E
 }
 
 open class WeighedGraph<V, E>(vertices: Collection<Vertex<V>>,
-                              weighedEdges: Collection<WeighedEdge<V, E>>,
+                              var weighedEdges: Collection<WeighedEdge<V, E>>,
                               edges: Collection<Edge<V>> = weighedEdges)  // maintained only for inheritance
-	: Graph<V>(vertices, edges)
+	: Graph<V>(vertices, edges) {
+	fun getWeigedEdgesOf(vertex: Vertex<V>) =
+			weighedEdges.filter {
+				if (it.isDirected) {
+					it.start == vertex
+				} else {
+					it.start == vertex || it.end == vertex
+				}
+			}
+}
 
 class AdjListGraph<V>(var adjList: List<Tuple2<Vertex<V>, List<Vertex<V>>>>)
 	: Graph<V>(

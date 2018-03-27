@@ -41,7 +41,7 @@ fun snakeLadder(n: Int,
                 k: Int): Int {
 	val end = n * n
 	// [1, 2, 3, ..., n^2]
-	val vertices = (0 until end).map { Vertex(it + 1) }
+	val vertices = (1..end).map { Vertex(it) }
 	val edges = HashSet<Edge<Int>>()
 	vertices.forEach { v ->
 		if (snakes.any { it.first == v.data }) {
