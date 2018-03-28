@@ -29,10 +29,12 @@ fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
 	var counter = clock
 	status[vertex] = ACTIVE
 	getEdgesOf(vertex).forEach { (s, e) ->
-		val u = if (s === vertex) e else s
+		val u = if (s == vertex) e else s
 		when (status[u]) {
 			NEW -> counter = topoSort(u, status, counter, list)
-			ACTIVE -> throw CycleDetectedException()
+			ACTIVE -> {
+				throw CycleDetectedException()
+			}
 		}
 	}
 	status[vertex] = FINISHED
@@ -48,11 +50,16 @@ enum class Status {
 }
 
 fun main(args: Array<String>) {
-	val vertices = (1..3).map { Vertex(it) }
+	val vertices = (1..5).map { Vertex(it) }
 	val edges = setOf(
 			Edge(vertices[0], vertices[1], true),
 			Edge(vertices[0], vertices[2], true),
-			Edge(vertices[2], vertices[1], true))
+			Edge(vertices[0], vertices[3], true),
+			Edge(vertices[0], vertices[4], true),
+			Edge(vertices[1], vertices[4], true),
+			Edge(vertices[2], vertices[1], true),
+			Edge(vertices[2], vertices[3], true),
+			Edge(vertices[3], vertices[4], true))
 	val graph = Graph(vertices, edges)
 	println(graph.topoSort())
 }

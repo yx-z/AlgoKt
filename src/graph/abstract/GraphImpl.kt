@@ -62,7 +62,7 @@ class WeightedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean =
 		super.toString()
 	} else {
 		if (isDirected) {
-			"$vertex1 ---($data)---> $vertex2"
+			"$vertex1 ---[$data]---> $vertex2"
 		} else {
 			"$vertex1 <---($data)---> $vertex2"
 		}
@@ -100,6 +100,8 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<E
 					it.vertex1 == vertex || it.vertex2 == vertex
 				}
 			}
+
+	override fun toString() = "V = $vertices\nE = $edges"
 }
 
 open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
