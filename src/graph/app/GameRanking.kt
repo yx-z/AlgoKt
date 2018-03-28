@@ -37,6 +37,5 @@ fun gameRanking(players: OneArray<Int>,
 		edges.add(Edge(Vertex(second), Vertex(third), true))
 	}
 	val graph = Graph(vertices, edges)
-	println(graph)
 	return graph.topoSort().map { it.data }.toOneArray()
 }

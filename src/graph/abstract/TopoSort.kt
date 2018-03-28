@@ -28,8 +28,7 @@ fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
                           list: ArrayList<Vertex<V>>): Int {
 	var counter = clock
 	status[vertex] = ACTIVE
-	getEdgesOf(vertex).forEach { (s, e) ->
-		val u = if (s == vertex) e else s
+	getEdgesOf(vertex).forEach { (_, u) ->
 		when (status[u]) {
 			NEW -> counter = topoSort(u, status, counter, list)
 			ACTIVE -> {

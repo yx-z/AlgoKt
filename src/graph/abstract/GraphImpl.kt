@@ -54,8 +54,8 @@ open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirecte
 	}
 }
 
-class WeightedEdge<V, E>(start: Vertex<V>, end: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
-	: Edge<V>(start, end, isDirected) {
+class WeightedEdge<V, E>(vertex1: Vertex<V>, vertex2: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
+	: Edge<V>(vertex1, vertex2, isDirected) {
 	operator fun component4() = data
 
 	override fun toString() = if (data == null) {
