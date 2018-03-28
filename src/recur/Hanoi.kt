@@ -11,9 +11,12 @@ fun hanoi(n: Int, from: Int, middle: Int, to: Int): Int {
 	if (n == 0) {
 		return count
 	}
+
 	count += hanoi(n - 1, from, to, middle)
+
 	move(n, from, to)
 	count++
+
 	count += hanoi(n - 1, middle, from, to)
 	return count
 }
@@ -23,5 +26,5 @@ fun move(n: Int, from: Int, to: Int) {
 }
 
 fun main(args: Array<String>) {
-	println("the puzzle takes ${hanoi(2, 1, 2, 3)} step(s)")
+	println("the puzzle takes ${hanoi(5, 1, 2, 3)} step(s)")
 }
