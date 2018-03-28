@@ -45,6 +45,8 @@ fun OneArray<Int>.momSelect(k: Int): Int {
 	val m = n / 5
 	val M = OneArray(m) { 0 }
 	for (i in 1..m) {
+		// find the median of five numbers
+		// either do brute force or quickselect <- overkill!
 		M[i] = A[5 * i - 4..5 * i].quickSelect(3)
 	}
 	val mom = M.momSelect(m / 2)

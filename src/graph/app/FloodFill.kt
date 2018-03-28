@@ -17,12 +17,12 @@ fun main(args: Array<String>) {
 			arrayOf(3, 2, 1, 1, 2))
 
 	A.paintAt(0 tu 2, 5)
-	A.prettyPrint()
+	A.prettyPrintLines()
 
 	println()
 
 	A.paintAt(2, 2, 7)
-	A.prettyPrint()
+	A.prettyPrintLines()
 }
 
 // well the following is actually an example of a "bad use" of graph

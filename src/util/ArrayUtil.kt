@@ -69,7 +69,11 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 }
 
 // pretty-print
-fun <T> Array<Array<T>>.prettyPrint() = forEach { println(Arrays.toString(it)) }
+fun <T> Array<Array<T>>.prettyPrintLines() = forEach { println(Arrays.toString(it)) }
+
+fun <T> Array<T>.prettyPrintln() = println(Arrays.toString(this))
+
+fun IntArray.prettyPrintln() = println(Arrays.toString(this))
 
 // swap
 fun <T> OneArray<T>.swap(i1: Int, i2: Int) {
