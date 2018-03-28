@@ -1,6 +1,6 @@
 package arr
 
-import sort.swap
+import util.swap
 
 // returns the k-th smallest element in the array
 fun main(args: Array<String>) {

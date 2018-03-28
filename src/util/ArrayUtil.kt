@@ -70,3 +70,26 @@ operator fun <T> Array<Array<Array<Array<T>>>>.set(i1: Int, i2: Int, i3: Int, i4
 
 // pretty-print
 fun <T> Array<Array<T>>.prettyPrint() = forEach { println(Arrays.toString(it)) }
+
+// swap
+fun <T> OneArray<T>.swap(i1: Int, i2: Int) {
+	if (i1 !in indices || i2 !in indices) {
+		return
+	}
+
+	val tmp = this[i1]
+	this[i1] = this[i2]
+	this[i2] = tmp
+}
+
+fun <T> Array<T>.swap(i1: Int, i2: Int) {
+	val tmp = this[i1]
+	this[i1] = this[i2]
+	this[i2] = tmp
+}
+
+fun IntArray.swap(i1: Int, i2: Int) {
+	val tmp = this[i1]
+	this[i1] = this[i2]
+	this[i2] = tmp
+}
