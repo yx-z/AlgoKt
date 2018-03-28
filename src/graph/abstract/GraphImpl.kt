@@ -1,9 +1,8 @@
 package graph.abstract
 
 import util.Tuple2
-import java.util.*
 
-class Vertex<V>(var data: V) {
+open class Vertex<V>(var data: V) {
 	override fun toString() = "(${data.toString()})"
 
 	override fun equals(other: Any?) = if (other is Vertex<*>) {
@@ -15,7 +14,10 @@ class Vertex<V>(var data: V) {
 	override fun hashCode() = data?.hashCode() ?: 0
 }
 
-fun <V : Comparable<V>> Vertex<V>.compareTo(other: Vertex<V>) = data.compareTo(other.data)
+class ComparableVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable<ComparableVertex<V>> {
+	override fun compareTo(other: ComparableVertex<V>) = data.compareTo(other.data)
+}
+
 
 open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirected: Boolean = false) {
 	operator fun component1() = vertex1

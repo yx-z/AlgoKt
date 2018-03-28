@@ -1,4 +1,4 @@
-package str
+package datastructure
 
 const val EMPTY_CHAR = 0.toChar()
 const val START_CHAR = 'a'
@@ -8,7 +8,7 @@ const val NUM_CHARS = END_CHAR - START_CHAR + 1
 
 const val EMPTY_STRING = ""
 
-class AddrTrie {
+class Trie {
 	private val root = Node()
 
 	class Node(private val c: Char = EMPTY_CHAR, var address: String = EMPTY_STRING) {
@@ -69,7 +69,7 @@ class AddrTrie {
 }
 
 fun main(args: Array<String>) {
-	val testTrie = AddrTrie()
+	val testTrie = Trie()
 	testTrie.insert("abcd", "501 s 6th st")
 	testTrie.insert("abc", "601 s white st")
 	testTrie.insert("bcd", "309 green st")

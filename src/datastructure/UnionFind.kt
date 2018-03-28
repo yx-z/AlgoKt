@@ -1,4 +1,4 @@
-package other
+package datastructure
 
 import java.util.*
 
