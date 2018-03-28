@@ -1,46 +1,35 @@
 package sort
 
-import util.prettyPrintln
 import util.swap
-import java.util.*
 
 fun IntArray.quickSort() {
 	quickSort(0, size - 1)
 }
 
 fun IntArray.quickSort(start: Int, end: Int) {
-	if (end > start) {
-		val mid = partition(1)
-		prettyPrintln()
+	if (start < end) {
+		val mid = partition(start, end)
 		quickSort(start, mid - 1)
 		quickSort(mid + 1, end)
 	}
 }
 
-fun IntArray.partition(idx: Int): Int {
+// pick A[end] as pivot naively
+fun IntArray.partition(start: Int, end: Int): Int {
 	val A = this
-	val n = size - 1
 
-	swap(idx, n)
-	var i = -1
-	var j = n
-	while (i < j) {
-		do {
+	val pivot = A[end]
+	var i = start - 1
+
+	for (j in start until end) {
+		if (this[j] <= pivot) {
 			i++
-		} while (i < j && A[i] < A[n])
-
-		do {
-			j--
-		} while (i < j && A[j] > A[n])
-
-		if (i < j) {
 			swap(i, j)
 		}
 	}
 
-	// now idx >= j
-	swap(i, n)
-	return i
+	swap(i + 1, end)
+	return i + 1
 }
 
 fun main(args: Array<String>) {
