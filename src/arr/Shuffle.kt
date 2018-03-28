@@ -1,6 +1,6 @@
 package arr
 
-import arr.sort.swap
+import sort.swap
 import java.util.*
 
 fun main(args: Array<String>) {

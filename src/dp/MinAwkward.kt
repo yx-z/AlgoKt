@@ -48,7 +48,7 @@ fun BinTreeNode<Tuple2<Int?, Int?>>.init(
 		dp: HashMap<BinTreeNode<Tuple2<Int?, Int?>>, OneArray<Array<Int>>>,
 		k: Int) {
 	dp[this] = OneArray(k) { Array(2) { INF } }
-	dp[this]!!.getterIndexOutOfBoundHandler = { Array(2) { 0 } }
+	dp[this]!!.getterIndexOutOfBoundsHandler = { Array(2) { 0 } }
 	left?.init(dp, k)
 	right?.init(dp, k)
 }

@@ -31,9 +31,9 @@ fun OneArray<OneArray<Int>>.maxPoint1(): Int {
 
 	// base case:
 	// dp(i, j) = 0 if i, j !in 1..n
-	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	dp.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		dp[i].getterIndexOutOfBoundHandler = { 0 }
+		dp[i].getterIndexOutOfBoundsHandler = { 0 }
 	}
 
 	// we want max_i, j { dp(i, j) }
@@ -80,13 +80,13 @@ fun OneArray<OneArray<Int>>.maxPoint2(): Int {
 
 	// base case:
 	// { D, L, R }[i, j] = 0 if i, j !in 1..n
-	D.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
-	L.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
-	R.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	D.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
+	L.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
+	R.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		D[i].getterIndexOutOfBoundHandler = { 0 }
-		L[i].getterIndexOutOfBoundHandler = { 0 }
-		R[i].getterIndexOutOfBoundHandler = { 0 }
+		D[i].getterIndexOutOfBoundsHandler = { 0 }
+		L[i].getterIndexOutOfBoundsHandler = { 0 }
+		R[i].getterIndexOutOfBoundsHandler = { 0 }
 	}
 
 	// recursive case:

@@ -26,7 +26,7 @@ class OneArray<T>(val size: Int) {
 	 * of type Int and return an instance of <T> class
 	 */
 	// one-indexed
-	var getterIndexOutOfBoundHandler: ((Int) -> T)? = null
+	var getterIndexOutOfBoundsHandler: ((Int) -> T)? = null
 	/**
 	 * a function that will be called when the array is being modified
 	 * in an invalid index
@@ -36,7 +36,7 @@ class OneArray<T>(val size: Int) {
 	 * and return Unit since setter method does not have a return value
 	 */
 	// one-indexed
-	var setterIndexOutOfBoundHandler: ((Int, T) -> Unit)? = null
+	var setterIndexOutOfBoundsHandler: ((Int, T) -> Unit)? = null
 
 	/**
 	 * constructor that constructs from a given array
@@ -54,22 +54,16 @@ class OneArray<T>(val size: Int) {
 	}
 
 	// accessing with ArrayIndexOutofBoundException handling
-	operator fun get(i: Int): T {
-		if (i in indices) {
-			return container[i - 1]
-		}
-
-		return getterIndexOutOfBoundHandler?.invoke(i)
-				?: throw ArrayIndexOutOfBoundsException()
+	operator fun get(i: Int) = when {
+		i in indices -> container[i - 1]
+		getterIndexOutOfBoundsHandler != null -> getterIndexOutOfBoundsHandler!!(i)
+		else -> throw ArrayIndexOutOfBoundsException()
 	}
 
-	operator fun set(i: Int, v: T) {
-		if (i in indices) {
-			container[i - 1] = v
-		} else {
-			setterIndexOutOfBoundHandler?.invoke(i, v)
-					?: throw ArrayIndexOutOfBoundsException()
-		}
+	operator fun set(i: Int, v: T) = when {
+		i in indices -> container[i - 1] = v
+		setterIndexOutOfBoundsHandler != null -> setterIndexOutOfBoundsHandler!!(i, v)
+		else -> throw ArrayIndexOutOfBoundsException()
 	}
 
 	// printing, i.e. toString()

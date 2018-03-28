@@ -92,7 +92,7 @@ fun OneArray<Double>.maxProd(): Double {
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.getterIndexOutOfBoundHandler = { 0.0 tu 0.0 }
+	dp.getterIndexOutOfBoundsHandler = { 0.0 tu 0.0 }
 	// dp(1) = max(0, A[1])
 	dp[1] = max(0.0, A[1]) tu min(0.0, A[1])
 

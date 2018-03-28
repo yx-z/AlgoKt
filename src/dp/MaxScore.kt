@@ -28,7 +28,7 @@ fun maxScore(Score: OneArray<Int>, Wait: OneArray<Int>): Int {
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.getterIndexOutOfBoundHandler = { 0 }
+	dp.getterIndexOutOfBoundsHandler = { 0 }
 	// dp(n) = Score[n]
 	dp[n] = Score[n]
 

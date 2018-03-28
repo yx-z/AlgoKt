@@ -53,9 +53,9 @@ fun OneArray<Int>.maxPoints(): Int {
 
 	// base case:
 	// dp(i, j) = 0 if i > j or i, j !in 1..n
-//	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+//	dp.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		dp[i].getterIndexOutOfBoundHandler = { 0 }
+		dp[i].getterIndexOutOfBoundsHandler = { 0 }
 	}
 	// dp(i, i) = C[i]
 	for (i in 1..n) {
@@ -102,11 +102,11 @@ fun OneArray<Int>.maxPointsPerfect(): Int {
 
 	// base case:
 	// dp(i, j) = (0, 0) if i > j or i, j !in 1..n
-	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 tu 0 } }
+	dp.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 tu 0 } }
 	// dp(i, i) = (i, C[i])
 	for (i in 1..n) {
 		dp[i, i] = i tu C[i]
-		dp[i].getterIndexOutOfBoundHandler = { 0 tu 0 }
+		dp[i].getterIndexOutOfBoundsHandler = { 0 tu 0 }
 	}
 	// time complextiy: O(n)
 
@@ -162,15 +162,15 @@ fun OneArray<Int>.maxPointsPerfect2(): Int {
 
 	// base case:
 	// self(i, j), oppo(i, j) = 0 if i, j !in 1..n or i > j
-	self.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
-	oppo.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	self.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
+	oppo.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
 	// self(i, i) = C[i]
 	// oppo(i, i) = 0
 	for (i in 1..n) {
 		self[i, i] = C[i]
 		oppo[i, i] = 0
-		self[i].getterIndexOutOfBoundHandler = { 0 }
-		oppo[i].getterIndexOutOfBoundHandler = { 0 }
+		self[i].getterIndexOutOfBoundsHandler = { 0 }
+		oppo[i].getterIndexOutOfBoundsHandler = { 0 }
 	}
 	// time complexity: O(n)
 
@@ -205,13 +205,13 @@ fun OneArray<Int>.maxPointsExpected(): Double {
 	// dp(i, j): max points I can get if I play first given C[i..j]
 	// memoization strucuture: 2d array dp[1..n, 1..n] : dp[i, j] = dp(i, j)
 	val dp = OneArray(n) { OneArray(n) { 0.0 } }
-	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0.0 } }
+	dp.getterIndexOutOfBoundsHandler = { OneArray(n) { 0.0 } }
 	// space complexity: O(n^2)
 
 	// base case:
 	// dp(i, j) = 0 if i > j or i, j !in 1..n
 	for (i in 1..n) {
-		dp[i].getterIndexOutOfBoundHandler = { 0.0 }
+		dp[i].getterIndexOutOfBoundsHandler = { 0.0 }
 	}
 	// dp(i, i) = C[i]
 	for (i in 1..n) {

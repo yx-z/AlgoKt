@@ -22,6 +22,8 @@ class MinHeap<T : Comparable<T>>(val capacity: Int) : Heap<T>() {
 	private val arr = OneArray<T?>(capacity) { null }
 	private var size = 0
 
+	init { arr.getterIndexOutOfBoundsHandler = { null } }
+
 	fun size() = size
 
 	override fun add(t: T) {
@@ -50,9 +52,7 @@ class MinHeap<T : Comparable<T>>(val capacity: Int) : Heap<T>() {
 	private fun heapifyUp(i: Int) {
 		var parent = i / 2
 		var curr = i
-		while (parent in arr.indices &&
-				curr in arr.indices &&
-				arr[parent] != null &&
+		while (arr[parent] != null &&
 				arr[curr] != null &&
 				arr[parent]!! > arr[curr]!!) {
 			swap(curr, parent)
@@ -65,16 +65,12 @@ class MinHeap<T : Comparable<T>>(val capacity: Int) : Heap<T>() {
 		var smallest = i
 		val left = 2 * i
 		val right = left + 1
-		if (smallest in arr.indices &&
-				left in arr.indices &&
-				arr[smallest] != null &&
+		if (arr[smallest] != null &&
 				arr[left] != null &&
 				arr[smallest]!! > arr[left]!!) {
 			smallest = left
 		}
-		if (smallest in arr.indices &&
-				right in arr.indices &&
-				arr[smallest] != null &&
+		if (arr[smallest] != null &&
 				arr[right] != null &&
 				arr[smallest]!! > arr[right]!!) {
 			smallest = right

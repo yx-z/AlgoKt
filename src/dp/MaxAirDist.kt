@@ -23,7 +23,7 @@ fun maxAirDist(Ramp: OneArray<Int>, Length: OneArray<Int>): Int {
 
 	// base case:
 	// dp(i) = 0 if i !in 1..n
-	dp.getterIndexOutOfBoundHandler = { 0 }
+	dp.getterIndexOutOfBoundsHandler = { 0 }
 	// dp(n) = Length[n]
 	dp[n] = Length[n]
 
@@ -73,9 +73,9 @@ fun maxAirDistKJumps(Ramp: OneArray<Int>, Length: OneArray<Int>, k: Int): Int {
 
 	// base case:
 	// dp(i, j) = 0 if i !in 1..n or j <= 0
-	dp.getterIndexOutOfBoundHandler = { OneArray(n) { 0 } }
+	dp.getterIndexOutOfBoundsHandler = { OneArray(n) { 0 } }
 	for (i in 1..n) {
-		dp[i].getterIndexOutOfBoundHandler = { 0 }
+		dp[i].getterIndexOutOfBoundsHandler = { 0 }
 	}
 	// dp(n, j) = Length[n] for all j in 1..k
 	for (j in 1..k) {
