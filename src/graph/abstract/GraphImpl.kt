@@ -69,7 +69,7 @@ class WeightedEdge<V, E>(vertex1: Vertex<V>, vertex2: Vertex<V>, isDirected: Boo
 		if (isDirected) {
 			"$vertex1 ---[$data]---> $vertex2"
 		} else {
-			"$vertex1 <---($data)---> $vertex2"
+			"$vertex1 <---[$data]---> $vertex2"
 		}
 	}
 
