@@ -1,5 +1,6 @@
 package graph.abstract
 
+import util.INF
 import util.Tuple2
 import util.min
 import util.tu
@@ -41,8 +42,8 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 // if we use a queue instead of minHeap in the above classic Dijkstra's Algorithm,
 // it will be called Shimbel's or Bellman-Ford's Alogrithm
 
-// but we can also do a DP version of Shimbel's algorithm
-fun <V> WeightedGraph<V, Int>.shimbelDP(s: Vertex<V>, t: Vertex<V>): Int {
+// but we can also do a DP version of Shimbel's i.e. Bellman-Ford's algorithm
+fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
 	val V = vertices.size
 	val INF = Int.MAX_VALUE / 2
 
@@ -80,10 +81,24 @@ fun <V> WeightedGraph<V, Int>.shimbelDP(s: Vertex<V>, t: Vertex<V>): Int {
 	return dp[V - 1][t]!!
 }
 
-// we can optimize the above algorithm by observing that we only need dp[i - 1]
-// to compute dp[i]
-// so we don't need dp[1 until V] instead, a single map containing previous
-// results is enough
+// and we can do even better as follows
+fun <V> WeightedGraph<V, Int>.bellmanFordOpt(s: Vertex<V>, t: Vertex<V>): Int {
+	val V = vertices.size
+
+	val dist = HashMap<Vertex<V>, Int>()
+	vertices.forEach { dist[it] = INF }
+	dist[s] = 0
+
+	for (i in 1 until V) {
+		weightedEdges.forEach {(u, v, _, d) ->
+			if (dist[v]!! > dist[u]!! + d!!) { // if edge is tense
+				dist[v] = dist[u]!! + d // relax the edge
+			}
+		}
+	}
+
+	return dist[t]!!
+}
 
 
 fun main(args: Array<String>) {
@@ -97,5 +112,6 @@ fun main(args: Array<String>) {
 			WeightedEdge(vertices[3], vertices[4], true, 1))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.dijkstra(vertices[0]).first[vertices[4]])
-	println(graph.shimbelDP(vertices[0], vertices[4]))
+	println(graph.bellmanFordDp(vertices[0], vertices[4]))
+	println(graph.bellmanFordOpt(vertices[0], vertices[4]))
 }

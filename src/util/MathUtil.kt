@@ -13,3 +13,9 @@ fun <T, R : Comparable<R>> maxBy(vararg ts: T, selector: (T) -> R) = ts.maxBy(se
 
 fun <T, R : Comparable<R>> minBy(vararg ts: T, selector: (T) -> R) = ts.minBy(selector)
 		?: throw NullPointerException("no minimum value")
+
+/**
+ * an Int that is large enough to represent infinity
+ * that can also prevents overflow comparing to some small perturbations
+ */
+const val INF = Int.MAX_VALUE / 2
