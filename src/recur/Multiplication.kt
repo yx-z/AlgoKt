@@ -21,31 +21,33 @@ fun mult(x: Int, y: Int): Long {
 }
 
 // x * y, each of which are n digit numbers
-fun karastuba(x: Int, y: Int, n: Int): Long {
+fun karastuba(x: Double, y: Double, n: Int): Double {
 	if (n == 1) {
-		return (x * y).toLong()
+		return (x * y)
 	}
 
-	val m = ceil(n / 2.0)
-	val p = pow(10.0, m)
-	val a = floor(x / p)
-	val b = x % p
-	val c = floor(y / p)
-	val d = y % p
-	val e = karastuba(a.toInt(), c.toInt(), m.toInt())
-	val f = karastuba(b.toInt(), d.toInt(), m.toInt())
-	val g = karastuba(b.toInt(), c.toInt(), m.toInt())
-	val h = karastuba(a.toInt(), d.toInt(), m.toInt())
-	return (p * p * e + p * (g + h) + f).toLong()
+	val m = ceil(n / 2.0).toInt()
+
+	val a = floor(x / pow(10.0, m.toDouble()))
+	val b = x % pow(10.0, m.toDouble())
+	val c = floor(y / pow(10.0, m.toDouble()))
+	val d = y % pow(10.0, m.toDouble())
+
+	val e = karastuba(a, c, m)
+	val f = karastuba(b, d, m)
+	val g = karastuba(a - b, c - d, m)
+
+	return (pow(10.0, 2.0 * m) * e + pow(10.0, m.toDouble()) * (e + f - g) + f)
 }
 
-fun main(args: Array<String>) {
-	val M1 = 12345
-	val M2 = 54321
 
-	val direct = time({ M1 * M2 } * 100)
-	val indirect = time({ mult(M1, M2) } * 100)
-	val karastuba = time({ karastuba(M1, M2, 5) * 100 })
+fun main(args: Array<String>) {
+	val M1 = 1234
+	val M2 = 4321
+
+	val direct = time({ M1 * M2 } * 1000)
+	val indirect = time({ mult(M1, M2) } * 1000)
+	val karastuba = time({ karastuba(M1.toDouble(), M2.toDouble(), 5) * 1000 })
 
 	println("direct method takes $direct ms")
 	println("indirect method takes $indirect ms")
