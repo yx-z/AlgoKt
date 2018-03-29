@@ -38,6 +38,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 
 	return dist tu parent
 }
+// time complexity: O(E log V)
 
 // if we use a queue instead of minHeap in the above classic Dijkstra's Algorithm,
 // it will be called Shimbel's or Bellman-Ford's Alogrithm
@@ -82,6 +83,7 @@ fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
 }
 
 // and we can do even better as follows
+// (not faster but more succinct)
 fun <V> WeightedGraph<V, Int>.bellmanFordOpt(s: Vertex<V>, t: Vertex<V>): Int {
 	val V = vertices.size
 
@@ -90,9 +92,16 @@ fun <V> WeightedGraph<V, Int>.bellmanFordOpt(s: Vertex<V>, t: Vertex<V>): Int {
 	dist[s] = 0
 
 	for (i in 1 until V) {
-		weightedEdges.forEach {(u, v, _, d) ->
+		weightedEdges.forEach { (u, v, isDirected, d) ->
 			if (dist[v]!! > dist[u]!! + d!!) { // if edge is tense
 				dist[v] = dist[u]!! + d // relax the edge
+			}
+			if (!isDirected) {
+				// if the graph is undirected
+				// relax the other edge if necessary
+				if (dist[u]!! > dist[v]!! + d) {
+					dist[u] = dist[v]!! + d
+				}
 			}
 		}
 	}

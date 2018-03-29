@@ -19,3 +19,8 @@ fun <T, R : Comparable<R>> minBy(vararg ts: T, selector: (T) -> R) = ts.minBy(se
  * that can also prevents overflow comparing to some small perturbations
  */
 const val INF = Int.MAX_VALUE / 2
+
+/**
+ * a Negative INFinity that serves for the similar purpose as the above
+ */
+const val N_INF = Int.MIN_VALUE / 2

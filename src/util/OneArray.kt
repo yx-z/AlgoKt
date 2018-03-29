@@ -200,6 +200,11 @@ class OneArray<T>(val size: Int) {
 	// one-indexed
 	fun indexOf(element: T): Int =
 			indices.filter { this[it] == element }.firstOrNull() ?: -1
+
+	// searching
+	fun last(predicate: (T) -> Boolean = { true }) = container.last(predicate)
+
+	fun first(predicate: (T) -> Boolean = { true }) = container.first(predicate)
 }
 
 // comparing elements in OneArray

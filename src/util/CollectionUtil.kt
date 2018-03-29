@@ -40,6 +40,18 @@ operator fun Array<Array<IntArray>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2
 
 operator fun <T> Array<Array<Array<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
 
+operator fun <T> List<MutableList<T>>.set(i1: Int, i2: Int, t: T) {
+	this[i1][i2] = t
+}
+
+operator fun <T, R> Map<T, MutableList<R>>.set(i1: T, i2: Int, r: R) {
+	this[i1]?.set(i2, r)
+}
+
+operator fun <T, R, S> Map<T, HashMap<R, S>>.set(i1: T, i2: R, s: S) {
+	this[i1]?.set(i2, s)
+}
+
 operator fun Array<Array<Array<IntArray>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
 
 operator fun <T> Array<Array<Array<Array<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
@@ -93,6 +105,12 @@ fun <T> Array<T>.swap(i1: Int, i2: Int) {
 }
 
 fun IntArray.swap(i1: Int, i2: Int) {
+	val tmp = this[i1]
+	this[i1] = this[i2]
+	this[i2] = tmp
+}
+
+fun <T> MutableList<T>.swap(i1: Int, i2: Int) {
 	val tmp = this[i1]
 	this[i1] = this[i2]
 	this[i2] = tmp
