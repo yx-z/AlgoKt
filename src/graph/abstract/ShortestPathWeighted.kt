@@ -25,11 +25,12 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 
 	while (minHeap.isNotEmpty()) {
 		val v = minHeap.remove()
-		getEdgesOf(v).forEach { (_, w, _, d) ->
-			if (dist[v]!! + d!! < dist[w]!!) {
-				dist[w] = dist[v]!! + d
-				parent[w] = v
-				minHeap.add(w)
+		getWeightedEdgesOf(v).forEach { (start, end, _, weight) ->
+			val u = if (start === v) end else start
+			if (dist[v]!! + weight!! < dist[u]!!) {
+				dist[u] = dist[v]!! + weight
+				parent[u] = v
+				minHeap.add(u)
 			}
 		}
 	}
