@@ -2,7 +2,6 @@ package graph.abstract
 
 import util.*
 import java.lang.Math.ceil
-import java.lang.Math.pow
 import kotlin.math.log
 
 // given a weighted graph with either negative, zero, or positive edges G = (V, E)

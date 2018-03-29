@@ -97,14 +97,22 @@ class WeightedEdge<V, E>(vertex1: Vertex<V>, vertex2: Vertex<V>, isDirected: Boo
 }
 
 open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<Edge<V>>) {
-	open fun getEdgesOf(vertex: Vertex<V>) =
+	open fun getEdgesOf(v: Vertex<V>) = getEdgesOf(v, true)
+
+	open fun getEdgesOf(v: Vertex<V>, checkIdentity: Boolean) =
 			edges.filter {
 				if (it.isDirected) {
-					it.vertex1 == vertex
+					if (checkIdentity) it.vertex1 === v else it.vertex1 == v
 				} else {
-					it.vertex1 == vertex || it.vertex2 == vertex
+					if (checkIdentity) it.vertex1 === v || it.vertex2 === v else it.vertex1 == v || it.vertex2 == v
 				}
 			}
+
+	open fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean = true) =
+			edges.filter { (s, _) -> if (checkIdentity) s === v else s == v }
+
+	open fun getEdgesTo(v: Vertex<V>, checkIdentity: Boolean = true) =
+			edges.filter { (_, e) -> if (checkIdentity) v === e else v == e }
 
 	override fun toString() = "V = $vertices\nE = $edges"
 }
@@ -114,14 +122,16 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
                                edges: Collection<Edge<V>> = weightedEdges)  // maintained only for inheritance
 	: Graph<V>(vertices, edges) {
 
-	override fun getEdgesOf(vertex: Vertex<V>) = getWeightedEdgesOf(vertex)
+	override fun getEdgesOf(v: Vertex<V>) = getWeightedEdgesOf(v)
 
-	fun getWeightedEdgesOf(vertex: Vertex<V>) =
+	override fun getEdgesOf(v: Vertex<V>, checkIdentity: Boolean) = getWeightedEdgesOf(v, checkIdentity)
+
+	fun getWeightedEdgesOf(v: Vertex<V>, checkIdentity: Boolean = true) =
 			weightedEdges.filter {
 				if (it.isDirected) {
-					it.vertex1 == vertex
+					if (checkIdentity) it.vertex1 === v else it.vertex1 == v
 				} else {
-					it.vertex1 == vertex || it.vertex2 == vertex
+					if (checkIdentity) it.vertex1 === v || it.vertex2 === v else it.vertex1 == v || it.vertex2 == v
 				}
 			}
 }
@@ -176,11 +186,11 @@ class AdjMatGraph<V>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, Boolean>>)
 		}.flatten()
 	}
 
-	override fun getEdgesOf(vertex: Vertex<V>) =
-			adjMat[vertex]!!
+	override fun getEdgesOf(v: Vertex<V>) =
+			adjMat[v]!!
 					.filterValues { it }
 					.map { (endVertex, _) ->
-						Edge(vertex, endVertex)
+						Edge(v, endVertex)
 					}
 }
 
@@ -204,9 +214,9 @@ class WeightedAdjListGraph<V, E>(var adjList: Map<Vertex<V>, List<Tuple2<E, Vert
 		}.flatten()
 	}
 
-	override fun getEdgesOf(vertex: Vertex<V>) =
-			adjList[vertex]!!.map { (data, endVertex) ->
-				WeightedEdge(vertex, endVertex, data = data)
+	override fun getEdgesOf(v: Vertex<V>) =
+			adjList[v]!!.map { (data, endVertex) ->
+				WeightedEdge(v, endVertex, data = data)
 			}
 }
 
@@ -235,10 +245,10 @@ class WeightedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 		}.flatten()
 	}
 
-	override fun getEdgesOf(vertex: Vertex<V>) =
-			adjMat[vertex]!!
+	override fun getEdgesOf(v: Vertex<V>) =
+			adjMat[v]!!
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeightedEdge(vertex, endVertex, data = data)
+						WeightedEdge(v, endVertex, data = data)
 					}
 }
