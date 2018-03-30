@@ -64,7 +64,30 @@ fun OneArray<Int>.target(): Tuple2<OneArray<Int>, OneArray<Int>> {
 	return L tu R
 }
 
+// 2. after shooting either of their target, some people die and others survive
+//    keep performing such "massacre" and only the shortest guy survives
+//    find # of rounds required to find the winner in O(n)
+fun OneArray<Int>.rounds(): Int {
+	val H = this
+	val n = size
+
+	if (n == 1) {
+		return 0
+	}
+
+	val survivors = ArrayList<Int>()
+	H.getterIndexOutOfBoundsHandler = { INF } // sentinel values
+	for (i in 1..n) {
+		if (H[i - 1] > H[i] && H[i] < H[i + 1]) { // H[i] is a local minimum
+			survivors.add(H[i])
+		}
+	}
+
+	return 1 + survivors.toOneArray().rounds()
+}
+
 fun main(args: Array<String>) {
 	val H = oneArrayOf(3, 8, 1, 6, 5, 7, 2, 4)
 	println(H.target())
+	println(H.rounds())
 }
