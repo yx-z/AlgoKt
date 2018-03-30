@@ -168,8 +168,10 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
-	// note that this array is ZERO-indexed
+	// note that the following two data strucutures are ZERO-indexed
 	fun toArray() = Arrays.copyOf(container, size)
+
+	fun toList() = toArray().toList()
 
 	// sizing
 	fun isEmpty() = size <= 0
@@ -206,6 +208,9 @@ class OneArray<T>(val size: Int) {
 
 	fun first(predicate: (T) -> Boolean = { true }) = container.first(predicate)
 }
+
+inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
+		listOf(this.toList(), that.toList()).flatten().toOneArray()
 
 // comparing elements in OneArray
 fun <T : Comparable<T>> OneArray<T>.max(): T? {
