@@ -50,7 +50,21 @@ class OneArray<T>(val size: Int) {
 	 * constructor that accepts an initialization method transforming index into <T>
 	 */
 	constructor(size: Int, init: (Int) -> T) : this(size) {
-		indices.forEach { this[it] = init(it) }
+		set(init)
+	}
+
+	/**
+	 * constructor that is able to initialize all public properties
+	 */
+	constructor(size: Int,
+	            set: ((Int, T) -> Unit)? = null, // setHandler as the 2nd parameter avoids duplicate signature with this(size, init)
+	            get: ((Int) -> T)? = null, // since we see that getHandler has the same method signature as init
+	            init: ((Int) -> T)? = null) : this(size) {
+		if (init != null) {
+			set(init)
+		}
+		getterIndexOutOfBoundsHandler = get
+		setterIndexOutOfBoundsHandler = set
 	}
 
 	// accessing with ArrayIndexOutofBoundException handling
@@ -64,6 +78,11 @@ class OneArray<T>(val size: Int) {
 		i in indices -> container[i - 1] = v
 		setterIndexOutOfBoundsHandler != null -> setterIndexOutOfBoundsHandler!!(i, v)
 		else -> throw ArrayIndexOutOfBoundsException()
+	}
+
+	// functional setter
+	fun set(func: (Int) -> T) {
+		indices.forEach { this[it] = func(it) }
 	}
 
 	// printing, i.e. toString()
@@ -340,14 +359,68 @@ operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
 operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
 
+// some default handlers
+val INT_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { 0 }
+
+val BOOLEAN_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { false }
+
+val CHAR_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { 0 }
+
+val STRING_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { "" }
+
+val DEFAULT_STTER_INDEX_OUT_OF_BOUNDS_HANDLER = { }
+
 // python-like indexing for multi-dimensional arrays
-operator fun <T> OneArray<OneArray<T>>.get(i1: Int, i2: Int) = this[i1][i2]
+operator fun <T> OneArray<OneArray<T>>.get(i1: Int,
+                                           i2: Int,
+                                           getHandler: ((Int, Int) -> T)? = null) =
+		if (getHandler != null && (i1 !in indices || i2 !in this[i1].indices)) {
+			getHandler(i1, i2)
+		} else {
+			this[i1][i2] // may throw ArrayIndexOutOfBoundsException
+		}
 
-operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) = this[i1][i2][i3]
+operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int,
+                                                     i2: Int,
+                                                     i3: Int,
+                                                     getHandler: ((Int, Int, Int) -> T)? = null) =
+		if (getHandler != null && (i1 !in indices ||
+						i2 !in this[i1].indices ||
+						i3 !in this[i1][i2].indices)) {
+			getHandler(i1, i2, i3)
+		} else {
+			this[i1][i2][i3]
+		}
 
-operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
+operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int,
+                                                               i2: Int,
+                                                               i3: Int,
+                                                               i4: Int,
+                                                               getHandler: ((Int, Int, Int, Int) -> T)? = null) =
+		if (getHandler != null && (i1 !in indices ||
+						i2 !in this[i1].indices ||
+						i3 !in this[i1][i2].indices ||
+						i4 !in this[i1][i2][i3].indices)) {
+			getHandler(i1, i2, i3, i4)
+		} else {
+			this[i1][i2][i3][i4]
+		}
 
-operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int) = this[i1][i2][i3][i4][i5]
+operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.get(i1: Int,
+                                                                         i2: Int,
+                                                                         i3: Int,
+                                                                         i4: Int,
+                                                                         i5: Int,
+                                                                         getHandler: ((Int, Int, Int, Int, Int) -> T)? = null) =
+		if (getHandler != null && (i1 !in indices ||
+						i2 !in this[i1].indices ||
+						i3 !in this[i1][i2].indices ||
+						i4 !in this[i1][i2][i3].indices ||
+						i5 !in this[i1][i2][i3][i4].indices)) {
+			getHandler(i1, i2, i3, i4, i5)
+		} else {
+			this[i1][i2][i3][i4][i5]
+		}
 
 operator fun <T> OneArray<OneArray<T>>.set(i1: Int, i2: Int, v: T) {
 	this[i1][i2] = v

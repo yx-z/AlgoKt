@@ -3,8 +3,10 @@ package dp
 import util.get
 
 // given an array of look-up frequencies of some sorted array
-// find the minimum cost for all look-ups
-// where cost = sum over all nodes (# of ancestors * freq)  [one's ancestor includes itself]
+// find the minimum cost for all look-ups if the sorted array is stored as a
+// binary search tree (the sorted key values is actually irrelevant to this problem!
+
+// cost = sum over all nodes (# of ancestors * freq)  [one's ancestor includes itself]
 fun main(args: Array<String>) {
 	val freq = intArrayOf(5, 8, 2, 1, 9, 5)
 	println(freq.bstCost())

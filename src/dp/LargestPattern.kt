@@ -25,13 +25,17 @@ fun OneArray<OneArray<Int>>.largestPattern(): Int {
 	// dp(i, j, p, q, h): max width w : h * w subarrays are identical
 	// memoization structure: 5d array dp[1..n, 1..n, 1..n, 1..n, 1..n]
 	val dp = OneArray(n + 1) { OneArray(n + 1) { OneArray(n + 1) { OneArray(n + 1) { OneArray(n) { 0 } } } } }
+	// space complexity: O(n^5)
 
 	var max = 0
+	// evaluation order: h has to be 1 to n since entries in h - 1 are required
+	// there is no specific evaluation order for i, j, p, q
 	for (h in 1..n) {
 		for (i in 1..n) {
 			for (j in 1..n + 1) {
 				for (p in 1..n) {
 					for (q in 1..n + 1) {
+						// different cases
 						val curr = when {
 							i == p && j == q -> N_INF
 							j > n || q > n -> 0
@@ -40,14 +44,17 @@ fun OneArray<OneArray<Int>>.largestPattern(): Int {
 							else -> min(dp[i, j, p, q, 1], dp[i + 1, j, p + 1, q, h - 1])
 						}
 						dp[i, j, p, q, h] = curr
+
+						// maintain a max here
 						if (curr > 0) {
-							max = max(max, curr)
+							max = max(max, curr * h)
 						}
 					}
 				}
 			}
 		}
 	}
+	// time complexity: O(n^5)
 	return max
 }
 
