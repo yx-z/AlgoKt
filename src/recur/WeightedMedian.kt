@@ -27,7 +27,7 @@ fun OneArray<Tuple2<Int, Int>>.weightedMedian(targetWeight: Int = map { it.secon
 	}
 }
 
-// same partition as in QuickSelect
+// similar partition method to the one in QuickSelect
 fun OneArray<Tuple2<Int, Int>>.partitionTuple(idx: Int) {
 	val A = this
 	val n = size

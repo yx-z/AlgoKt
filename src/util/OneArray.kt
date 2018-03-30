@@ -347,6 +347,8 @@ operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int, i2: Int, i3: Int) 
 
 operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int) = this[i1][i2][i3][i4]
 
+operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.get(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int) = this[i1][i2][i3][i4][i5]
+
 operator fun <T> OneArray<OneArray<T>>.set(i1: Int, i2: Int, v: T) {
 	this[i1][i2] = v
 }
@@ -357,4 +359,8 @@ operator fun <T> OneArray<OneArray<OneArray<T>>>.set(i1: Int, i2: Int, i3: Int, 
 
 operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, v: T) {
 	this[i1][i2][i3][i4] = v
+}
+
+operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, v: T) {
+	this[i1][i2][i3][i4][i5] = v
 }
