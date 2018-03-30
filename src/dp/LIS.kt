@@ -1,3 +1,5 @@
+import util.OneArray
+import util.max
 import java.util.*
 
 // Longest Increasing Subsequence
@@ -40,10 +42,23 @@ fun lenLISDP2(arr: Array<Int>): Int {
 	val dp = IntArray(len)
 	var lenMax = 0
 	for (i in (len - 1) downTo 0) {
-		dp[i] = 1 + (dp.filterIndexed { j, _ -> j > i && arr[j] > arr[i] }.max() ?: 0)
+		dp[i] = 1 + (dp.filterIndexed { j, _ -> j > i && arr[j] > arr[i] }.max()
+				?: 0)
 		lenMax = maxOf(dp[i], lenMax)
 	}
 	return lenMax
+}
+
+// succinct LIS implementation for OneArray
+// the algorithm is the same, but i just want to show how expressive Kotlin is!
+fun OneArray<Int>.lis(): Int {
+	val dp = OneArray(size) { 0 }
+	for (i in size downTo 1)
+		dp[i] = 1 + ((i + 1..size)
+				.filter { this[it] > this[i] }
+				.map { dp[it] }
+				.max() ?: 0)
+	return dp.max() ?: 0
 }
 
 // yet another DP with O(N^2)
