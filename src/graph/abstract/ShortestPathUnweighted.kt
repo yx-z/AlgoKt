@@ -3,7 +3,7 @@ package graph.abstract
 import java.util.*
 import kotlin.collections.HashMap
 
-fun <V> Graph<V>.bfs(start: Vertex<V>): Map<Vertex<V>, Vertex<V>?> {
+fun <V> Graph<V>.bfs(start: Vertex<V>, checkIdentity: Boolean = true): Map<Vertex<V>, Vertex<V>?> {
 	val marked = HashMap<Vertex<V>, Boolean>()
 	val parent = HashMap<Vertex<V>, Vertex<V>?>()
 	vertices.forEach {
@@ -19,7 +19,7 @@ fun <V> Graph<V>.bfs(start: Vertex<V>): Map<Vertex<V>, Vertex<V>?> {
 
 		if (marked[vertex] == false) {
 			marked[vertex] = true
-			getEdgesOf(vertex).forEach {
+			getEdgesOf(vertex, checkIdentity).forEach {
 				queue.add(it.vertex2)
 				if (parent[it.vertex2] == null) {
 					parent[it.vertex2] = vertex

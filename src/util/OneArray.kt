@@ -373,9 +373,10 @@ val DEFAULT_STTER_INDEX_OUT_OF_BOUNDS_HANDLER = { }
 // python-like indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int,
                                            i2: Int,
-                                           getHandler: ((Int, Int) -> T)? = null) =
-		if (getHandler != null && (i1 !in indices || i2 !in this[i1].indices)) {
-			getHandler(i1, i2)
+                                           handler: ((Int, Int) -> T)? = null) =
+		if (handler != null && (i1 !in indices ||
+						i2 !in this[i1].indices)) {
+			handler(i1, i2)
 		} else {
 			this[i1][i2] // may throw ArrayIndexOutOfBoundsException
 		}
@@ -383,11 +384,11 @@ operator fun <T> OneArray<OneArray<T>>.get(i1: Int,
 operator fun <T> OneArray<OneArray<OneArray<T>>>.get(i1: Int,
                                                      i2: Int,
                                                      i3: Int,
-                                                     getHandler: ((Int, Int, Int) -> T)? = null) =
-		if (getHandler != null && (i1 !in indices ||
+                                                     handler: ((Int, Int, Int) -> T)? = null) =
+		if (handler != null && (i1 !in indices ||
 						i2 !in this[i1].indices ||
 						i3 !in this[i1][i2].indices)) {
-			getHandler(i1, i2, i3)
+			handler(i1, i2, i3)
 		} else {
 			this[i1][i2][i3]
 		}
@@ -396,12 +397,12 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.get(i1: Int,
                                                                i2: Int,
                                                                i3: Int,
                                                                i4: Int,
-                                                               getHandler: ((Int, Int, Int, Int) -> T)? = null) =
-		if (getHandler != null && (i1 !in indices ||
+                                                               handler: ((Int, Int, Int, Int) -> T)? = null) =
+		if (handler != null && (i1 !in indices ||
 						i2 !in this[i1].indices ||
 						i3 !in this[i1][i2].indices ||
 						i4 !in this[i1][i2][i3].indices)) {
-			getHandler(i1, i2, i3, i4)
+			handler(i1, i2, i3, i4)
 		} else {
 			this[i1][i2][i3][i4]
 		}
@@ -411,13 +412,13 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.get(i1: Int
                                                                          i3: Int,
                                                                          i4: Int,
                                                                          i5: Int,
-                                                                         getHandler: ((Int, Int, Int, Int, Int) -> T)? = null) =
-		if (getHandler != null && (i1 !in indices ||
+                                                                         handler: ((Int, Int, Int, Int, Int) -> T)? = null) =
+		if (handler != null && (i1 !in indices ||
 						i2 !in this[i1].indices ||
 						i3 !in this[i1][i2].indices ||
 						i4 !in this[i1][i2][i3].indices ||
 						i5 !in this[i1][i2][i3][i4].indices)) {
-			getHandler(i1, i2, i3, i4, i5)
+			handler(i1, i2, i3, i4, i5)
 		} else {
 			this[i1][i2][i3][i4][i5]
 		}
