@@ -67,21 +67,13 @@ fun OneArray<OneArray<Int>>.minSteps(): Int {
 	val M = this
 	val n = size
 
-	// define start and end vertices
-	var start: Vertex<Tuple2<Int, Int>>? = null
-	var end: Vertex<Tuple2<Int, Int>>? = null
-
-	// define all vertices
+	// define vertices
 	val vertices = HashSet<Vertex<Tuple2<Int, Int>>>()
 	// space complexity: O(n^2)
 	for (i in 1..n) {
 		for (j in 1..n) {
 			if (M[i, j] == 0) {
 				val v = Vertex(i tu j)
-				when {
-					i == 1 && j == 1 -> start = v
-					i == n && j == n -> end = v
-				}
 				vertices.add(v)
 			}
 		}
@@ -118,12 +110,13 @@ fun OneArray<OneArray<Int>>.minSteps(): Int {
 	// define graph
 	val graph = Graph(vertices, edges)
 	// run BFS to find the shortest path from start
-	val map = graph.bfs(start!!, false)
+	val map = graph.bfs(Vertex(0 tu 0), false)
 	// time complexity: O(n^4)
 
 	// count # of edges from end to start
+	var end = Vertex(n tu n)
 	var count = 0
-	while (end !== start) {
+	while (end !== Vertex(0 tu 0)) {
 		end = map[end]!!
 		count++
 	}

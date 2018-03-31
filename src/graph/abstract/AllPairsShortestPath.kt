@@ -1,6 +1,9 @@
 package graph.abstract
 
-import util.*
+import util.INF
+import util.get
+import util.min
+import util.set
 import java.lang.Math.ceil
 import kotlin.math.log
 
@@ -41,7 +44,7 @@ fun <V> WeightedGraph<V, Int>.allPairsShortestPathDivideAndConquer()
 				map[u, v] = when {
 					u === v -> 0
 					getWeightedEdgesOf(u)
-							.any { (s, e) -> s === v || e === v} -> {
+							.any { (s, e) -> s === v || e === v } -> {
 						getWeightedEdgesOf(u)
 								.filter { (s, e) -> s === v || e === v }
 								.map { it.data!! }
@@ -67,16 +70,44 @@ fun <V> WeightedGraph<V, Int>.allPairsShortestPathDivideAndConquer()
 }
 // time complexity: O(V^3 log V)
 
+// warshall's algorithm
+fun <V> WeightedGraph<V, Int>.warshall(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
+	val dist = HashMap<Vertex<V>, HashMap<Vertex<V>, Int>>()
+	vertices.forEach { u ->
+		dist[u] = HashMap()
+		vertices.forEach { v ->
+			dist[u, v] = if (u === v) {
+				0
+			} else {
+				getWeightedEdgesOf(u)
+						.firstOrNull { (_, e) -> e === v }?.data ?: INF
+			}
+		}
+	}
+
+	vertices.forEach { r ->
+		vertices.forEach { u ->
+			vertices.forEach { v ->
+				dist[u, v] = min(dist[u, v]!!, dist[u, r]!! + dist[r, v]!!)
+			}
+		}
+	}
+
+	return dist
+}
+// time complexity: O(V^3)
+
 fun main(args: Array<String>) {
 	val vertices = (1..5).map { ComparableVertex(it) }
 	val edges = setOf(
-			WeightedEdge(vertices[0], vertices[1], data = 1),
-			WeightedEdge(vertices[0], vertices[3], data = 3),
-			WeightedEdge(vertices[1], vertices[2], data = 1),
-			WeightedEdge(vertices[2], vertices[3], data = 2),
-			WeightedEdge(vertices[2], vertices[4], data = 3),
-			WeightedEdge(vertices[3], vertices[4], data = 1))
+			WeightedEdge(vertices[0], vertices[1], true, 1),
+			WeightedEdge(vertices[0], vertices[3], true, 3),
+			WeightedEdge(vertices[1], vertices[2], true, 1),
+			WeightedEdge(vertices[2], vertices[3], true, 2),
+			WeightedEdge(vertices[2], vertices[4], true, 3),
+			WeightedEdge(vertices[3], vertices[4], true, 1))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.bellmanFordAll())
 	println(graph.allPairsShortestPathDivideAndConquer())
+	println(graph.warshall())
 }
