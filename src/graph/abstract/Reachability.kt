@@ -1,13 +1,20 @@
 package graph.abstract
 
-import util.*
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
+import kotlin.collections.Set
+import kotlin.collections.forEach
+import kotlin.collections.isNotEmpty
+import kotlin.collections.listOf
+import kotlin.collections.map
+import kotlin.collections.mapOf
+import kotlin.collections.set
 
 // given a graph as an adjacency list and a starting point
 // return a set of spanning tree (that is reachable vertices) of it
 fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
+                                     checkIdentity: Boolean = true,
                                      marked: HashMap<Vertex<V>, Boolean>? = null)
 		: Set<Vertex<V>> {
 	var marked = marked
@@ -28,19 +35,19 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 		if (marked[vertex] == false) {
 			marked[vertex] = true
 			reachableVertices.add(vertex)
-			bag.addAll(getEdgesOf(vertex).map { it.vertex2 })
+			bag.addAll(getEdgesOf(vertex, checkIdentity).map { it.vertex2 })
 		}
 	}
 
 	return reachableVertices
 }
 
-fun <V> Graph<V>.whateverFirstSearchAll() {
+fun <V> Graph<V>.whateverFirstSearchAll(checkIdentity: Boolean = true) {
 	val marked = HashMap<Vertex<V>, Boolean>()
 	vertices.forEach { marked[it] = false }
 	vertices.forEach {
 		if (marked[it] == false) {
-			println(whateverFirstSearch(it, marked))
+			println(whateverFirstSearch(it, checkIdentity, marked))
 		}
 	}
 }

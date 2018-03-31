@@ -11,7 +11,7 @@ import kotlin.collections.HashMap
 // find the shortest path with min weight from s to all other vertices
 // assume the weights are all positive ints
 
-fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
+fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>, checkIdentity: Boolean = true)
 		: Tuple2<Map<Vertex<V>, Int>, Map<Vertex<V>, Vertex<V>?>> {
 	val dist = HashMap<Vertex<V>, Int>()
 	val parent = HashMap<Vertex<V>, Vertex<V>?>()
@@ -26,8 +26,8 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 
 	while (minHeap.isNotEmpty()) {
 		val v = minHeap.remove()
-		getWeightedEdgesOf(v).forEach { (start, end, _, weight) ->
-			val u = if (start === v) end else start
+		getWeightedEdgesOf(v, checkIdentity).forEach { (start, end, isDirected, weight) ->
+			val u = if (isDirected || start == v) end else start
 			if (dist[v]!! + weight!! < dist[u]!!) {
 				dist[u] = dist[v]!! + weight
 				parent[u] = v
@@ -44,9 +44,10 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 // it will be called Shimbel's or Bellman-Ford's Algorithm
 
 // but we can also do a DP version of Shimbel's i.e. Bellman-Ford's algorithm
-fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
+fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>,
+                                            t: Vertex<V>,
+                                            checkIdentity: Boolean = true): Int {
 	val V = vertices.size
-	val INF = Int.MAX_VALUE / 2
 
 	// dp(i, v): shortest distance from s to v consisting of at most i edges
 	// memoization structure: array of maps dp[1 until V, vertices ] : dp[i, v] = dp(i, v)
@@ -70,7 +71,13 @@ fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
 		vertices.forEach { v ->
 			dp[i][v] = dp[i - 1][v]!!
 			weightedEdges
-					.filter { (_, e) -> e === v } // get all edges to v
+					.filter { (s, e, isDirected) ->
+						if (isDirected) {
+							if (checkIdentity) e === v else e == v
+						} else {
+							if (checkIdentity) s === v || e === v else s == v || e == v
+						}
+					} // get all edges to v
 					.forEach { (u, _, _, d) ->
 						dp[i][v] = min(dp[i][v]!!, dp[i - 1][u]!! + d!!)
 					}

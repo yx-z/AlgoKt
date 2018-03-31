@@ -5,7 +5,7 @@ import util.OneArray
 import util.toOneArray
 
 // topological sort of a directed acyclic graph (dag)
-fun <V> Graph<V>.topoSort(): OneArray<Vertex<V>> {
+fun <V> Graph<V>.topoSort(checkIdentity: Boolean = true): OneArray<Vertex<V>> {
 	val sorted = ArrayList<Vertex<V>>()
 
 	val status = HashMap<Vertex<V>, Status>()
@@ -15,7 +15,7 @@ fun <V> Graph<V>.topoSort(): OneArray<Vertex<V>> {
 
 	vertices.forEach {
 		if (status[it] == NEW) {
-			clock = topoSort(it, status, clock, sorted)
+			clock = topoSort(it, status, clock, sorted, checkIdentity)
 		}
 	}
 
@@ -25,14 +25,15 @@ fun <V> Graph<V>.topoSort(): OneArray<Vertex<V>> {
 private fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
                                   status: HashMap<Vertex<V>, Status>,
                                   clock: Int,
-                                  list: ArrayList<Vertex<V>>): Int {
+                                  list: ArrayList<Vertex<V>>,
+                                  checkIdentity: Boolean): Int {
 	var counter = clock
 	status[vertex] = ACTIVE
-	getEdgesOf(vertex, false).forEach { (_, u) ->
+	getEdgesOf(vertex, checkIdentity).forEach { (_, u) ->
 		when (status[u]) {
-			NEW -> counter = topoSort(u, status, counter, list)
-			ACTIVE -> {
-				throw CycleDetectedException()
+			NEW -> counter = topoSort(u, status, counter, list, checkIdentity)
+			ACTIVE -> throw CycleDetectedException()
+			else -> {
 			}
 		}
 	}

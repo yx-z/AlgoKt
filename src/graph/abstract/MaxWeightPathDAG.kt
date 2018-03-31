@@ -4,7 +4,9 @@ import util.max
 
 // find a path in a directed acyclic graph that has max weight from s to t
 // report the total weight of such path
-fun <V> WeightedGraph<V, Int>.maxWeightedPath(s: Vertex<V>, t: Vertex<V>): Int {
+fun <V> WeightedGraph<V, Int>.maxWeightedPath(s: Vertex<V>,
+                                              t: Vertex<V>,
+                                              checkIdentity: Boolean = true): Int {
 	val dp = HashMap<Vertex<V>, Int>()
 	val sortedVertices = topoSort()
 	sortedVertices.reversed().forEach { v ->
@@ -12,7 +14,7 @@ fun <V> WeightedGraph<V, Int>.maxWeightedPath(s: Vertex<V>, t: Vertex<V>): Int {
 			dp[v] = 0
 		} else {
 			dp[v] = Int.MIN_VALUE
-			getWeightedEdgesOf(v).forEach { edge ->
+			getWeightedEdgesOf(v, checkIdentity).forEach { edge ->
 				val (_, w) = edge
 				dp[v] = max(dp[v]!!, (edge.data ?: 0) + dp[w]!!)
 			}
