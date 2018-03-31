@@ -1,9 +1,6 @@
 package graph.abstract
 
-import util.INF
-import util.get
-import util.min
-import util.set
+import util.*
 import java.lang.Math.ceil
 import kotlin.math.log
 
@@ -70,7 +67,50 @@ fun <V> WeightedGraph<V, Int>.allPairsShortestPathDivideAndConquer()
 }
 // time complexity: O(V^3 log V)
 
-// warshall's algorithm
+// warshall's dp
+// given G = (V, E), number all vertices from 1 to |V|
+// consider dp[1..V, 1..V, 0 until V] : dp[u, v, r] is the shortest distance from
+// u to v with intermediate vertices having index at most r
+// for example dp[u, v, 0] is the shortest distance from u to v with NO
+// intermediate vertices (since no vertex has an index <= 0)
+fun <V> WeightedGraph<V, Int>.warshallDP(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
+	val vArr = vertices.toOneArray()
+	val V = vertices.size
+	val dp = OneArray(V) { OneArray(V) { Array(V) { 0 } } }
+	// space complexity: O(V^3)
+
+	for (u in 1..V) {
+		for (v in 1..V) {
+			dp[u, v][0] = if (u == v) {
+				0
+			} else {
+				getWeightedEdgesOf(vArr[u])
+						.firstOrNull { (_, e) -> e === vArr[v] }?.data ?: INF
+			}
+		}
+	}
+
+	for (r in 1 until V) {
+		for (u in 1..V) {
+			for (v in 1..V) {
+				dp[u, v][r] = min(dp[u, v][r - 1], dp[u, r][r - 1] + dp[r, v][r - 1])
+			}
+		}
+	}
+
+	val dist = HashMap<Vertex<V>, HashMap<Vertex<V>, Int>>()
+	for (u in 1..V) {
+		dist[vArr[u]] = HashMap()
+		for (v in 1..V) {
+			dist[vArr[u], vArr[v]] = dp[u, v][V - 1]
+		}
+	}
+	return dist
+}
+// time complexity: O(V^3)
+
+// but we can do better as we have done from bellmanFordDP to bellmanFord!
+// warshall's final algorithm
 fun <V> WeightedGraph<V, Int>.warshall(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
 	val dist = HashMap<Vertex<V>, HashMap<Vertex<V>, Int>>()
 	vertices.forEach { u ->
@@ -109,5 +149,6 @@ fun main(args: Array<String>) {
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.bellmanFordAll())
 	println(graph.allPairsShortestPathDivideAndConquer())
+	println(graph.warshallDP())
 	println(graph.warshall())
 }
