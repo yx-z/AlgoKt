@@ -41,7 +41,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 // time complexity: O(E log V)
 
 // if we use a queue instead of minHeap in the above classic Dijkstra's Algorithm,
-// it will be called Shimbel's or Bellman-Ford's Alogrithm
+// it will be called Shimbel's or Bellman-Ford's Algorithm
 
 // but we can also do a DP version of Shimbel's i.e. Bellman-Ford's algorithm
 fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
