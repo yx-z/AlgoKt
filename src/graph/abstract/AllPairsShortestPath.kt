@@ -14,7 +14,7 @@ fun <V> WeightedGraph<V, Int>.bellmanFordAll()
 	vertices.forEach { u ->
 		ret[u] = HashMap()
 		vertices.forEach { v ->
-			ret[u, v] = bellmanFordOpt(u, v)
+			ret[u, v] = bellmanFord(u, v)
 		}
 	}
 	return ret

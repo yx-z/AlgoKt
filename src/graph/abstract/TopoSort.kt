@@ -22,13 +22,13 @@ fun <V> Graph<V>.topoSort(): OneArray<Vertex<V>> {
 	return sorted.toOneArray()
 }
 
-fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
-                          status: HashMap<Vertex<V>, Status>,
-                          clock: Int,
-                          list: ArrayList<Vertex<V>>): Int {
+private fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
+                                  status: HashMap<Vertex<V>, Status>,
+                                  clock: Int,
+                                  list: ArrayList<Vertex<V>>): Int {
 	var counter = clock
 	status[vertex] = ACTIVE
-	getEdgesOf(vertex).forEach { (_, u) ->
+	getEdgesOf(vertex, false).forEach { (_, u) ->
 		when (status[u]) {
 			NEW -> counter = topoSort(u, status, counter, list)
 			ACTIVE -> {

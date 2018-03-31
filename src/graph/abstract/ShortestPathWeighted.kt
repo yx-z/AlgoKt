@@ -16,7 +16,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>)
 	val dist = HashMap<Vertex<V>, Int>()
 	val parent = HashMap<Vertex<V>, Vertex<V>?>()
 	vertices.forEach {
-		dist[it] = Int.MAX_VALUE
+		dist[it] = INF
 		parent[it] = null
 	}
 	dist[s] = 0
@@ -70,7 +70,7 @@ fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
 		vertices.forEach { v ->
 			dp[i][v] = dp[i - 1][v]!!
 			weightedEdges
-					.filter { (s, e) -> e === v } // get all edges to v
+					.filter { (_, e) -> e === v } // get all edges to v
 					.forEach { (u, _, _, d) ->
 						dp[i][v] = min(dp[i][v]!!, dp[i - 1][u]!! + d!!)
 					}
@@ -84,7 +84,7 @@ fun <V> WeightedGraph<V, Int>.bellmanFordDp(s: Vertex<V>, t: Vertex<V>): Int {
 
 // and we can do even better as follows
 // (not faster but more succinct)
-fun <V> WeightedGraph<V, Int>.bellmanFordOpt(s: Vertex<V>, t: Vertex<V>): Int {
+fun <V> WeightedGraph<V, Int>.bellmanFord(s: Vertex<V>, t: Vertex<V>): Int {
 	val V = vertices.size
 
 	val dist = HashMap<Vertex<V>, Int>()
@@ -122,5 +122,5 @@ fun main(args: Array<String>) {
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.dijkstra(vertices[0]).first[vertices[4]])
 	println(graph.bellmanFordDp(vertices[0], vertices[4]))
-	println(graph.bellmanFordOpt(vertices[0], vertices[4]))
+	println(graph.bellmanFord(vertices[0], vertices[4]))
 }
