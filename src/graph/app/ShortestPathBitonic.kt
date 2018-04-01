@@ -21,8 +21,8 @@ fun WeightedGraph<Int, Int>.shortestPathBitonic(s: ComparableVertex<Int>,
 fun main(args: Array<String>) {
 	val vertices = (1..3).map { ComparableVertex(it) }
 	val edges = setOf(
-			WeightedEdge(ComparableVertex(1), ComparableVertex(3), data = 1),
-			WeightedEdge(ComparableVertex(3), ComparableVertex(2), data = 1))
+			WeightedEdge(ComparableVertex(1), ComparableVertex(3), weight = 1),
+			WeightedEdge(ComparableVertex(3), ComparableVertex(2), weight = 1))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.shortestPathBitonic(ComparableVertex(1), ComparableVertex(2), false))
 }

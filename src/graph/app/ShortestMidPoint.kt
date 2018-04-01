@@ -19,12 +19,12 @@ fun <V> WeightedGraph<V, Int>.shortestMidPoint(s: Vertex<V>, t: Vertex<V>): Int 
 fun main(args: Array<String>) {
 	val vertices = (0..4).map { ComparableVertex(it) }
 	val edges = setOf(
-			WeightedEdge(vertices[0], vertices[1], data = 3),
-			WeightedEdge(vertices[0], vertices[3], data = 1),
-			WeightedEdge(vertices[1], vertices[2], data = 1),
-			WeightedEdge(vertices[2], vertices[3], data = 2),
-			WeightedEdge(vertices[2], vertices[4], data = 3),
-			WeightedEdge(vertices[3], vertices[4], data = 1))
+			WeightedEdge(vertices[0], vertices[1], weight = 3),
+			WeightedEdge(vertices[0], vertices[3], weight = 1),
+			WeightedEdge(vertices[1], vertices[2], weight = 1),
+			WeightedEdge(vertices[2], vertices[3], weight = 2),
+			WeightedEdge(vertices[2], vertices[4], weight = 3),
+			WeightedEdge(vertices[3], vertices[4], weight = 1))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.shortestMidPoint(vertices[0], vertices[4]))
 }

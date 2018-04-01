@@ -33,7 +33,7 @@ fun <V> LoopedBinTree<V>.shortestPath(s: Vertex<V>, t: Vertex<V>): Int {
 	queue1.add(root)
 	while (queue1.isNotEmpty()) {
 		val v = queue1.remove()
-		getWeightedEdgesOf(v).forEach { (_, e, _, w) ->
+		getEdgesOf(v).forEach { (_, e, _, w) ->
 			if (e !== root) {
 				down[e] = w!! + down[v]!!
 				queue1.add(e)
@@ -60,7 +60,7 @@ fun <V> LoopedBinTree<V>.shortestPath(s: Vertex<V>, t: Vertex<V>): Int {
 			return d
 		}
 
-		getWeightedEdgesOf(v).forEach { (_, e, _, w) ->
+		getEdgesOf(v).forEach { (_, e, _, w) ->
 			if (e !== root) {
 				queue2.add(e tu (d + w!!))
 			}
@@ -76,13 +76,13 @@ fun <V> LoopedBinTree<V>.shortestPath(s: Vertex<V>, t: Vertex<V>): Int {
 fun <V> WeightedGraph<V, Int>.getUp(root: Vertex<V>,
                                     vertex: Vertex<V>,
                                     map: HashMap<Vertex<V>, Int>) {
-	val edge = getWeightedEdgesOf(vertex).first()
+	val edge = getEdgesOf(vertex).first()
 	val isLeaf = edge.vertex2 == root
 	if (isLeaf) {
-		map[vertex] = edge.data!!
+		map[vertex] = edge.weight!!
 	} else {
-		getWeightedEdgesOf(vertex).forEach { (_, e) -> getUp(root, e, map) }
-		map[vertex] = getWeightedEdgesOf(vertex)
+		getEdgesOf(vertex).forEach { (_, e) -> getUp(root, e, map) }
+		map[vertex] = getEdgesOf(vertex)
 				.map { (_, e, _, d) -> map[e]!! + d!! }
 				.min()!!
 	}

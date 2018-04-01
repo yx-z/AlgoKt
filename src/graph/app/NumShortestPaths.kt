@@ -24,7 +24,7 @@ fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>): Int {
 
 	while (minHeap.isNotEmpty()) {
 		val v = minHeap.remove()
-		getWeightedEdgesOf(v, false).forEach { edge ->
+		getEdgesOf(v, false).forEach { edge ->
 			val (start, end, _, weight) = edge
 			val u = if (start == v) end else start
 			if (dist[v]!! + weight!! < dist[u]!!) {
@@ -42,7 +42,7 @@ fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>): Int {
 	val num = OneArray(list.size) { 0 }
 	num[num.size] = 1
 	for (i in num.size - 1 downTo 1) {
-		num[i] = getWeightedEdgesOf(list[i], false).map { num[dict[it.vertex2]!!] }.sum()
+		num[i] = getEdgesOf(list[i], false).map { num[dict[it.vertex2]!!] }.sum()
 	}
 	return num[1]
 }

@@ -19,7 +19,9 @@ class ComparableVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable
 }
 
 
-open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirected: Boolean = false) {
+open class Edge<V>(var vertex1: Vertex<V>,
+                   var vertex2: Vertex<V>,
+                   var isDirected: Boolean = false) {
 	operator fun component1() = vertex1
 	operator fun component2() = vertex2
 	operator fun component3() = isDirected
@@ -59,17 +61,20 @@ open class Edge<V>(var vertex1: Vertex<V>, var vertex2: Vertex<V>, var isDirecte
 	}
 }
 
-class WeightedEdge<V, E>(vertex1: Vertex<V>, vertex2: Vertex<V>, isDirected: Boolean = false, var data: E? = null)
+class WeightedEdge<V, E>(vertex1: Vertex<V>,
+                         vertex2: Vertex<V>,
+                         isDirected: Boolean = false,
+                         var weight: E? = null)
 	: Edge<V>(vertex1, vertex2, isDirected) {
-	operator fun component4() = data
+	operator fun component4() = weight
 
-	override fun toString() = if (data == null) {
+	override fun toString() = if (weight == null) {
 		super.toString()
 	} else {
 		if (isDirected) {
-			"$vertex1 ---[$data]---> $vertex2"
+			"$vertex1 ---[$weight]---> $vertex2"
 		} else {
-			"$vertex1 <---[$data]---> $vertex2"
+			"$vertex1 <---[$weight]---> $vertex2"
 		}
 	}
 
@@ -86,17 +91,18 @@ class WeightedEdge<V, E>(vertex1: Vertex<V>, vertex2: Vertex<V>, isDirected: Boo
 			return false
 		}
 
-		return data == other.data
+		return weight == other.weight
 	}
 
 	override fun hashCode(): Int {
 		var result = super.hashCode()
-		result = 31 * result + (data?.hashCode() ?: 0)
+		result = 31 * result + (weight?.hashCode() ?: 0)
 		return result
 	}
 }
 
-open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<Edge<V>>) {
+open class Graph<V>(var vertices: Collection<Vertex<V>>,
+                    var edges: Collection<Edge<V>>) {
 	open fun getEdgesOf(v: Vertex<V>) = getEdgesOf(v, true)
 
 	open fun getEdgesOf(v: Vertex<V>, checkIdentity: Boolean) =
@@ -108,10 +114,14 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>, var edges: Collection<E
 				}
 			}
 
-	open fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean = true) =
+	open fun getEdgesFrom(v: Vertex<V>) = getEdgesFrom(v, true)
+
+	open fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean) =
 			edges.filter { (s, _) -> if (checkIdentity) s === v else s == v }
 
-	open fun getEdgesTo(v: Vertex<V>, checkIdentity: Boolean = true) =
+	open fun getEdgesTo(v: Vertex<V>) = getEdgesTo(v, true)
+
+	open fun getEdgesTo(v: Vertex<V>, checkIdentity: Boolean) =
 			edges.filter { (_, e) -> if (checkIdentity) v === e else v == e }
 
 	override fun toString() = "V = $vertices\nE = $edges"
@@ -126,7 +136,7 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
 
 	override fun getEdgesOf(v: Vertex<V>, checkIdentity: Boolean) = getWeightedEdgesOf(v, checkIdentity)
 
-	fun getWeightedEdgesOf(v: Vertex<V>, checkIdentity: Boolean = true) =
+	private fun getWeightedEdgesOf(v: Vertex<V>, checkIdentity: Boolean = true) =
 			weightedEdges.filter {
 				if (it.isDirected) {
 					if (checkIdentity) it.vertex1 === v else it.vertex1 == v
@@ -134,6 +144,20 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
 					if (checkIdentity) it.vertex1 === v || it.vertex2 === v else it.vertex1 == v || it.vertex2 == v
 				}
 			}
+
+	private fun getWeightedEdgesFrom(v: Vertex<V>, checkIdentity: Boolean = true) =
+			weightedEdges.filter { (s, _) -> if (checkIdentity) s === v else s == v }
+
+	override fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean) = getWeightedEdgesFrom(v, checkIdentity)
+
+	override fun getEdgesFrom(v: Vertex<V>) = getEdgesFrom(v, true)
+
+	override fun getEdgesTo(v: Vertex<V>, checkIdentity: Boolean) = getWeightedEdgesTo(v, checkIdentity)
+
+	override fun getEdgesTo(v: Vertex<V>) = getEdgesTo(v, true)
+
+	private fun getWeightedEdgesTo(v: Vertex<V>, checkIdentity: Boolean = true) =
+			weightedEdges.filter { (_, e) -> if (checkIdentity) v === e else v == e }
 }
 
 class AdjListGraph<V>(var adjList: Map<Vertex<V>, List<Vertex<V>>>)
@@ -199,7 +223,7 @@ class WeightedAdjListGraph<V, E>(var adjList: Map<Vertex<V>, List<Tuple2<E, Vert
 		adjList.keys,
 		adjList.map { (startVertex, endVertexList) ->
 			endVertexList.map { (data, endVertex) ->
-				WeightedEdge(startVertex, endVertex, data = data)
+				WeightedEdge(startVertex, endVertex, weight = data)
 			}
 		}.flatten()) {
 	fun updateVertices() {
@@ -209,14 +233,14 @@ class WeightedAdjListGraph<V, E>(var adjList: Map<Vertex<V>, List<Tuple2<E, Vert
 	fun updateWeighedEdges() {
 		weightedEdges = adjList.map { (startVertex, endVertexList) ->
 			endVertexList.map { (data, endVertex) ->
-				WeightedEdge(startVertex, endVertex, data = data)
+				WeightedEdge(startVertex, endVertex, weight = data)
 			}
 		}.flatten()
 	}
 
 	override fun getEdgesOf(v: Vertex<V>) =
 			adjList[v]!!.map { (data, endVertex) ->
-				WeightedEdge(v, endVertex, data = data)
+				WeightedEdge(v, endVertex, weight = data)
 			}
 }
 
@@ -228,7 +252,7 @@ class WeightedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 			endVertexMap
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeightedEdge(startVertex, endVertex, data = data)
+						WeightedEdge(startVertex, endVertex, weight = data)
 					}
 		}.flatten()) {
 	fun updateVertices() {
@@ -240,7 +264,7 @@ class WeightedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 			endVertexMap
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeightedEdge(startVertex, endVertex, data = data)
+						WeightedEdge(startVertex, endVertex, weight = data)
 					}
 		}.flatten()
 	}
@@ -249,6 +273,6 @@ class WeightedAdjMatGraph<V, E>(var adjMat: Map<Vertex<V>, Map<Vertex<V>, E?>>)
 			adjMat[v]!!
 					.filterValues { it != null }
 					.map { (endVertex, data) ->
-						WeightedEdge(v, endVertex, data = data)
+						WeightedEdge(v, endVertex, weight = data)
 					}
 }

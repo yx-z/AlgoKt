@@ -15,10 +15,10 @@ fun <V> WeightedGraph<V, Int>.shortestPathNegEdge(s: Vertex<V>, t: Vertex<V>): I
 	// negative edge u -> v, and finally find the shortest path from v to t
 
 	val newVertices = vertices
-	val newEdges = weightedEdges.filter { it.data!! > 0 }
+	val newEdges = weightedEdges.filter { it.weight!! > 0 }
 	val newGraph = WeightedGraph(newVertices, newEdges)
 
-	val (u, v, _, d) = weightedEdges.first { it.data!! < 0 }
+	val (u, v, _, d) = weightedEdges.first { it.weight!! < 0 }
 	val sMap = newGraph.dijkstra(s)
 
 	val notInclude = sMap.first[t]!!

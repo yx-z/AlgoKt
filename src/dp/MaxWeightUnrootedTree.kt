@@ -20,7 +20,7 @@ fun WeightedGraph<Int, Int>.maxWeight(v: Vertex<Int>,
                                       map: HashMap<Vertex<Int>, Boolean>): Int {
 	map[v] = true
 	var max = 0
-	getWeightedEdgesOf(v).forEach { (s, e, _, data) ->
+	getEdgesOf(v).forEach { (s, e, _, data) ->
 		val u = if (s === v) e else s
 		if (map[u] == false) {
 			max = max(max, this.maxWeight(u, map) + (data ?: 0))
@@ -55,11 +55,11 @@ fun Graph<Int>.maxWeight(v: Vertex<Int>, map: HashMap<Vertex<Int>, Boolean>): In
 fun main(args: Array<String>) {
 	val vertices = (1..6).map { Vertex(it) }
 	val edges = setOf(
-			WeightedEdge(vertices[0], vertices[1], data = -1),
-			WeightedEdge(vertices[1], vertices[2], data = 3),
-			WeightedEdge(vertices[2], vertices[3], data = -2),
-			WeightedEdge(vertices[3], vertices[4], data = 3),
-			WeightedEdge(vertices[3], vertices[5], data = 0))
+			WeightedEdge(vertices[0], vertices[1], weight = -1),
+			WeightedEdge(vertices[1], vertices[2], weight = 3),
+			WeightedEdge(vertices[2], vertices[3], weight = -2),
+			WeightedEdge(vertices[3], vertices[4], weight = 3),
+			WeightedEdge(vertices[3], vertices[5], weight = 0))
 	val T = WeightedGraph(vertices, edges)
 //	println(T.maxWeight())
 

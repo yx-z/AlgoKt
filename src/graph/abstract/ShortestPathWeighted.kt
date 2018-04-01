@@ -26,7 +26,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>, checkIdentity: Boolean = tr
 
 	while (minHeap.isNotEmpty()) {
 		val v = minHeap.remove()
-		getWeightedEdgesOf(v, checkIdentity).forEach { (start, end, isDirected, weight) ->
+		getEdgesOf(v, checkIdentity).forEach { (start, end, isDirected, weight) ->
 			val u = if (isDirected || start == v) end else start
 			if (dist[v]!! + weight!! < dist[u]!!) {
 				dist[u] = dist[v]!! + weight

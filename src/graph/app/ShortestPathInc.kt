@@ -26,7 +26,7 @@ fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
 
 	while (minHeap.isNotEmpty()) {
 		val v = minHeap.remove()
-		getWeightedEdgesOf(v, checkIdentity).forEach { (start, end, isDirected, weight) ->
+		getEdgesOf(v, checkIdentity).forEach { (start, end, isDirected, weight) ->
 			val u = (if (isDirected || start == v) end else start) as ComparableVertex<Int>
 			if (dist[v]!! + weight!! < dist[u]!! && u.data > v.data) {
 				dist[u] = dist[v]!! + weight
@@ -72,13 +72,13 @@ fun main(args: Array<String>) {
 			ComparableVertex(4),
 			ComparableVertex(9))
 	val edges = setOf(
-			WeightedEdge(ComparableVertex(5), ComparableVertex(6), data = 1),
-			WeightedEdge(ComparableVertex(5), ComparableVertex(7), data = 3),
-			WeightedEdge(ComparableVertex(6), ComparableVertex(7), data = 1),
-			WeightedEdge(ComparableVertex(6), ComparableVertex(4), data = 1),
-			WeightedEdge(ComparableVertex(7), ComparableVertex(4), data = 5),
-			WeightedEdge(ComparableVertex(7), ComparableVertex(9), data = 7),
-			WeightedEdge(ComparableVertex(4), ComparableVertex(9), data = 2))
+			WeightedEdge(ComparableVertex(5), ComparableVertex(6), weight = 1),
+			WeightedEdge(ComparableVertex(5), ComparableVertex(7), weight = 3),
+			WeightedEdge(ComparableVertex(6), ComparableVertex(7), weight = 1),
+			WeightedEdge(ComparableVertex(6), ComparableVertex(4), weight = 1),
+			WeightedEdge(ComparableVertex(7), ComparableVertex(4), weight = 5),
+			WeightedEdge(ComparableVertex(7), ComparableVertex(9), weight = 7),
+			WeightedEdge(ComparableVertex(4), ComparableVertex(9), weight = 2))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.shortestPathInc(ComparableVertex(5), false))
 	println(graph.shortestPathInc2(ComparableVertex(5), false))

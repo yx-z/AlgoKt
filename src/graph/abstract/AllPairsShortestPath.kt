@@ -40,11 +40,11 @@ fun <V> WeightedGraph<V, Int>.allPairsShortestPathDivideAndConquer()
 			vertices.forEach { v ->
 				map[u, v] = when {
 					u === v -> 0
-					getWeightedEdgesOf(u)
+					getEdgesOf(u)
 							.any { (s, e) -> s === v || e === v } -> {
-						getWeightedEdgesOf(u)
+						getEdgesOf(u)
 								.filter { (s, e) -> s === v || e === v }
-								.map { it.data!! }
+								.map { it.weight!! }
 								.first()
 					}
 					else -> INF
@@ -84,8 +84,8 @@ fun <V> WeightedGraph<V, Int>.warshallDP(): Map<Vertex<V>, Map<Vertex<V>, Int>> 
 			dp[u, v][0] = if (u == v) {
 				0
 			} else {
-				getWeightedEdgesOf(vArr[u])
-						.firstOrNull { (_, e) -> e === vArr[v] }?.data ?: INF
+				getEdgesOf(vArr[u])
+						.firstOrNull { (_, e) -> e === vArr[v] }?.weight ?: INF
 			}
 		}
 	}
@@ -119,8 +119,8 @@ fun <V> WeightedGraph<V, Int>.warshall(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
 			dist[u, v] = if (u === v) {
 				0
 			} else {
-				getWeightedEdgesOf(u)
-						.firstOrNull { (_, e) -> e === v }?.data ?: INF
+				getEdgesOf(u)
+						.firstOrNull { (_, e) -> e === v }?.weight ?: INF
 			}
 		}
 	}
