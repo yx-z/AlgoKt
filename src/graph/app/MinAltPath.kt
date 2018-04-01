@@ -37,14 +37,20 @@ fun WeightedGraph<Int, Int>.minUpPath(s: ComparableVertex<Int>,
 	}
 
 	var min = INF
-	getEdgesFrom(s).forEach { (_, e, _, _) ->
-		if (e.data > s.data) {
-			min = min(min, minDownPath(e as ComparableVertex<Int>, t, checkIdentity, marked))
-			marked[e] = false
+	getEdgesFrom(s).forEach {
+		val e = it.vertex2 as ComparableVertex<Int>
+		if (!marked.containsKey(e) || marked[e] == false) {
+			marked[e] = true
+			min = if (e.data > s.data) {
+				min(min, minUpPath(e, t, checkIdentity, marked))
+			} else {
+				min(min, minDownPath(e, t, checkIdentity, marked) + 1)
+			}
 		}
+		marked[e] = false
 	}
 
-	return min + 1
+	return min
 }
 
 fun WeightedGraph<Int, Int>.minDownPath(s: ComparableVertex<Int>,
@@ -58,14 +64,20 @@ fun WeightedGraph<Int, Int>.minDownPath(s: ComparableVertex<Int>,
 	}
 
 	var min = INF
-	getEdgesFrom(s).forEach { (_, e, _, _) ->
-		if (e.data > s.data) {
-			min = min(min, minUpPath(e as ComparableVertex<Int>, t, checkIdentity, marked))
-			marked[e] = false
+	getEdgesFrom(s).forEach {
+		val e = it.vertex2 as ComparableVertex<Int>
+		if (!marked.containsKey(e) || marked[e] == false) {
+			marked[e] = true
+			min = if (e.data < s.data) {
+				min(min, minDownPath(e, t, checkIdentity, marked))
+			} else {
+				min(min, minUpPath(e, t, checkIdentity, marked) + 1)
+			}
 		}
+		marked[e] = false
 	}
 
-	return min + 1
+	return min
 }
 
 // transform a weighted undirected graph to a directed graph
@@ -84,8 +96,8 @@ fun <V, E> WeightedGraph<V, E>.toDirectedGraph(): WeightedGraph<V, E> {
 fun main(args: Array<String>) {
 	val vertices = (0..2).map { ComparableVertex(it) }
 	val edges = setOf(
-			WeightedEdge(vertices[0], vertices[1], true, 10),
-			WeightedEdge(vertices[1], vertices[2], true, 2))
+			WeightedEdge(vertices[2], vertices[1], true, 10),
+			WeightedEdge(vertices[1], vertices[0], true, 2))
 	val graph = WeightedGraph(vertices, edges)
-	println(graph.minAltPath(vertices[0], vertices[2]))
+	println(graph.minAltPath(vertices[2], vertices[0]))
 }
