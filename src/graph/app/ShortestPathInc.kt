@@ -1,8 +1,6 @@
 package graph.app
 
-import graph.abstract.ComparableVertex
-import graph.abstract.WeightedEdge
-import graph.abstract.WeightedGraph
+import graph.abstract.*
 import util.INF
 import java.util.*
 import kotlin.collections.set
@@ -12,6 +10,7 @@ import kotlin.collections.set
 // this path is always increasing and report the total weight
 // you may assume that each int is unique and distinct
 
+// modify dijkstra algorithm
 fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
 //                                            t: ComparableVertex<Int>,
                                             checkIdentity: Boolean = true)
@@ -40,6 +39,31 @@ fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
 	return dist
 }
 
+// modify graph : there exists an edge u -> v iff. u -> v in E,
+// v.data > u.data, for all u, v in V
+
+fun WeightedGraph<Int, Int>.shortestPathInc2(s: ComparableVertex<Int>,
+                                             checkIdentity: Boolean = true)
+		: Map<Vertex<Int>, Int> {
+	val newEdges = weightedEdges.mapNotNull { (s, e, d, w) ->
+		if (d) {
+			if (e.data > s.data) {
+				WeightedEdge(s, e, true, w)
+			} else {
+				null
+			}
+		} else {
+			if (e.data > s.data) {
+				WeightedEdge(s, e, true, w)
+			} else {
+				WeightedEdge(e, s, true, w)
+			}
+		}
+	}
+	val newGraph = WeightedGraph(vertices, newEdges)
+	return newGraph.dijkstra(s, checkIdentity).first
+}
+
 fun main(args: Array<String>) {
 	val vertices = setOf(
 			ComparableVertex(5),
@@ -57,4 +81,5 @@ fun main(args: Array<String>) {
 			WeightedEdge(ComparableVertex(4), ComparableVertex(9), data = 2))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.shortestPathInc(ComparableVertex(5), false))
+	println(graph.shortestPathInc2(ComparableVertex(5), false))
 }
