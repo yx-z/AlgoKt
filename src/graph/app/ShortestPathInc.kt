@@ -5,10 +5,7 @@ import graph.abstract.WeightedEdge
 import graph.abstract.WeightedGraph
 import util.INF
 import java.util.*
-import kotlin.collections.forEach
-import kotlin.collections.isNotEmpty
 import kotlin.collections.set
-import kotlin.collections.setOf
 
 // given a weighted graph G = (V, E) with each vertex having an int
 // find a shortest path from s to t (s, t in V) : values of vertices included in
@@ -16,8 +13,9 @@ import kotlin.collections.setOf
 // you may assume that each int is unique and distinct
 
 fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
-                                            t: ComparableVertex<Int>,
-                                            checkIdentity: Boolean = true): Int {
+//                                            t: ComparableVertex<Int>,
+                                            checkIdentity: Boolean = true)
+		: Map<ComparableVertex<Int>, Int> {
 	val dist = HashMap<ComparableVertex<Int>, Int>()
 	vertices.forEach {
 		dist[it as ComparableVertex<Int>] = INF
@@ -37,9 +35,9 @@ fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
 			}
 		}
 	}
-	println(dist)
+//	println(dist)
 
-	return dist[t]!!
+	return dist
 }
 
 fun main(args: Array<String>) {
@@ -58,5 +56,5 @@ fun main(args: Array<String>) {
 			WeightedEdge(ComparableVertex(7), ComparableVertex(9), data = 7),
 			WeightedEdge(ComparableVertex(4), ComparableVertex(9), data = 2))
 	val graph = WeightedGraph(vertices, edges)
-	println(graph.shortestPathInc(ComparableVertex(5), ComparableVertex(9), false))
+	println(graph.shortestPathInc(ComparableVertex(5), false))
 }
