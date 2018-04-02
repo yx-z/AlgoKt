@@ -18,7 +18,6 @@ class ComparableVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable
 	override fun compareTo(other: ComparableVertex<V>) = data.compareTo(other.data)
 }
 
-
 open class Edge<V>(var vertex1: Vertex<V>,
                    var vertex2: Vertex<V>,
                    var isDirected: Boolean = false) {
