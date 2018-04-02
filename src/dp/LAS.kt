@@ -13,7 +13,9 @@ fun main(args: Array<String>) {
 // space complexity: O(1)
 // count the number of local extrema
 fun lasNoDP(A: IntArray) = A.indices.filter {
-	it in 1 until A.size - 1 && (A[it] > A[it - 1] && A[it] > A[it + 1] || A[it] < A[it - 1] && A[it] < A[it + 1])
+	it in 1 until A.size - 1 &&
+			(A[it] > A[it - 1] && A[it] > A[it + 1]) ||
+			(A[it] < A[it - 1] && A[it] < A[it + 1])
 }.count() + 2
 
 fun las(A: IntArray): Int {

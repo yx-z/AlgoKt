@@ -6,16 +6,9 @@ import graph.abstract.Graph
 import util.INF
 import util.Tuple2
 import util.tu
+import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.List
-import kotlin.collections.flatten
-import kotlin.collections.forEach
-import kotlin.collections.hashMapOf
-import kotlin.collections.listOf
-import kotlin.collections.map
 import kotlin.collections.set
-import kotlin.collections.setOf
 
 // given a graph, with each vertex associated with an int
 // you start from s and want to reach t in a path : # of alternations in the
@@ -31,104 +24,90 @@ fun Graph<Int>.minAltPath(s: ComparableVertex<Int>,
 		: List<ComparableVertex<Int>> {
 	val newGraph = toDirectedGraph()
 
-	val up = newGraph.minUpPath(s, t, checkIdentity)
-	println(up)
-	val down = newGraph.minDownPath(s, t, checkIdentity)
-	println(down)
+	val (upCount, upPath) = newGraph.minUpPath(s, t, checkIdentity)
+	upPath.add(0, s)
+	val (downCount, downPath) = newGraph.minDownPath(s, t, checkIdentity)
+	downPath.add(0, s)
 
-	val path = ArrayList<ComparableVertex<Int>>()
-	var curr = t
-	if (up.first < down.first) {
-		while ((checkIdentity && curr !== s) || (!checkIdentity && curr != s)) {
-			path.add(0, curr)
-			curr = up.second[curr]!!
-		}
-	} else {
-		while ((checkIdentity && curr !== s) || (!checkIdentity && curr != s)) {
-			path.add(0, curr)
-			curr = down.second[curr]!!
-		}
-	}
-	path.add(0, s)
-
-	return path
+	return if (upCount < downCount) upPath else downPath
 }
 
-// assume a directed graph
 fun Graph<Int>.minUpPath(s: ComparableVertex<Int>,
                          t: ComparableVertex<Int>,
                          checkIdentity: Boolean = true,
                          marked: HashMap<ComparableVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, HashMap<ComparableVertex<Int>, ComparableVertex<Int>?>> {
+		: Tuple2<Int, MutableList<ComparableVertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
-		return 0 tu hashMapOf(t to s as ComparableVertex<Int>?)
+		return 0 tu mutableListOf()
 	}
 
-	var min = INF
-	var map: HashMap<ComparableVertex<Int>, ComparableVertex<Int>?>? = null
+	var minCount = INF
+	val minPath: MutableList<ComparableVertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
 		val e = it.vertex2 as ComparableVertex<Int>
 		if (!marked.containsKey(e) || marked[e] == false) {
-			marked[e] = true
 			if (e.data > s.data) {
-				val (upCount, upMap) = minUpPath(e, t, checkIdentity, marked)
-				if (upCount < min) {
-					min = upCount
-					upMap[e] = s
-					map = upMap
+				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
+				if (upCount < minCount) {
+					minCount = upCount
+					minPath.clear()
+					minPath.addAll(upPath)
+					minPath.add(0, e)
 				}
 			} else {
-				val (downCount, downMap) = minDownPath(e, t, checkIdentity, marked)
-				if (downCount + 1 < min) {
-					min = downCount + 1
-					downMap[e] = s
-					map = downMap
+				val (downCount, downPath) = minDownPath(e, t, checkIdentity, marked)
+				if (downCount + 1 < minCount) {
+					minCount = downCount + 1
+					minPath.clear()
+					minPath.addAll(downPath)
+					minPath.add(0, e)
 				}
 			}
+			marked[e] = false
 		}
-		marked[e] = false
 	}
 
-	return min tu (map ?: hashMapOf())
+	return minCount tu minPath
 }
 
 fun Graph<Int>.minDownPath(s: ComparableVertex<Int>,
                            t: ComparableVertex<Int>,
                            checkIdentity: Boolean = true,
                            marked: HashMap<ComparableVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, HashMap<ComparableVertex<Int>, ComparableVertex<Int>?>> {
+		: Tuple2<Int, MutableList<ComparableVertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
-		return 0 tu hashMapOf(t to s as ComparableVertex<Int>?)
+		return 0 tu mutableListOf()
 	}
 
-	var min = INF
-	var map: HashMap<ComparableVertex<Int>, ComparableVertex<Int>?>? = null
+	var minCount = INF
+	val minPath: MutableList<ComparableVertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
 		val e = it.vertex2 as ComparableVertex<Int>
 		if (!marked.containsKey(e) || marked[e] == false) {
-			marked[e] = true
-			if (e.data < s.data) {
-				val (downCount, downMap) = minDownPath(e, t, checkIdentity, marked)
-				if (downCount < min) {
-					min = downCount
-					downMap[e] = s
-					map = downMap
+			if (e.data > s.data) {
+				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
+				if (upCount + 1 < minCount) {
+					minCount = upCount + 1
+					minPath.clear()
+					minPath.addAll(upPath)
+					minPath.add(0, e)
 				}
 			} else {
-				val (upCount, upMap) = minUpPath(e, t, checkIdentity, marked)
-				if (upCount + 1 < min) {
-					min = upCount + 1
-					upMap[e] = s
-					map = upMap
+				val (downCount, downPath) = minDownPath(e, t, checkIdentity, marked)
+				if (downCount < minCount) {
+					minCount = downCount
+					minPath.clear()
+					minPath.addAll(downPath)
+					minPath.add(0, e)
 				}
 			}
+			marked[e] = false
 		}
-		marked[e] = false
 	}
 
-	return min tu (map ?: hashMapOf())
+	return minCount tu minPath
 }
 
 // transform a weighted undirected graph to a directed graph

@@ -2,6 +2,7 @@ package graph.app
 
 import graph.abstract.*
 import util.INF
+import util.Tuple2
 import java.util.*
 import kotlin.collections.set
 
@@ -44,7 +45,7 @@ fun WeightedGraph<Int, Int>.shortestPathInc(s: ComparableVertex<Int>,
 
 fun WeightedGraph<Int, Int>.shortestPathInc2(s: ComparableVertex<Int>,
                                              checkIdentity: Boolean = true)
-		: Map<Vertex<Int>, Int> {
+		: Tuple2<Map<Vertex<Int>, Int>, Map<Vertex<Int>, Vertex<Int>?>> {
 	val newEdges = weightedEdges.mapNotNull { (s, e, d, w) ->
 		if (d) {
 			if (e.data > s.data) {
@@ -61,7 +62,7 @@ fun WeightedGraph<Int, Int>.shortestPathInc2(s: ComparableVertex<Int>,
 		}
 	}
 	val newGraph = WeightedGraph(vertices, newEdges)
-	return newGraph.dijkstra(s, checkIdentity).first
+	return newGraph.dijkstra(s, checkIdentity)
 }
 
 fun main(args: Array<String>) {
