@@ -1,6 +1,6 @@
 package dp
 
-import graph.abstract.*
+import graph.core.*
 import util.max
 
 // given an unrooted tree T, that is, connected acyclic undirected graphs,

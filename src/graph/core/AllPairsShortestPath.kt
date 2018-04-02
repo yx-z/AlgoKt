@@ -1,4 +1,4 @@
-package graph.abstract
+package graph.core
 
 import util.*
 import java.lang.Math.ceil

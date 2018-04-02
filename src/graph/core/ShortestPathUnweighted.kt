@@ -1,4 +1,4 @@
-package graph.abstract
+package graph.core
 
 import java.util.*
 import kotlin.collections.HashMap

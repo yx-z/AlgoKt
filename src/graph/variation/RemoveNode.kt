@@ -1,6 +1,6 @@
 package graph.variation
 
-import graph.abstract.*
+import graph.core.*
 import util.*
 
 // given a directed and weighted graph G = (V, E), with weights being either

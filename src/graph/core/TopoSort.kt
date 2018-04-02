@@ -1,6 +1,6 @@
-package graph.abstract
+package graph.core
 
-import graph.abstract.Status.*
+import graph.core.Status.*
 import util.OneArray
 import util.toOneArray
 

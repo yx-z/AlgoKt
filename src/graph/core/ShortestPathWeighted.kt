@@ -1,4 +1,4 @@
-package graph.abstract
+package graph.core
 
 import util.INF
 import util.Tuple2
