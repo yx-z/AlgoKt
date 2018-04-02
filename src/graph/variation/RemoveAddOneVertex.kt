@@ -1,6 +1,9 @@
 package graph.variation
 
-import graph.core.*
+import graph.core.Vertex
+import graph.core.WeightedEdge
+import graph.core.WeightedGraph
+import graph.core.warshall
 import util.*
 
 // given a directed and weighted graph G = (V, E), with weights being either
@@ -20,14 +23,18 @@ fun <V> WeightedGraph<V, Int>.removeVertex(v: Vertex<V>,
 		getEdgesFrom(v, checkIdentity).forEach { (_, w, _, w2) ->
 			// for each u -> v -> w
 			// perform an add or replace
-			val ori = newEdges.firstOrNull { (s, e, _, _) -> s === u && e === w }
-			if (ori == null) {
-				newEdges.add(WeightedEdge(u, w, weight = w1!! + w2!!))
-			} else {
-				ori.weight = min(w1!! + w2!!, ori.weight!!)
+			if (!(checkIdentity && u === w) && !(!checkIdentity && u == w)) {
+				val ori = newEdges.firstOrNull { (s, e, _, _) -> s === u && e === w }
+				if (ori == null) {
+					newEdges.add(WeightedEdge(u, w, true, weight = w1!! + w2!!))
+				} else {
+					ori.weight = min(w1!! + w2!!, ori.weight!!)
+				}
 			}
 		}
 	}
+	newEdges.removeAll(getEdgesTo(v, checkIdentity))
+	newEdges.removeAll(getEdgesFrom(v, checkIdentity))
 	return WeightedGraph(newVertices, newEdges)
 }
 
@@ -53,7 +60,15 @@ fun <V> WeightedGraph<V, Int>.addVertex(v: Vertex<V>,
 	vertices
 			.filterNot { if (checkIdentity) it === v else it == v }
 			.forEach { u ->
+				getEdgesTo(v, checkIdentity).forEach { (r, _, _, w) ->
+					// u -> r -> v
+					toV[u] = min(toV[u]!!, dist[u, r]!! + w!!)
+				}
 
+				getEdgesFrom(v, checkIdentity).forEach { (_, r, _, w) ->
+					// v -> r -> u
+					fromV[u] = min(fromV[u]!!, dist[r, u]!! + w!!)
+				}
 			}
 
 	return toV tu fromV
@@ -63,6 +78,16 @@ fun <V> WeightedGraph<V, Int>.addVertex(v: Vertex<V>,
 // all pairs shortest paths in a given directed, weighted graph G
 // it should look similar to warshall's algorithm
 fun <V> WeightedGraph<V, Int>.apsp(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
+	val v = vertices.toList()
+	var g = this
+	for (i in 0 until v.size - 2) {
+		g = g.removeVertex(v[i])
+		println(g)
+	}
+	val dist = HashMap<Vertex<V>, HashMap<Vertex<V>, Int>>()
+	for (i in 0 until v.size - 2) {
+
+	}
 	TODO()
 }
 
@@ -77,12 +102,19 @@ fun main(args: Array<String>) {
 			WeightedEdge(vertices[3], vertices[4], true, 2),
 			WeightedEdge(vertices[4], vertices[2], true, 3))
 	val graph = WeightedGraph(vertices, edges)
-	println(graph.warshall())
 	val newGraph = graph.removeVertex(vertices[3])
-	println(newGraph.warshall())
 
-	val dist = newGraph.warshall()
-	println(newGraph.addVertex(vertices[3], dist))
+	val gDist = graph.warshall()
+	val nDist = newGraph.warshall()
 
+	println(gDist)
+
+	// 1.
+//	println(nDist)
+
+	// 2.
+//	println(graph.addVertex(vertices[3], nDist))
+
+	// 3.
 	println(graph.apsp())
 }

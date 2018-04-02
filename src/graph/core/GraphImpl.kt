@@ -106,22 +106,50 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>,
 
 	open fun getEdgesOf(v: Vertex<V>, checkIdentity: Boolean) =
 			edges.filter {
-				if (it.isDirected) {
-					if (checkIdentity) it.vertex1 === v else it.vertex1 == v
+				if (checkIdentity) {
+					it.vertex1 === v || it.vertex2 === v
 				} else {
-					if (checkIdentity) it.vertex1 === v || it.vertex2 === v else it.vertex1 == v || it.vertex2 == v
+					it.vertex1 == v || it.vertex2 == v
 				}
 			}
 
 	open fun getEdgesFrom(v: Vertex<V>) = getEdgesFrom(v, true)
 
 	open fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean) =
-			edges.filter { (s, _) -> if (checkIdentity) s === v else s == v }
+			edges.filter { (s, e, d) ->
+				if (d) {
+					if (checkIdentity) {
+						s === v
+					} else {
+						s == v
+					}
+				} else {
+					if (checkIdentity) {
+						s === v || e === v
+					} else {
+						s == v || e == v
+					}
+				}
+			}
 
 	open fun getEdgesTo(v: Vertex<V>) = getEdgesTo(v, true)
 
 	open fun getEdgesTo(v: Vertex<V>, checkIdentity: Boolean) =
-			edges.filter { (_, e) -> if (checkIdentity) v === e else v == e }
+			edges.filter { (s, e, d) ->
+				if (d) {
+					if (checkIdentity) {
+						v === e
+					} else {
+						v == e
+					}
+				} else {
+					if (checkIdentity) {
+						v === s || v === e
+					} else {
+						v == s || v == e
+					}
+				}
+			}
 
 	override fun toString() = "V = $vertices\nE = $edges"
 }
@@ -137,15 +165,29 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
 
 	private fun getWeightedEdgesOf(v: Vertex<V>, checkIdentity: Boolean = true) =
 			weightedEdges.filter {
-				if (it.isDirected) {
-					if (checkIdentity) it.vertex1 === v else it.vertex1 == v
+				if (checkIdentity) {
+					it.vertex1 === v || it.vertex2 === v
 				} else {
-					if (checkIdentity) it.vertex1 === v || it.vertex2 === v else it.vertex1 == v || it.vertex2 == v
+					it.vertex1 == v || it.vertex2 == v
 				}
 			}
 
 	private fun getWeightedEdgesFrom(v: Vertex<V>, checkIdentity: Boolean = true) =
-			weightedEdges.filter { (s, _) -> if (checkIdentity) s === v else s == v }
+			weightedEdges.filter { (s, e, d) ->
+				if (d) {
+					if (checkIdentity) {
+						s === v
+					} else {
+						s == v
+					}
+				} else {
+					if (checkIdentity) {
+						s === v || e === v
+					} else {
+						s == v || e == v
+					}
+				}
+			}
 
 	override fun getEdgesFrom(v: Vertex<V>, checkIdentity: Boolean) = getWeightedEdgesFrom(v, checkIdentity)
 
@@ -156,7 +198,21 @@ open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
 	override fun getEdgesTo(v: Vertex<V>) = getEdgesTo(v, true)
 
 	private fun getWeightedEdgesTo(v: Vertex<V>, checkIdentity: Boolean = true) =
-			weightedEdges.filter { (_, e) -> if (checkIdentity) v === e else v == e }
+			weightedEdges.filter { (s, e, d) ->
+				if (d) {
+					if (checkIdentity) {
+						v === e
+					} else {
+						v == e
+					}
+				} else {
+					if (checkIdentity) {
+						v === e || s === e
+					} else {
+						v == e || s == e
+					}
+				}
+			}
 }
 
 class AdjListGraph<V>(var adjList: Map<Vertex<V>, List<Vertex<V>>>)
