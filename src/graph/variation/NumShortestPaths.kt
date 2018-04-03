@@ -10,24 +10,34 @@ import kotlin.collections.HashMap
 fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>,
                                                t: Vertex<V>,
                                                checkIdentity: Boolean = true): Int {
-	val newEdges = HashSet<WeightedEdge<V, Int>>()
 	val (dist, _) = dijkstra(s, checkIdentity)
+	// O(E log V)
+
+	val newEdges = HashSet<WeightedEdge<V, Int>>()
 	weightedEdges.forEach { edge ->
 		val (s, e, _, w) = edge
 		if (dist[e]!! == dist[s]!! + w!!) {
 			newEdges.add(edge)
 		}
 	}
+
 	val newGraph = WeightedGraph(vertices, newEdges)
 	val list = newGraph.topoSort()
+	// O(V + E)
 	val dict = HashMap<Vertex<V>, Int>()
-	list.forEachIndexed { i, vertex -> dict[vertex] = i }
+	list.forEachIndexed { i, vertex ->
+		dict[vertex] = i
+	}
+
 	val num = OneArray(list.size) { 0 }
 	num[dict[t]!!] = 1
 	for (i in dict[t]!! downTo 1) {
-		num[i] = getEdgesOf(list[i], false).map { num[dict[it.vertex2]!!] }.sum()
+		num[i] = getEdgesOf(list[i], checkIdentity)
+				.map { num[dict[it.vertex2]!!] }
+				.sum()
 	}
-	return num[1]
+
+	return num[dist[s]!!]
 }
 
 fun main(args: Array<String>) {

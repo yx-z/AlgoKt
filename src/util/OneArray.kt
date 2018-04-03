@@ -309,7 +309,7 @@ fun <T> OneArray<OneArray<OneArray<T>>>.prettyPrintTables(printIndex: Boolean = 
 	}
 }
 
-// converting other general arrays to OneArray
+// converting other general collections to OneArray
 fun IntArray.toOneArray() = toTypedArray().toOneArray()
 
 fun CharArray.toOneArray() = toTypedArray().toOneArray()
@@ -317,6 +317,12 @@ fun CharArray.toOneArray() = toTypedArray().toOneArray()
 fun <T> Array<T>.toOneArray() = OneArray(this)
 
 fun String.toCharOneArray() = toCharArray().toOneArray()
+
+fun IntRange.toOneArray() = toList().toOneArray()
+
+fun CharRange.toOneArray() = toList().toOneArray()
+
+fun LongRange.toOneArray() = toList().toOneArray()
 
 inline fun <reified T> Collection<T>.toOneArray() = toTypedArray().toOneArray()
 
