@@ -17,7 +17,7 @@ fun <T : Comparable<T>> OneArray<T>.localMin(lo: Int = 1, hi: Int = size): T {
 		}
 	}
 
-	val m = n / 2
+	val m = n / 2 + lo
 	if (A[m - 1] >= A[m] && A[m] <= A[m + 1]) {
 		return A[m]
 	}
