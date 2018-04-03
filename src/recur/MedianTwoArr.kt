@@ -27,6 +27,8 @@ infix fun OneArray<Int>.medianUnion(B: OneArray<Int>): Int {
 	} else {
 		A[m + 1..n] medianUnion B[1..m] // discard lower half of A and upper half of B
 	}
+	// here we assume there is no copying between arrays since we can set
+	// lo/hi bounds for indices
 }
 
 fun main(args: Array<String>) {
