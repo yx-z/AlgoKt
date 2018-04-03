@@ -83,7 +83,7 @@ fun <V> WeightedGraph<V, Int>.apsp(checkIdentity: Boolean = true)
 	var g = this
 
 	// removing vertices as part 1
-	for (i in v.size - 2 downTo 0) {
+	for (i in v.size - 1 downTo 0) {
 		val (tmpG, tmpE) = g.removeVertex(v[i])
 		g = tmpG
 		removedEdges[i].addAll(tmpE)
@@ -97,7 +97,7 @@ fun <V> WeightedGraph<V, Int>.apsp(checkIdentity: Boolean = true)
 	}
 
 	// adding vertices as part 2
-	for (i in 0 until v.size - 1) {
+	for (i in 0 until v.size) {
 		val newVertices = g.vertices.toMutableList()
 		newVertices.add(v[i])
 		val newEdges = g.weightedEdges.toMutableList()

@@ -20,6 +20,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>, checkIdentity: Boolean = tr
 		parent[it] = null
 	}
 	dist[s] = 0
+	parent[s] = s
 
 	val minHeap = PriorityQueue<Vertex<V>>()
 	minHeap.add(s)
