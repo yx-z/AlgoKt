@@ -14,36 +14,43 @@ fun <T> BinTreeNode<T>.maxCompleteSubTree(): Tuple2<BinTreeNode<T>, Int> {
 	if (left == null && right == null) {
 		return this tu 0
 	}
-	if (left == null) {
-		val (rightMaxCompleteSubTree, rightDepth) = right!!.maxCompleteSubTree()
-		return if (rightDepth > 0) {
-			rightMaxCompleteSubTree tu rightDepth
-		} else {
-			this tu 0
-		}
+	if (left == null) { // and right != null
+		return right.maxCompleteSubTree()
 	}
-	if (right == null) {
-		val (leftMaxCompleteSubTree, leftDepth) = left!!.maxCompleteSubTree()
-		return if (leftDepth > 0) {
-			leftMaxCompleteSubTree tu leftDepth
-		} else {
-			this tu 0
-		}
+	if (right == null) { // and left != null
+		return left.maxCompleteSubTree()
 	}
 
-	// left != null && right != null
-	val (leftMaxCompleteSubTree, leftDepth) = left!!.maxCompleteSubTree()
-	val (rightMaxCompleteSubTree, rightDepth) = right!!.maxCompleteSubTree()
+	// left, right != null
+	val (leftMaxCompleteSubTree, leftDepth) = left.maxCompleteSubTree()
+	val (rightMaxCompleteSubTree, rightDepth) = right.maxCompleteSubTree()
 
-	if (leftMaxCompleteSubTree === left && rightMaxCompleteSubTree === right) {
-		return this tu min(leftDepth, rightDepth) + 1
-	}
+	// first find the larger subtree between these two
+	val childrenMaxDepth = if (leftDepth > rightDepth) leftDepth else rightDepth
+	val childrenMaxCompleteSubTree = if (leftDepth > rightDepth) leftMaxCompleteSubTree else rightMaxCompleteSubTree
 
-	return if (leftDepth > rightDepth) {
-		leftMaxCompleteSubTree tu leftDepth
+	// then consider the maxCompleteSubTree rooted at this (current root)
+	val currMaxDepth = maxCompleteSubTreeRootedAtCurrent()
+	return if (currMaxDepth >= childrenMaxDepth) {
+		this tu currMaxDepth
 	} else {
-		rightMaxCompleteSubTree tu rightDepth
+		childrenMaxCompleteSubTree tu childrenMaxDepth
 	}
+}
+
+fun <T> BinTreeNode<T>.maxCompleteSubTreeRootedAtCurrent(): Int {
+	if (left == null && right == null) {
+		return 0
+	}
+	if (left == null) { // and right != null
+		return right.maxCompleteSubTreeRootedAtCurrent()
+	}
+	if (right == null) { // and left != null
+		return left.maxCompleteSubTreeRootedAtCurrent()
+	}
+
+	// left, right != null
+	return min(left.maxCompleteSubTreeRootedAtCurrent(), right.maxCompleteSubTreeRootedAtCurrent()) + 1
 }
 
 fun main(args: Array<String>) {
@@ -54,19 +61,21 @@ fun main(args: Array<String>) {
 	root.left!!.left = BinTreeNode(4)
 	root.left!!.right = BinTreeNode(5)
 	root.right!!.left = BinTreeNode(6)
-	root.left!!.left!!.left = BinTreeNode(7)
-	root.left!!.left!!.right = BinTreeNode(8)
-	root.left!!.right!!.left = BinTreeNode(9)
-	root.left!!.right!!.right = BinTreeNode(10)
-	root.right!!.left!!.left = BinTreeNode(11)
-	root.right!!.left!!.right = BinTreeNode(12)
-	root.left!!.left!!.right!!.left = BinTreeNode(13)
-	root.left!!.left!!.right!!.right = BinTreeNode(14)
-	root.left!!.right!!.left!!.left = BinTreeNode(15)
-	root.left!!.right!!.left!!.right = BinTreeNode(16)
-	root.right!!.left!!.right!!.left = BinTreeNode(17)
-	root.right!!.left!!.right!!.right = BinTreeNode(18)
+	root.right!!.right = BinTreeNode(7)
+	root.left!!.left!!.left = BinTreeNode(8)
+	root.left!!.left!!.right = BinTreeNode(9)
+	root.left!!.right!!.left = BinTreeNode(10)
+	root.left!!.right!!.right = BinTreeNode(11)
+	root.right!!.left!!.left = BinTreeNode(12)
+	root.right!!.left!!.right = BinTreeNode(13)
+	root.right!!.right!!.left = BinTreeNode(14)
+	root.right!!.right!!.right = BinTreeNode(15)
+	root.left!!.left!!.right!!.left = BinTreeNode(16)
+	root.left!!.left!!.right!!.right = BinTreeNode(17)
+	root.left!!.left!!.right!!.left!!.left = BinTreeNode(18)
 	root.left!!.left!!.right!!.left!!.right = BinTreeNode(19)
+	root.left!!.left!!.right!!.right!!.left = BinTreeNode(20)
+	root.left!!.left!!.right!!.right!!.right = BinTreeNode(21)
 	root.prettyPrintTree()
 
 	val (maxCompleteTree, depth) = root.maxCompleteSubTree()
