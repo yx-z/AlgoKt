@@ -1,6 +1,8 @@
 package dp
 
 import util.get
+import util.max
+import util.min
 import util.set
 
 // similar to MaxPlusMinus
@@ -103,11 +105,57 @@ fun CharArray.maxPlusMultRedo(): Int {
 	return dp[0, n]
 }
 
+fun Array<Any>.maxPlusMultNegativeIncluded(): Int {
+	val E = this
+	val n = size / 2
+
+	val dpMax = Array(n + 1) { Array(n + 1) { 0 } }
+	val dpMin = Array(n + 1) { Array(n + 1) { 0 } }
+
+	for (i in 0..n) {
+		dpMax[i, i] = E[2 * i] as Int
+		dpMin[i, i] = E[2 * i] as Int
+	}
+
+	for (i in n - 1 downTo 0) {
+		for (j in i + 1..n) {
+			dpMax[i, j] = (2 * i + 1 until 2 * j step 2).map {
+				val pre = (it - 1) / 2
+				val nex = (it + 1) / 2
+				if (E[it] == '+') {
+					dpMax[i, pre] + dpMax[nex, j]
+				} else { // E[it] == '*'
+					max(dpMax[i, pre] * dpMax[nex, j], dpMin[i, pre] * dpMin[nex, j])
+				}
+			}.max()!!
+
+			dpMin[i, j] = (2 * i + 1 until 2 * j step 2).map {
+				val pre = (it - 1) / 2
+				val nex = (it + 1) / 2
+				if (E[it] == '+') {
+					dpMin[i, pre] + dpMin[nex, j]
+				} else { // E[it] == '*'
+					min(
+							dpMax[i, pre] * dpMin[nex, j],
+							dpMax[i, pre] * dpMax[nex, j],
+							dpMin[i, pre] * dpMin[nex, j],
+							dpMin[i, pre] * dpMax[nex, j])
+				}
+			}.min()!!
+		}
+	}
+
+	return dpMax[0, n]
+}
+
 fun main(args: Array<String>) {
 	val test1 = "1+3*2+1*6+7".toCharArray()
 //	println(test1.maxPlusMult1())
 
 	val test2 = "1+3*2*0+1*6+7".toCharArray()
-	println(test2.maxPlusMult2())
-	println(test2.maxPlusMultRedo())
+//	println(test2.maxPlusMult2())
+//	println(test2.maxPlusMultRedo())
+
+	val test3 = arrayOf(1, '+', -3, '*', 5, '*', -1, '+', 4)
+	println(test3.maxPlusMultNegativeIncluded())
 }
