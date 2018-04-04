@@ -1,12 +1,6 @@
 package dp
 
-import util.max
-import util.min
-import util.get
-import util.set
-import util.toOneArray
-import util.OneArray
-import util.oneArrayOf
+import util.*
 
 // given X[1..k] and Y[1..n] : k <= n
 
@@ -205,7 +199,7 @@ fun OneArray<Int>.minWeighedSubseq(Y: OneArray<Int>, C: OneArray<Int>): Int {
 		}
 	}
 	// time complexity: O(k * n)
-//	dp.util.prettyPrintTable(true)
+//	dp.prettyPrintTable(true)
 
 	return min
 }

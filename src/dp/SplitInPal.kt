@@ -22,9 +22,9 @@ fun OneArray<Char>.minSplitInPal(): Int {
 	val n = S.size
 //	S.prettyPrintln(true)
 
-	// preprocess to util.get isPal[i..j] that determines if S[i, j] is palindromic
+	// preprocess to get isPal[i..j] that determines if S[i, j] is palindromic
 	val isPal = isPal()
-//	isPal.util.prettyPrintTable(true)
+//	isPal.prettyPrintTable(true)
 
 	// dp(i): # of pal that can separate S[1..i]
 	// memoization structure: 1d array dp[1..n] : dp[i] = dp(i)

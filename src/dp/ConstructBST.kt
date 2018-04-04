@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 fun IntArray.bstCost(): Int {
 	// dp[i][j] = optimal cost for this[i..j]
 	// dp[i][j] = 0, if i > j
-	//            sum(this[i..j]) + util.min(dp[i][r - 1] + dp[r + 1][j]): i <= r <= j, o/w
+	//            sum(this[i..j]) + min(dp[i][r - 1] + dp[r + 1][j]): i <= r <= j, o/w
 	val dp = Array(size) { IntArray(size) }
 	for (j in 0 until size) {
 		for (i in j downTo 0) {

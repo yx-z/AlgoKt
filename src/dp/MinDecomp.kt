@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
 fun Int.minDecomp(): Int {
 	// dp[i] = minimum amount of 1s that make up i
-	// dp[i] = util.min(dp[a] + dp[b], dp[c] + dp[d]), for all possible a * b == i, c + d == i
+	// dp[i] = min(dp[a] + dp[b], dp[c] + dp[d]), for all possible a * b == i, c + d == i
 	val dp = IntArray(this + 1) { it } // an upper bound is simply adding 1s, making `it` 1s
 	for (i in 2..this) {
 		for (a in 2..Math.sqrt(i.toDouble()).roundToInt()) {

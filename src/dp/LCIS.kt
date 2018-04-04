@@ -1,8 +1,8 @@
 package dp
 
 import util.get
-import util.set
 import util.max
+import util.set
 
 // longest common increasing subsequence
 
@@ -22,9 +22,9 @@ fun lcis(A: IntArray, B: IntArray): Int {
 	// let M[1..l] be the sorted sequence of common elements of A and B
 	// then M is strictly increasing
 	val M = (A.toSet() intersect B.toSet()).toMutableList()
-	// sorting costs O(util.min(m, n) * log util.min(m, n)) time
+	// sorting costs O(min(m, n) * log min(m, n)) time
 	M.sort()
-	// l is O(util.min(m, n))
+	// l is O(min(m, n))
 	val l = M.size
 
 	// dp(i, j, k): len of lcis for A[1..i] and B[1..j] : last element = M[k]

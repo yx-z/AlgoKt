@@ -1,8 +1,8 @@
 package dp
 
 import util.get
-import util.set
 import util.max
+import util.set
 
 // given an array of arbitrary numbers
 // find the largest sum of elements in a contiguous subarray
@@ -49,7 +49,7 @@ fun IntArray.maxSumNLogN(s: Int = 0, e: Int = size - 1): Int {
 	// 3. i < n / 2 < j crossing the middle line
 	// we may recursively solve 1 and 2
 	// and do O(n) to find 3: max prefix sum of A[n / 2 + 1..n] + max suffix sum of A[1..n / 2 - 1]
-	// finally compare 1, 2, and 3 and util.get the biggest one as solution
+	// finally compare 1, 2, and 3 and get the biggest one as solution
 
 	// runtime analysis
 	// T(n) <= O(n) + 2T(n / 2) -> T ~ O(n log n)

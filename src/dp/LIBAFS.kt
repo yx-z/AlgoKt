@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
 }
 
 fun Array<Pair<Int, Boolean>>.libafs(): Int {
-	// util.get the original index in the sorted array
+	// get the original index in the sorted array
 	val idx = IntArray(size) { it }
 	val sortedIdx = idx.sortedByDescending { this[it].first }
 

@@ -14,7 +14,7 @@ fun String.canBeSegmented(): Boolean {
 	dp[length] = true
 
 	for (i in length - 1 downTo 0) {
-		// iterate over the rest and util.set "breakpoint" there
+		// iterate over the rest and set "breakpoint" there
 		// if we can divide the rest into a word && string after the breakpoint can be segmented
 		// then current suffix can also be segmented
 		dp[i] = (i until length).any { isWord(i, it) && dp[it + 1] }

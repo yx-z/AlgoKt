@@ -1,8 +1,8 @@
 package dp
 
 import util.get
-import util.set
 import util.min
+import util.set
 
 // shortest common supersequence
 
@@ -21,8 +21,8 @@ infix fun IntArray.scs(that: IntArray): Int {
 	// dp(i, j): length of shortest common supersequence for A[1..i] and B[1..j]
 	// dp(i, j) = j if i = 0
 	//          = i if j = 0
-	//          = util.min{ 1 + dp(i - 1, j - 1), 1 + dp(i, j - 1), 1 + dp(i - 1, j) } if A[i] = B[j]
-	//          = util.min{ 2 + dp(i - 1, j - 1), 1 + dp(i, j - 1), 1 + dp(i - 1, j) } o/w
+	//          = min{ 1 + dp(i - 1, j - 1), 1 + dp(i, j - 1), 1 + dp(i - 1, j) } if A[i] = B[j]
+	//          = min{ 2 + dp(i - 1, j - 1), 1 + dp(i, j - 1), 1 + dp(i - 1, j) } o/w
 	// memoization structure: 2d array dp[1..m][1..n]
 	// space complexity: O(mn)
 	val dp = Array(size + 1) { IntArray(that.size + 1) }

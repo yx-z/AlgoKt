@@ -1,8 +1,8 @@
 package dp
 
-import util.oneArrayOf
 import util.OneArray
 import util.max
+import util.oneArrayOf
 import util.toOneArray
 
 // longest increasing back and forth subsequence
@@ -44,7 +44,7 @@ fun OneArray<Pair<Int, Color>>.lbfs(): Int {
 	val A = this
 	val n = A.size
 
-	// sort A to util.get an array of (index, value, Color) that descends in value
+	// sort A to get an array of (index, value, Color) that descends in value
 	val sortedA = A.indices
 			.map { it to A[it] }
 			.toList()
