@@ -1,7 +1,7 @@
 package dp
 
-import util.*
-import java.util.*
+import util.get
+import util.set
 
 // similar to MaxPlusMinus
 // but this time, the input array contains only numbers, +, and *
@@ -58,7 +58,7 @@ fun CharArray.maxPlusMult2(): Int {
 	//                 } for all s < k <= e
 	// dependency: dp(s, e) depends on dp(s, k), and dp(k + 1, e), s < k < e
 	//             that is entries below and to the left
-	// evalutaion order: outer loop for s from h down to 0 (bottom up)
+	// evaluation order: outer loop for s from h down to 0 (bottom up)
 	for (s in h downTo 0) {
 		// inner loop for e from s + 1 to h (left to right)
 		for (e in s + 1..h) {
@@ -72,12 +72,35 @@ fun CharArray.maxPlusMult2(): Int {
 		}
 	}
 
-	for (s in 0..h) {
-		println(Arrays.toString(dp[s]))
-	}
+//	for (s in 0..h) {
+//		println(Arrays.toString(dp[s]))
+//	}
 
 	// we want dp(0, h)
 	return dp[0, h]
+}
+
+fun CharArray.maxPlusMultRedo(): Int {
+	val E = this
+	val n = size / 2
+	val dp = Array(n + 1) { Array(n + 1) { 0 } }
+	for (i in 0..n) {
+		dp[i, i] = E[2 * i].toDigit()
+	}
+
+	for (i in n - 1 downTo 0) {
+		for (j in i + 1..n) {
+			dp[i, j] = (2 * i + 1 until 2 * j step 2).map {
+				if (E[it] == '+') {
+					dp[i, (it - 1) / 2] + dp[(it + 1) / 2, j]
+				} else { // E[it] == '*'
+					dp[i, (it - 1) / 2] * dp[(it + 1) / 2, j]
+				}
+			}.max() ?: 0
+		}
+	}
+
+	return dp[0, n]
 }
 
 fun main(args: Array<String>) {
@@ -86,4 +109,5 @@ fun main(args: Array<String>) {
 
 	val test2 = "1+3*2*0+1*6+7".toCharArray()
 	println(test2.maxPlusMult2())
+	println(test2.maxPlusMultRedo())
 }

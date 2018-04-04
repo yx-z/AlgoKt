@@ -8,7 +8,7 @@ import util.set
 // ex. "abc" shuffle "123" -> "abc123", "a1b2c3", "1ab23c", ...
 
 // 1. given A[1..m], B[1..n], and C[1..m + n] determine if C is a shuffle of A and B
-fun String.isShuffle(A: String, B: String): Boolean {
+fun String.isShuffleOf(A: String, B: String): Boolean {
 	val C = this // follow the naming convention in the problem
 	val m = A.length
 	val n = B.length
@@ -62,14 +62,14 @@ fun String.isShuffle(A: String, B: String): Boolean {
 //     but not "abc12d34" since "abc", has length more than two
 //     neither is "ab1234cd" (due to "1234")
 // 2. given X[1..m], Y[1..n], and Z[1..m + n], determine if Z is a smooth shuffle of X and Y
-fun String.isSmoothShuffle(X: String, Y: String): Boolean {
+fun String.isSmoothShuffleOf(X: String, Y: String): Boolean {
 	// follow naming conventions in the problem statement
 	val Z = this
 	val m = X.length
 	val n = Y.length
 
 	// ss(i, j) = null if Z[1..i + j] is NOT a smooth shuffle of X[1..i] and Y[1..j]
-	//          = util.set of pairs of possible combination of sources of last two characters
+	//          = set of pairs of possible combination of sources of last two characters
 	//            that make Z[1..i + j] to be a smooth shuffle of X[1..i] and Y[1..j] o/w
 	// ex. ss(i, j) = [(X, Y), (Y, Y)] means Z[1..i + j] is a smooth shuffle of X[1..i] and Y[1..j]
 	//     and the last two characters of Z can be from EITHER (X then Y) OR (Y then Y)
@@ -138,7 +138,7 @@ fun String.isSmoothShuffle(X: String, Y: String): Boolean {
 							.filterNot { it.first == 'Y' && it.second == 'Y' }
 							.forEach { dp[i, j].add(it.second to 'Y') }
 				}
-			// else -> do nothing, keep the current util.set empty
+			// else -> do nothing, keep the current set empty
 			}
 		}
 	}
@@ -156,7 +156,7 @@ fun main(args: Array<String>) {
 			"ab132c", // false
 			"ab123c", // true
 			"ab1c23") // true
-	Cs.forEach { println(it.isShuffle(A, B)) }
+	Cs.forEach { println(it.isShuffleOf(A, B)) }
 
 	// regular tests for smoothShuffle()
 	val X = "abcd"
@@ -166,21 +166,21 @@ fun main(args: Array<String>) {
 			"ab12c34d5", // true
 			"1ab23c4d5" // true
 	)
-	Zs.forEach { println(it.isSmoothShuffle(X, Y)) }
+	Zs.forEach { println(it.isSmoothShuffleOf(X, Y)) }
 
 	// ex-treme example of X, Y, and Z
 	val exX = "xxxxxxxx"
 	val exY = "xxxxxxxxxxx"
 	val exZ = exX + exY
-	println(exZ.isShuffle(exX, exY)) // true
-	println(exZ.isSmoothShuffle(exX, exY)) // true
+	println(exZ.isShuffleOf(exX, exY)) // true
+	println(exZ.isSmoothShuffleOf(exX, exY)) // true
 
 	// a counterexample of smoothShuffle of X, Y, and Z
 	val exCounterX = "xxxx"
 	val exCounterY = "xxxxxxxxxxx"
 	val exCounterZ = exCounterX + exCounterY
-	println(exCounterZ.isShuffle(exCounterX, exCounterY)) // true
+	println(exCounterZ.isShuffleOf(exCounterX, exCounterY)) // true
 	// length of two strings are too different to be separated properly in any shuffle
-	println(exCounterZ.isSmoothShuffle(exCounterX, exCounterY)) // false
+	println(exCounterZ.isSmoothShuffleOf(exCounterX, exCounterY)) // false
 }
 
