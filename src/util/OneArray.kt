@@ -245,6 +245,10 @@ class OneArray<T>(val size: Int) {
 	fun first(predicate: (T) -> Boolean = { true }) = container.first(predicate)
 
 	fun indexOfFirst(predicate: (T) -> Boolean) = container.indexOfFirst(predicate) + 1
+
+	fun <R : Comparable<R>> maxBy(selector: (T) -> R) = container.maxBy(selector)
+
+	fun <R : Comparable<R>> minBy(selector: (T) -> R) = container.minBy(selector)
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
@@ -383,17 +387,6 @@ operator fun OneArray<Double>.rem(num: Double) = map { it % num }.toList().toOne
 operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
 operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
-
-// some default handlers
-val INT_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { 0 }
-
-val BOOLEAN_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { false }
-
-val CHAR_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { 0 }
-
-val STRING_DEFAULT_GETTER_INDEX_OUT_OF_BOUNDS_HANDLER = { "" }
-
-val DEFAULT_STTER_INDEX_OUT_OF_BOUNDS_HANDLER = { }
 
 // python-like indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int,
