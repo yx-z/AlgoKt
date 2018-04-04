@@ -1,6 +1,8 @@
 package recur
 
-import util.*
+import util.OneArray
+import util.get
+import util.swap
 
 // given an unsorted array, A[1..n], find the k-th smallest element
 fun main(args: Array<String>) {
@@ -59,9 +61,9 @@ fun OneArray<Int>.momSelect(k: Int): Int {
 }
 
 // given an element A[idx], partition A :
-// A[1 until idx] are elements less than A[idx] and
-// A[idx + 1..n] are elements greater than A[idx]
-// return the correct index of A[idx] after the partition
+// A[1 until idx'] are elements less than or equal to A[idx] and
+// A[idx' + 1..n] are elements greater than A[idx]
+// return the correct index of A[idx], i.e. idx' after the partition
 fun OneArray<Int>.partition(idx: Int): Int {
 	val A = this
 	val n = size
@@ -72,7 +74,7 @@ fun OneArray<Int>.partition(idx: Int): Int {
 	while (i < j) {
 		do {
 			i++
-		} while (i < j && A[i] < A[n])
+		} while (i < j && A[i] <= A[n])
 
 		do {
 			j--

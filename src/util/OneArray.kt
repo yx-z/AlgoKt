@@ -187,7 +187,19 @@ class OneArray<T>(val size: Int) {
 		return ret
 	}
 
-	// note that the following two data strucutures are ZERO-indexed
+	fun shuffle() {
+		val list = toList()
+		Collections.shuffle(list)
+		container.indices.forEach { container[it] = list[it] }
+	}
+
+	fun shuffled(): OneArray<T> {
+		val ret = copy()
+		ret.shuffle()
+		return ret
+	}
+
+	// note that the following two data structures are ZERO-indexed
 	fun toArray() = Arrays.copyOf(container, size)
 
 	fun toList() = toArray().toList()
@@ -200,6 +212,9 @@ class OneArray<T>(val size: Int) {
 	// sequencing
 	// note that this sequence is ZERO-indexed
 	fun asSequence() = container.asSequence()
+
+	// one-indexed
+	fun withIndex() = indices.map { IndexedValue(it, this[it]) }
 
 	inline fun forEach(action: (T) -> Unit) = container.forEach(action)
 
@@ -220,12 +235,16 @@ class OneArray<T>(val size: Int) {
 
 	// one-indexed
 	fun indexOf(element: T): Int =
-			indices.filter { this[it] == element }.firstOrNull() ?: -1
+			indices.firstOrNull { this[it] == element } ?: -1
 
 	// searching
 	fun last(predicate: (T) -> Boolean = { true }) = container.last(predicate)
 
+	fun indexOfLast(predicate: (T) -> Boolean) = container.indexOfLast(predicate) + 1
+
 	fun first(predicate: (T) -> Boolean = { true }) = container.first(predicate)
+
+	fun indexOfFirst(predicate: (T) -> Boolean) = container.indexOfFirst(predicate) + 1
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
@@ -444,3 +463,4 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, v: T) {
 	this[i1][i2][i3][i4][i5] = v
 }
+
