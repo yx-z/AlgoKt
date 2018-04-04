@@ -7,6 +7,7 @@ fun main(args: Array<String>) {
 	// should be abba -> 4
 	println(lpsubstr(s))
 	println(s.toCharOneArray().lpsubstr())
+	println(s.toCharOneArray().lpsubstring())
 }
 
 // Longest Palindrome Substring (consecutive chars), NOT LPS
@@ -68,4 +69,36 @@ fun OneArray<Char>.lpsubstr(): Int {
 
 	val (start, end) = dp[1, n]
 	return end - start + 1
+}
+
+fun OneArray<Char>.lpsubstring(): Int {
+	val A = this
+//	A.prettyPrintln()
+	val n = size
+
+	// dp[i]: set of start indices of a palindromic substring of length i
+	//        will be empty if there is no such string
+	val dp = OneArray(n) { HashSet<Int>() }
+	// space: O(n^2)
+	// we want the index of last non-empty list
+
+	// dp[1] = every index in A
+	dp[1].addAll(indices)
+	// dp[2] = O(n) brute force check
+	dp[2].addAll((1 until n).filter { A[it] == A[it + 1] })
+
+	for (i in 3..n) {
+		dp[i].addAll(
+				dp[i - 2]
+						.filter {
+							it - 1 >= 1 &&
+									it + i - 2 + 1 <= n &&
+									A[it - 1] == A[it + i - 2 + 1]
+						}
+						.map { it - 1 })
+	}
+	// time: O(n^2)
+//	dp.prettyPrintln()
+
+	return dp.indexOfLast { it.isNotEmpty() }
 }
