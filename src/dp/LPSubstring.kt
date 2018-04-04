@@ -30,13 +30,13 @@ fun lpsubstr(s: String): Int {
 
 fun OneArray<Char>.lpsubstr(): Int {
 	val A = this
+//	A.prettyPrintln()
 	val n = size
 	// dp[i, j] = (start index, end index) of the lpsubstr in A[i..j]
-	val dp = OneArray(n) { OneArray(n) { 0 tu 0 } }
+	val dp = OneArray(n) { i -> OneArray(n) { j -> i tu j } }
 	// space: O(n^2)
 
-	// dp[i, j] = (0, 0) if i, j !in 1..n or 1 > j
-	//          = (i, j) if i = j, i, j in 1..n
+	// dp[i, j] = (i, j) if i = j, i, j in 1..n
 	for (i in 1..n) {
 		dp[i, i] = i tu i
 	}
@@ -46,4 +46,26 @@ fun OneArray<Char>.lpsubstr(): Int {
 	//            else A[i] = A[j]:
 	//                if dp[i + 1, j - 1] = (i + 1, j - 1)
 	//                    (i, j)
+	//                else
+	//                    max length among dp[i + 1, j], dp[i + 1, j - 1], dp[i, j - 1]
+	// dp[i, j] depends on entries below and to the left
+	// eval order: outer loop for i from n - 1 down to 1
+	for (i in n - 1 downTo 1) {
+		// inner loop for j from i + 1 to n
+		for (j in i + 1..n) {
+			dp[i, j] = if (A[i] == A[j] && dp[i + 1, j - 1] == (i + 1 tu j - 1)) {
+				i tu j
+			} else {
+				arrayOf(dp[i, j - 1], dp[i + 1, j - 1], dp[i + 1, j])
+						.maxBy { (s, e) ->
+							e - s + 1
+						} ?: 0 tu 0
+			}
+		}
+	}
+	// time: O(n^2)
+//	dp.prettyPrintTable()
+
+	val (start, end) = dp[1, n]
+	return end - start + 1
 }
