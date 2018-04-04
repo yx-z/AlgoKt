@@ -97,7 +97,7 @@ fun OneArray<Char>.lpsubstring(): Int {
 						.map { it - 1 })
 	}
 	// time: O(n^2)
-	dp.prettyPrintln()
+//	dp.prettyPrintln()
 
 	return dp.indexOfLast { it.isNotEmpty() }
 }
