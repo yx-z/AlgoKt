@@ -91,14 +91,13 @@ fun OneArray<Char>.lpsubstring(): Int {
 		dp[i].addAll(
 				dp[i - 2]
 						.filter {
-							it - 1 >= 1 &&
-									it + i - 2 + 1 <= n &&
-									A[it - 1] == A[it + i - 2 + 1]
+							it - 1 >= 1 && it + i - 2 <= n &&
+									A[it - 1] == A[it + i - 2]
 						}
 						.map { it - 1 })
 	}
 	// time: O(n^2)
-//	dp.prettyPrintln()
+	dp.prettyPrintln()
 
 	return dp.indexOfLast { it.isNotEmpty() }
 }
