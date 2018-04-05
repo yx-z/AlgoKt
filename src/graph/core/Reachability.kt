@@ -15,9 +15,9 @@ import kotlin.collections.set
 // return a set of spanning tree (that is reachable vertices) of it
 fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
                                      checkIdentity: Boolean = true,
-                                     marked: HashMap<Vertex<V>, Boolean>? = null)
+                                     pMarked: HashMap<Vertex<V>, Boolean>? = null)
 		: Set<Vertex<V>> {
-	var marked = marked
+	var marked = pMarked
 	val random = Random()
 	val reachableVertices = HashSet<Vertex<V>>()
 

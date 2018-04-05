@@ -6,21 +6,21 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 // Given a directed graph G, we want to build the SCC (Strongly Connected Components)
-// of G, or say the meta-graph, or say the condensation of G in linear time :
+// of G, or say the meta-graph, or say the condensation of G in linear time O(V + E) :
 // the resulting graph G' has vertices as sets of vertices in G : vertices in each
-// set can reach each other. And G' has edges as directions among these sets
+// set can reach other vertices in the same set. And G' has edges as directions among these sets
 // assume that graph is unweighted, o/w we will lose information while forming SCCs
 fun <V> Graph<V>.kosaraju(checkIdentity: Boolean = true): Graph<Set<Vertex<V>>> {
+	// init.:
 	val stack = Stack<Vertex<V>>()
 	val root = HashMap<Vertex<V>, Vertex<V>?>()
 	val marked = HashMap<Vertex<V>, Boolean>()
-	// init.:
 	vertices.forEach {
 		marked[it] = false
 		root[it] = null
 	}
 
-	// phase 1: push in postorder in the reversed graph
+	// phase 1: push in post-order in the reversed graph
 	vertices.forEach {
 		if (marked[it] == false) {
 			pushPostRevDFS(it, stack, marked, checkIdentity)
@@ -129,6 +129,7 @@ private fun <V> Graph<V>.sccFromMap(root: Map<Vertex<V>, Vertex<V>?>): Graph<Set
 	edges.forEach { (u, v, _) ->
 		// speed up is possible if we have built a <Vertex, Set<Vertex<V>>> map
 		// to find which set u/v belongs to in O(1) time
+		// but we'll ignore details for simplicity and expressiveness here
 		val uSet = newVertices.first { it.data.contains(u) }
 		val vSet = newVertices.first { it.data.contains(v) }
 		if (uSet != vSet) {

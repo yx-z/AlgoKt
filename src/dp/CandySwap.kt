@@ -50,8 +50,8 @@ fun OneArray<Candy>.maxScore(): Int {
 		}
 	}
 	// time: O(n)
-//	dp.prettyPrintTable()
+	dp.prettyPrintTable()
 
-	// we want to know given R[1..n] and a candy of type A at first
+	// we want to know the max score, given R[1..n] and a candy of type A at first
 	return dp[1, 1]
 }
