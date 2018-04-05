@@ -77,7 +77,7 @@ fun OneArray<Double>.maxProd(): Double {
 	}
 
 	// 0 cancels all our current progress! yuck!
-	// so we will recursively call ourself before and after the 0
+	// so we will recursively call itself before and after the 0
 	for (i in 1..n) {
 		if (this[i] == 0.0) {
 			return max(this[1 until i].maxProd(), this[i + 1..n].maxProd())
@@ -160,22 +160,31 @@ fun OneArray<Double>.maxProdRedo(): Double {
 
 	for (i in n - 1 downTo 1) {
 		when {
+		// 0 is the easiest case since everything multiply with 0 is 0
 			A[i] == 0.0 -> {
 				max[i] = 0.0
 				min[i] = 0.0
 			}
+		// then we can do > 0 since it's not that tricky
 			A[i] > 0 -> {
+				// we can get bigger when the scaling factor > 1
 				if (max[i + 1] > 1.0) {
 					max[i] *= max[i + 1]
 				}
+				// we will be smaller if we are multiplied with anything < 1
+				// ex. 0.7, 0.1, 0, and even better, negative numbers!
 				if (min[i + 1] < 1.0) {
 					min[i] *= min[i + 1]
 				}
 			}
+		// we are now < 0
 			A[i] < 0 -> {
-				if (min[i + 1] < -1.0) {
+				// we can get bigger if we can either scaled to a smaller
+				// magnitude (but still negative), or better, become positive!
+				if (min[i + 1] < 1.0) {
 					max[i] *= min[i + 1]
 				}
+				// we will get even smaller (more negative) when we are scaled up
 				if (max[i + 1] > 1.0) {
 					min[i] *= max[i + 1]
 				}
