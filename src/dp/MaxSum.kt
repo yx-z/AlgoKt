@@ -1,8 +1,6 @@
 package dp
 
-import util.get
-import util.max
-import util.set
+import util.*
 
 // given an array of arbitrary numbers
 // find the largest sum of elements in a contiguous subarray
@@ -10,8 +8,9 @@ fun main(args: Array<String>) {
 	val arr = intArrayOf(-6, 12, -7, 0, 14, -7, 5)
 //	println(arr.maxSumN2())
 //	println(arr.maxSumNLogN())
-	println(arr.maxSumN())
-	println(arr.maxSumKadane())
+//	println(arr.maxSumN())
+//	println(arr.maxSumKadane())
+	println(arr.toOneArray().maxSumRedo())
 }
 
 // brute force DP: O(N^2)
@@ -153,4 +152,14 @@ fun IntArray.maxSumKadane(): Int {
 		maxSoFar = max(maxSoFar, maxEndingHere)
 	}
 	return maxSoFar
+}
+
+// a variation of kadane's algorithm
+fun OneArray<Int>.maxSumRedo(): Int {
+	// dp[i]: max sum subarray for this[i..n] that MUST include this[i]
+	val dp = OneArray(size) { this[it] }
+	for (i in size - 1 downTo 1)
+		dp[i] += max(0, dp[i + 1])
+
+	return dp.max()!!
 }
