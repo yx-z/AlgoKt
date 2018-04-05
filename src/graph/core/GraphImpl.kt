@@ -151,7 +151,7 @@ open class Graph<V>(var vertices: Collection<Vertex<V>>,
 				}
 			}
 
-	override fun toString() = "V = $vertices\nE = $edges"
+	override fun toString() = "V:\n${vertices.joinToString("\n")}\n\nE:\n${edges.joinToString("\n")}"
 }
 
 open class WeightedGraph<V, E>(vertices: Collection<Vertex<V>>,
@@ -235,9 +235,9 @@ class AdjListGraph<V>(var adjList: Map<Vertex<V>, List<Vertex<V>>>)
 		}.flatten()
 	}
 
-	override fun getEdgesOf(vertex: Vertex<V>) =
-			adjList[vertex]!!.map {
-				Edge(vertex, it)
+	override fun getEdgesOf(v: Vertex<V>) =
+			adjList[v]!!.map {
+				Edge(v, it)
 			}.toList()
 }
 

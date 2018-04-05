@@ -27,6 +27,15 @@ fun <V> WeightedGraph<V, Int>.shortestPathNegEdge(s: Vertex<V>, t: Vertex<V>): I
 	return min(notInclude, include)
 }
 
+// given a graph with exactly one negative edge
+// can you say if it has a negative cycle?
+fun <V> WeightedGraph<V, Int>.hasNegCycles(): Boolean {
+	val (u, v, _, w) = weightedEdges.first { it.weight!! < 0 }
+	val newGraph = WeightedGraph(vertices, weightedEdges.filterNot { it.weight!! < 0 })
+	val (dist, _) = newGraph.dijkstra(v)
+	return dist[u]!! >= w!!
+}
+
 fun main(args: Array<String>) {
 	val vertices = (1..5).map { ComparableVertex(it) }
 	val edges = setOf(
@@ -34,8 +43,9 @@ fun main(args: Array<String>) {
 			WeightedEdge(vertices[0], vertices[3], true, 1),
 			WeightedEdge(vertices[1], vertices[2], true, 1),
 			WeightedEdge(vertices[2], vertices[3], true, 2),
-			WeightedEdge(vertices[2], vertices[4], true, -3),
-			WeightedEdge(vertices[3], vertices[4], true, 1))
+			WeightedEdge(vertices[2], vertices[4], true, -300),
+			WeightedEdge(vertices[4], vertices[2], true, 1))
 	val graph = WeightedGraph(vertices, edges)
-	println(graph.shortestPathNegEdge(vertices[0], vertices[4]))
+//	println(graph.shortestPathNegEdge(vertices[0], vertices[4]))
+	println(graph.hasNegCycles())
 }
