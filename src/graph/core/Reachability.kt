@@ -35,21 +35,24 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 		if (marked[vertex] == false) {
 			marked[vertex] = true
 			reachableVertices.add(vertex)
-			bag.addAll(getEdgesOf(vertex, checkIdentity).map { it.vertex2 })
+			bag.addAll(getEdgesFrom(vertex, checkIdentity).map { it.vertex2 })
 		}
 	}
 
 	return reachableVertices
 }
 
-fun <V> Graph<V>.whateverFirstSearchAll(checkIdentity: Boolean = true) {
+fun <V> Graph<V>.whateverFirstSearchAll(checkIdentity: Boolean = true)
+		: Set<Set<Vertex<V>>> {
+	val set = HashSet<Set<Vertex<V>>>()
 	val marked = HashMap<Vertex<V>, Boolean>()
 	vertices.forEach { marked[it] = false }
 	vertices.forEach {
 		if (marked[it] == false) {
-			println(whateverFirstSearch(it, checkIdentity, marked))
+			set.add(whateverFirstSearch(it, checkIdentity, marked))
 		}
 	}
+	return set
 }
 
 fun main(args: Array<String>) {
