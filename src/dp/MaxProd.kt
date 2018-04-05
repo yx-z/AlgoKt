@@ -14,6 +14,7 @@ fun main(args: Array<String>) {
 //	println(fracArray.maxProd())
 //	println(fracArray.maxProdShort())
 	println(fracArray.maxProdKadane())
+	println(fracArray.maxProdRedo())
 }
 
 // this solution assumes that input array are all integers
@@ -146,4 +147,44 @@ fun OneArray<Double>.maxProdKadane(): Double {
 	}
 
 	return maxSoFar
+}
+
+fun OneArray<Double>.maxProdRedo(): Double {
+	val A = this
+	val n = size
+	// max[i]: max prod subarray of A[i..n] that MUST include A[i]
+	val max = OneArray(n) { A[it] }
+	// min[i]: min prod subarray of A[i..n] that MUST include A[i]
+	val min = OneArray(n) { A[it] }
+	// space: O(n)
+
+	for (i in n - 1 downTo 1) {
+		when {
+			A[i] == 0.0 -> {
+				max[i] = 0.0
+				min[i] = 0.0
+			}
+			A[i] > 0 -> {
+				if (max[i + 1] > 1.0) {
+					max[i] *= max[i + 1]
+				}
+				if (min[i + 1] < 1.0) {
+					min[i] *= min[i + 1]
+				}
+			}
+			A[i] < 0 -> {
+				if (min[i + 1] < -1.0) {
+					max[i] *= min[i + 1]
+				}
+				if (max[i + 1] > 1.0) {
+					min[i] *= max[i + 1]
+				}
+			}
+		}
+	}
+	// time: O(n)
+
+	max.prettyPrintln()
+
+	return max.max()!!
 }
