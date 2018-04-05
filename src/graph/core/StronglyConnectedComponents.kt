@@ -1,5 +1,6 @@
 package graph.core
 
+import util.min
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
@@ -36,23 +37,9 @@ fun <V> Graph<V>.kosaraju(checkIdentity: Boolean = true): Graph<Set<Vertex<V>>> 
 
 	// phase 3: group/merge vertices having the same root (as new vertices)
 	// construct intermediate edges and build the new graph
-	val scc = root.entries.groupBy { it.value }
-	val newVertices = scc.map { Vertex(it.value.map { it.key }.toSet()) }
-
-	val newEdges = HashSet<Edge<Set<Vertex<V>>>>()
-	edges.forEach { (u, v, _) ->
-		// speed up is possible if we have built a <Vertex, Set<Vertex<V>>> map
-		// to find which set u/v belongs to in O(1) time
-		val uSet = newVertices.first { it.data.contains(u) }
-		val vSet = newVertices.first { it.data.contains(v) }
-		if (uSet != vSet) {
-			newEdges.add(Edge(uSet, vSet, true))
-		}
-	}
-
-	return Graph(newVertices, newEdges)
+	return sccFromMap(root)
+	// overall time complexity: O(V + E)
 }
-// overall time complexity: O(V + E)
 
 private fun <V> Graph<V>.pushPostRevDFS(v: Vertex<V>,
                                         stack: Stack<Vertex<V>>,
@@ -79,8 +66,77 @@ private fun <V> Graph<V>.labelOneDFS(v: Vertex<V>,
 	}
 }
 
-fun <V> Graph<V>.tarjan(): Graph<V> {
-	TODO()
+fun <V> Graph<V>.tarjan(checkIdentity: Boolean = true): Graph<Set<Vertex<V>>> {
+	var clock = 0
+	val stack = Stack<Vertex<V>>()
+	val marked = HashMap<Vertex<V>, Boolean>()
+	val root = HashMap<Vertex<V>, Vertex<V>?>()
+	val low = HashMap<Vertex<V>, Int>()
+	val pre = HashMap<Vertex<V>, Int>()
+	vertices.forEach {
+		marked[it] = false
+		root[it] = null
+		low[it] = 0
+		pre[it] = 0
+	}
+
+	vertices.forEach {
+		if (marked[it] == false) {
+			clock = tarjanDFS(it, clock, marked, pre, low, stack, root, checkIdentity)
+		}
+	}
+
+	return sccFromMap(root)
+	// still O(V + E)
+}
+
+private fun <V> Graph<V>.tarjanDFS(v: Vertex<V>,
+                                   pClock: Int,
+                                   marked: HashMap<Vertex<V>, Boolean>,
+                                   pre: HashMap<Vertex<V>, Int>,
+                                   low: HashMap<Vertex<V>, Int>,
+                                   stack: Stack<Vertex<V>>,
+                                   root: HashMap<Vertex<V>, Vertex<V>?>,
+                                   checkIdentity: Boolean = true): Int {
+	marked[v] = true
+	val clock = pClock + 1
+	pre[v] = clock
+	low[v] = pre[v]!!
+	stack.push(v)
+	getEdgesFrom(v).forEach { (_, w) ->
+		when {
+			marked[w] == false -> {
+				tarjanDFS(w, clock, marked, pre, low, stack, root, checkIdentity)
+				low[v] = min(low[v]!!, low[w]!!)
+			}
+			root[w] == null -> low[v] = min(low[v]!!, pre[w]!!)
+		}
+	}
+	if (low[v] == pre[v]) {
+		do {
+			val w = stack.pop()
+			root[w] = v
+		} while ((checkIdentity && w !== v) || (!checkIdentity && w != v))
+	}
+	return clock
+}
+
+private fun <V> Graph<V>.sccFromMap(root: Map<Vertex<V>, Vertex<V>?>): Graph<Set<Vertex<V>>> {
+	val scc = root.entries.groupBy { it.value }
+	val newVertices = scc.map { Vertex(it.value.map { it.key }.toSet()) }
+
+	val newEdges = HashSet<Edge<Set<Vertex<V>>>>()
+	edges.forEach { (u, v, _) ->
+		// speed up is possible if we have built a <Vertex, Set<Vertex<V>>> map
+		// to find which set u/v belongs to in O(1) time
+		val uSet = newVertices.first { it.data.contains(u) }
+		val vSet = newVertices.first { it.data.contains(v) }
+		if (uSet != vSet) {
+			newEdges.add(Edge(uSet, vSet, true))
+		}
+	}
+
+	return Graph(newVertices, newEdges)
 }
 
 fun main(args: Array<String>) {
