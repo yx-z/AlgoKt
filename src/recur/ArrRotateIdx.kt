@@ -26,7 +26,7 @@ fun OneArray<Int>.arrRotateIdx(): Int {
 		return m
 	}
 
-	// O(log n) in total
+	// O(log n) in total
 	val l = A[1 until m].arrRotateIdx()
 	val r = A[m + 1..n].arrRotateIdx()
 	if (l == -1 && r == -1) {

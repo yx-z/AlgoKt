@@ -2,8 +2,6 @@ package recur
 
 import util.OneArray
 import util.get
-import kotlin.collections.HashMap
-import kotlin.collections.any
 import kotlin.collections.set
 
 // given an unsorted array A[1..n]
@@ -26,7 +24,7 @@ fun OneArray<Int>.nOverFourHash(): Boolean {
 	return map.values.any { it > n / 4 }
 }
 
-// but what if hashing is not allowed yand you still want O(n) running time?
+// but what if hashing is not allowed and you still want O(n) running time?
 fun OneArray<Int>.nOverFour(count: Int = size / 4 + 1): Boolean {
 	val A = this
 	val n = size

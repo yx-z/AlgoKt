@@ -67,7 +67,7 @@ class OneArray<T>(val size: Int) {
 		setterIndexOutOfBoundsHandler = set
 	}
 
-	// accessing with ArrayIndexOutofBoundException handling
+	// accessing with ArrayIndexOutOfBoundException handling
 	operator fun get(i: Int) = when {
 		i in indices -> container[i - 1]
 		getterIndexOutOfBoundsHandler != null -> getterIndexOutOfBoundsHandler!!(i)
@@ -396,17 +396,9 @@ operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
 operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
 
-fun OneArray<Int>.sum(): Int {
-	var sum = 0
-	forEach { sum += it }
-	return sum
-}
+fun OneArray<Int>.sum() = reduce { i1, i2 -> i1 + i2 }
 
-fun OneArray<Double>.sum(): Double {
-	var sum = 0.0
-	forEach { sum += it }
-	return sum
-}
+fun OneArray<Int>.prod() = reduce { i1, i2 -> i1 * i2 }
 
 // python-like indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int,

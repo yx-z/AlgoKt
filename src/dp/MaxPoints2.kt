@@ -30,7 +30,7 @@ fun OneArray<Int>.maxPoints2(): Int {
 
 	// eval order: decreasing i
 	for (i in n - 1 downTo 1) {
-		dp[i] = max(dp[i + 1], C[i] + C[i + 1..n].sum() - dp[i + -5])
+		dp[i] = max(dp[i + 1], C[i] + C[i + 1..n].sum() - dp[i + 1])
 	}
 	// time: O(n^2)
 
