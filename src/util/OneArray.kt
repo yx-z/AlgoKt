@@ -202,7 +202,9 @@ class OneArray<T>(val size: Int) {
 	// note that the following two data structures are ZERO-indexed
 	fun toArray() = Arrays.copyOf(container, size)
 
-	fun toList() = toArray().toList()
+	fun toList() = container.toList()
+
+	fun toSet() = container.toSet()
 
 	// sizing
 	fun isEmpty() = size <= 0
@@ -249,6 +251,12 @@ class OneArray<T>(val size: Int) {
 	fun <R : Comparable<R>> maxBy(selector: (T) -> R) = container.maxBy(selector)
 
 	fun <R : Comparable<R>> minBy(selector: (T) -> R) = container.minBy(selector)
+
+	fun reduce(acc: (T, T) -> T) = container.reduce(acc)
+
+	fun count(predicate: (T) -> Boolean) = container.count(predicate)
+
+	fun distinct() = container.distinct()
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
@@ -387,6 +395,18 @@ operator fun OneArray<Double>.rem(num: Double) = map { it % num }.toList().toOne
 operator fun OneArray<Int>.inc() = map { it + 1 }.toList().toOneArray()
 
 operator fun OneArray<Int>.dec() = map { it - 1 }.toList().toOneArray()
+
+fun OneArray<Int>.sum(): Int {
+	var sum = 0
+	forEach { sum += it }
+	return sum
+}
+
+fun OneArray<Double>.sum(): Double {
+	var sum = 0.0
+	forEach { sum += it }
+	return sum
+}
 
 // python-like indexing for multi-dimensional arrays
 operator fun <T> OneArray<OneArray<T>>.get(i1: Int,

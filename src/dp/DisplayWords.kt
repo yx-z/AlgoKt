@@ -25,7 +25,7 @@ fun OneArray<Int>.minTotalSlop(L: Int): Int {
 	val dp = OneArray(L - 1) { OneArray(n) { OneArray(n) { INF } } }
 
 	// preprocess in O(n^2) time and space
-	val sumTable = sum()
+	val sumTable = allPairsSum()
 //	sumTable.prettyPrintTable()
 
 	// base case:
@@ -64,7 +64,7 @@ fun OneArray<Int>.minTotalSlop(L: Int): Int {
 }
 
 // return a table dp[1..n, 1..n] : dp[1, j] = sum(l[i..j])
-fun OneArray<Int>.sum(): OneArray<OneArray<Int>> {
+fun OneArray<Int>.allPairsSum(): OneArray<OneArray<Int>> {
 	val l = this
 	val n = l.size
 	val dp = OneArray(n) { OneArray(n) { 0 } }
