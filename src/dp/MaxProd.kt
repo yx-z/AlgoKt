@@ -193,7 +193,7 @@ fun OneArray<Double>.maxProdRedo(): Double {
 	}
 	// time: O(n)
 
-	max.prettyPrintln()
+//	max.prettyPrintln()
 
 	return max.max()!!
 }
