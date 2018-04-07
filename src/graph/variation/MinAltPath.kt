@@ -1,6 +1,6 @@
 package graph.variation
 
-import graph.core.ComparableVertex
+import graph.core.CVertex
 import graph.core.Edge
 import graph.core.Graph
 import util.INF
@@ -18,10 +18,10 @@ import kotlin.collections.set
 
 // assume a solution always exists
 // report this path
-fun Graph<Int>.minAltPath(s: ComparableVertex<Int>,
-                          t: ComparableVertex<Int>,
+fun Graph<Int>.minAltPath(s: CVertex<Int>,
+                          t: CVertex<Int>,
                           checkIdentity: Boolean = true)
-		: List<ComparableVertex<Int>> {
+		: List<CVertex<Int>> {
 	val newGraph = toDirectedGraph()
 
 	val (upCount, upPath) = newGraph.minUpPath(s, t, checkIdentity)
@@ -32,20 +32,20 @@ fun Graph<Int>.minAltPath(s: ComparableVertex<Int>,
 	return if (upCount < downCount) upPath else downPath
 }
 
-fun Graph<Int>.minUpPath(s: ComparableVertex<Int>,
-                         t: ComparableVertex<Int>,
+fun Graph<Int>.minUpPath(s: CVertex<Int>,
+                         t: CVertex<Int>,
                          checkIdentity: Boolean = true,
-                         marked: HashMap<ComparableVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, MutableList<ComparableVertex<Int>>> {
+                         marked: HashMap<CVertex<Int>, Boolean> = HashMap())
+		: Tuple2<Int, MutableList<CVertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
 		return 0 tu mutableListOf()
 	}
 
 	var minCount = INF
-	val minPath: MutableList<ComparableVertex<Int>> = ArrayList(vertices.size)
+	val minPath: MutableList<CVertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
-		val e = it.vertex2 as ComparableVertex<Int>
+		val e = it.vertex2 as CVertex<Int>
 		if (!marked.containsKey(e) || marked[e] == false) {
 			if (e.data > s.data) {
 				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
@@ -71,20 +71,20 @@ fun Graph<Int>.minUpPath(s: ComparableVertex<Int>,
 	return minCount tu minPath
 }
 
-fun Graph<Int>.minDownPath(s: ComparableVertex<Int>,
-                           t: ComparableVertex<Int>,
+fun Graph<Int>.minDownPath(s: CVertex<Int>,
+                           t: CVertex<Int>,
                            checkIdentity: Boolean = true,
-                           marked: HashMap<ComparableVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, MutableList<ComparableVertex<Int>>> {
+                           marked: HashMap<CVertex<Int>, Boolean> = HashMap())
+		: Tuple2<Int, MutableList<CVertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
 		return 0 tu mutableListOf()
 	}
 
 	var minCount = INF
-	val minPath: MutableList<ComparableVertex<Int>> = ArrayList(vertices.size)
+	val minPath: MutableList<CVertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
-		val e = it.vertex2 as ComparableVertex<Int>
+		val e = it.vertex2 as CVertex<Int>
 		if (!marked.containsKey(e) || marked[e] == false) {
 			if (e.data > s.data) {
 				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
@@ -125,18 +125,18 @@ fun <V> Graph<V>.toDirectedGraph(): Graph<V> {
 
 fun main(args: Array<String>) {
 	val vertices = setOf(
-			ComparableVertex(5),
-			ComparableVertex(2),
-			ComparableVertex(7),
-			ComparableVertex(3),
-			ComparableVertex(10))
+			CVertex(5),
+			CVertex(2),
+			CVertex(7),
+			CVertex(3),
+			CVertex(10))
 	val edges = setOf(
-			Edge(ComparableVertex(5), ComparableVertex(2)),
-			Edge(ComparableVertex(5), ComparableVertex(7)),
-			Edge(ComparableVertex(7), ComparableVertex(3)),
-			Edge(ComparableVertex(2), ComparableVertex(3)),
-			Edge(ComparableVertex(2), ComparableVertex(10)),
-			Edge(ComparableVertex(3), ComparableVertex(10)))
+			Edge(CVertex(5), CVertex(2)),
+			Edge(CVertex(5), CVertex(7)),
+			Edge(CVertex(7), CVertex(3)),
+			Edge(CVertex(2), CVertex(3)),
+			Edge(CVertex(2), CVertex(10)),
+			Edge(CVertex(3), CVertex(10)))
 	val graph = Graph(vertices, edges)
-	println(graph.minAltPath(ComparableVertex(5), ComparableVertex(10), false))
+	println(graph.minAltPath(CVertex(5), CVertex(10), false))
 }

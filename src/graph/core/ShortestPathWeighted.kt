@@ -119,7 +119,7 @@ fun <V> WeightedGraph<V, Int>.bellmanFord(s: Vertex<V>, t: Vertex<V>): Int {
 
 
 fun main(args: Array<String>) {
-	val vertices = (1..5).map { ComparableVertex(it) }
+	val vertices = (1..5).map { CVertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], true, 1),
 			WeightedEdge(vertices[0], vertices[3], true, 3),

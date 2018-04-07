@@ -3,6 +3,7 @@ package graph.core
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
+import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlin.collections.forEach
 import kotlin.collections.isNotEmpty
@@ -28,6 +29,7 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 
 	val bag = ArrayList<Vertex<V>>()
 	bag.add(start)
+	reachableVertices.add(start)
 	while (bag.isNotEmpty()) {
 		// we use random number here to emphasize Whatever First
 		val vertex = bag.removeAt(random.nextInt(bag.size))
@@ -43,13 +45,13 @@ fun <V> Graph<V>.whateverFirstSearch(start: Vertex<V>,
 }
 
 fun <V> Graph<V>.whateverFirstSearchAll(checkIdentity: Boolean = true)
-		: Set<Set<Vertex<V>>> {
-	val set = HashSet<Set<Vertex<V>>>()
+		: Map<Vertex<V>, Set<Vertex<V>>> {
+	val set = HashMap<Vertex<V>, Set<Vertex<V>>>()
 	val marked = HashMap<Vertex<V>, Boolean>()
 	vertices.forEach { marked[it] = false }
 	vertices.forEach {
 		if (marked[it] == false) {
-			set.add(whateverFirstSearch(it, checkIdentity, marked))
+			set[it] = whateverFirstSearch(it, checkIdentity, marked)
 		}
 	}
 	return set

@@ -37,7 +37,7 @@ fun <V> WeightedGraph<V, Int>.hasNegCycles(): Boolean {
 }
 
 fun main(args: Array<String>) {
-	val vertices = (1..5).map { ComparableVertex(it) }
+	val vertices = (1..5).map { CVertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], true, 3),
 			WeightedEdge(vertices[0], vertices[3], true, 1),

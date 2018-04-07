@@ -17,7 +17,7 @@ fun <V> WeightedGraph<V, Int>.shortestMidPoint(s: Vertex<V>, t: Vertex<V>): Int 
 }
 
 fun main(args: Array<String>) {
-	val vertices = (0..4).map { ComparableVertex(it) }
+	val vertices = (0..4).map { CVertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], weight = 3),
 			WeightedEdge(vertices[0], vertices[3], weight = 1),

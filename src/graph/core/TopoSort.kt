@@ -4,11 +4,12 @@ import graph.core.Status.*
 import util.OneArray
 import util.toOneArray
 
+
 // topological sort of a directed acyclic graph (dag)
 fun <V> Graph<V>.topoSort(checkIdentity: Boolean = true): OneArray<Vertex<V>> {
 	val sorted = ArrayList<Vertex<V>>()
-
 	val status = HashMap<Vertex<V>, Status>()
+
 	vertices.forEach { status[it] = NEW }
 
 	var clock = vertices.size
@@ -29,7 +30,7 @@ private fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
                                   checkIdentity: Boolean): Int {
 	var counter = clock
 	status[vertex] = ACTIVE
-	getEdgesOf(vertex, checkIdentity).forEach { (_, u) ->
+	getEdgesFrom(vertex, checkIdentity).forEach { (_, u) ->
 		when (status[u]) {
 			NEW -> counter = topoSort(u, status, counter, list, checkIdentity)
 			ACTIVE -> throw CycleDetectedException()
@@ -43,7 +44,7 @@ private fun <V> Graph<V>.topoSort(vertex: Vertex<V>,
 }
 
 class CycleDetectedException
-	: Exception("this graph contains cycles thus cannot be sorted")
+	: Exception("graph contains cycles, cannot be sorted")
 
 enum class Status {
 	NEW, ACTIVE, FINISHED;

@@ -5,17 +5,51 @@ import util.Tuple2
 open class Vertex<V>(var data: V) {
 	override fun toString() = "(${data.toString()})"
 
-	override fun equals(other: Any?) = if (other is Vertex<*>) {
-		data == other.data
-	} else {
-		false
-	}
+	override fun equals(other: Any?) =
+			if (other is Vertex<*>) {
+				data == other.data
+			} else {
+				false
+			}
 
 	override fun hashCode() = data?.hashCode() ?: 0
 }
 
-class ComparableVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable<ComparableVertex<V>> {
-	override fun compareTo(other: ComparableVertex<V>) = data.compareTo(other.data)
+// comparable vertex in the sense that we can compare values between vertices
+class CVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable<CVertex<V>> {
+	override fun compareTo(other: CVertex<V>) = data.compareTo(other.data)
+}
+
+// distinguishable vertex in the sense that we will assign a unique id (of type
+// Int) to distinguish vertices that possibly have the same data member stored
+class DVertex<V>(data: V) : Vertex<V>(data) {
+	val id = cId
+
+	init {
+		cId++ // update identifier
+	}
+
+	companion object {
+		var cId = 0 // Class-level Identifier
+	}
+
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is DVertex<*>) return false
+		if (!super.equals(other)) return false
+
+		if (id != other.id) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int {
+		var result = super.hashCode()
+		result = 31 * result + id
+		return result
+	}
+
+	override fun toString() = "(<$id> : $data)"
 }
 
 open class Edge<V>(var vertex1: Vertex<V>,

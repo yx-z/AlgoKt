@@ -138,7 +138,7 @@ fun <V> WeightedGraph<V, Int>.warshall(): Map<Vertex<V>, Map<Vertex<V>, Int>> {
 // time complexity: O(V^3)
 
 fun main(args: Array<String>) {
-	val vertices = (1..5).map { ComparableVertex(it) }
+	val vertices = (1..5).map { CVertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], true, 1),
 			WeightedEdge(vertices[0], vertices[3], true, 3),

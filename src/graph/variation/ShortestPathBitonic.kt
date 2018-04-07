@@ -1,6 +1,6 @@
 package graph.variation
 
-import graph.core.ComparableVertex
+import graph.core.CVertex
 import graph.core.WeightedEdge
 import graph.core.WeightedGraph
 import util.INF
@@ -9,8 +9,8 @@ import util.INF
 // find a shortest path that values in vertices first increases then decreases
 // note that such path can still be monotonic (only decreases/increases)
 // which is the case when the changing vertex is at the start/end
-fun WeightedGraph<Int, Int>.shortestPathBitonic(s: ComparableVertex<Int>,
-                                                t: ComparableVertex<Int>,
+fun WeightedGraph<Int, Int>.shortestPathBitonic(s: CVertex<Int>,
+                                                t: CVertex<Int>,
                                                 checkIdentity: Boolean = true): Int {
 	// idea is similar to longest bitonic sequence
 	val inc = shortestPathInc(s, checkIdentity)
@@ -19,10 +19,10 @@ fun WeightedGraph<Int, Int>.shortestPathBitonic(s: ComparableVertex<Int>,
 }
 
 fun main(args: Array<String>) {
-	val vertices = (1..3).map { ComparableVertex(it) }
+	val vertices = (1..3).map { CVertex(it) }
 	val edges = setOf(
-			WeightedEdge(ComparableVertex(1), ComparableVertex(3), weight = 1),
-			WeightedEdge(ComparableVertex(3), ComparableVertex(2), weight = 1))
+			WeightedEdge(CVertex(1), CVertex(3), weight = 1),
+			WeightedEdge(CVertex(3), CVertex(2), weight = 1))
 	val graph = WeightedGraph(vertices, edges)
-	println(graph.shortestPathBitonic(ComparableVertex(1), ComparableVertex(2), false))
+	println(graph.shortestPathBitonic(CVertex(1), CVertex(2), false))
 }
