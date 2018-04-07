@@ -5,9 +5,10 @@ import util.*
 fun main(args: Array<String>) {
 	val s = "abbaaa"
 	// should be abba -> 4
-	println(lpsubstr(s))
-	println(s.toCharOneArray().lpsubstr())
-	println(s.toCharOneArray().lpsubstring())
+//	println(lpsubstr(s))
+//	println(s.toCharOneArray().lpsubstr())
+//	println(s.toCharOneArray().lpsubstring())
+	println(s.toCharOneArray().lpsubstrRedo())
 }
 
 // Longest Palindrome Substring (consecutive chars), NOT LPS
@@ -100,4 +101,48 @@ fun OneArray<Char>.lpsubstring(): Int {
 //	dp.prettyPrintln()
 
 	return dp.indexOfLast { it.isNotEmpty() }
+}
+
+fun OneArray<Char>.lpsubstrRedo(): Int {
+	val A = this
+	val n = size
+
+	// dp(i, j): len of lpsubstr : that MUST start @ i and end @ j
+	val dp = OneArray(n) { OneArray(n) { 0 } }
+	// space: O(n^2)
+
+	// base case:
+	// dp(i, j) = 1 if i = j
+	//          = 2 if j = i + 1 and A[i] = A[j]
+	//          = 0 if i > j or i, j !in 1..n
+	for (i in indices) {
+		dp[i, i] = 1
+	}
+	for (i in 1 until n) {
+		if (A[i + 1] == A[i]) {
+			dp[i, i + 1] = 2
+		}
+	}
+
+	// we want max len of such substr
+	var max = 1 // as base case
+
+	// recursive case:
+	// dp(i, j) = 0 if A[i] != A[j]
+	//          = 2 + dp(i + 1, j - 1) o/w
+	// dependency: dp(i, j) depends on dp(i + 1, j - 1)
+	//             , that is, entry to the lower-left
+	// eval order: outer loop for i decreasing from n - 1 down to 1
+	for (i in n - 2 downTo 1) {
+		// inner loop for j increasing from i + 1 to n
+		for (j in i + 2..n) {
+			dp[i, j] = if (A[i] != A[j]) 0 else 2 + dp[i + 1, j - 1]
+			max = max(max, dp[i, j])
+		}
+	}
+	// time: O(n^2)
+
+//	dp.prettyPrintTable()
+
+	return max
 }
