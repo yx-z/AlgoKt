@@ -115,5 +115,6 @@ infix fun String.editDistRedo(that: String): Int {
 	}
 	// time: O(mn)
 
+	// we want the edit dist between A[1..m] and B[1..n]
 	return dp[m, n]
 }
