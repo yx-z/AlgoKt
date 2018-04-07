@@ -63,7 +63,7 @@ fun OneArray<Int>.subsetSumRedo(T: Int): Set<Int>? {
 	// memoization structure: 2d arr dp[0..n, 0..T]
 	val dp = Array(n + 1) { Array<HashSet<Int>?>(T + 1) { null } }
 	// note that each cell contains a subset of A, taking space O(n)
-	// space: O(Tn^2)
+	// space: O(Tn * n) = O(Tn^2)
 
 	// base case:
 	// dp[i, 0] = { } for all i
@@ -93,6 +93,9 @@ fun OneArray<Int>.subsetSumRedo(T: Int): Set<Int>? {
 			}
 		}
 	}
+	// we are filling a table of O(Tn), with each step (at worst case)
+	// taking O(n) work for copying all elements of A
+	// time: O(Tn^2)
 
 	// we want to find the subset of A[1..n] that sums up to T
 	return dp[n, T]
