@@ -15,8 +15,8 @@ fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>,
 
 	val newEdges = HashSet<WeightedEdge<V, Int>>()
 	weightedEdges.forEach { edge ->
-		val (s, e, _, w) = edge
-		if (dist[e]!! == dist[s]!! + w!!) {
+		val (start, end, _, w) = edge
+		if (dist[end]!! == dist[start]!! + w!!) {
 			newEdges.add(edge)
 		}
 	}
@@ -31,18 +31,22 @@ fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>,
 
 	val num = OneArray(list.size) { 0 }
 	num[dict[t]!!] = 1
-	for (i in dict[t]!! downTo 1) {
-		num[i] = getEdgesOf(list[i], checkIdentity)
+	for (i in dict[t]!! - 1 downTo dict[s]!!) {
+		num[i] = getEdgesFrom(list[i], checkIdentity)
 				.map { num[dict[it.vertex2]!!] }
 				.sum()
 	}
 
-	return num[dist[s]!!]
+//	num.prettyPrintln()
+	return num[dict[s]!!]
 }
 
 fun main(args: Array<String>) {
-	val vertices = setOf(Vertex(1), Vertex(2))
-	val edges = setOf(WeightedEdge(Vertex(1), Vertex(2), true, 1))
-	val graph = WeightedGraph(vertices, edges)
-	println(graph.numShortestPaths(Vertex(1), Vertex(2), false))
+	val V = (0..2).map { CVertex(it) }
+	val E = setOf(
+			WeightedEdge(V[0], V[1], true, 1),
+			WeightedEdge(V[1], V[2], true, 2),
+			WeightedEdge(V[0], V[2], true, 3))
+	val G = WeightedGraph(V, E)
+	println(G.numShortestPaths(V[0], V[2]))
 }

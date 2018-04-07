@@ -1,5 +1,10 @@
 package dp
 
+import util.OneArray
+import util.get
+import util.set
+import util.toOneArray
+
 // given an array of positive integers and an integer, determine if any subset of the array can sum
 // up to the integer
 fun main(args: Array<String>) {
@@ -11,9 +16,12 @@ fun main(args: Array<String>) {
 			11, // true
 			9, // false
 			10) // true
-	ints.forEach { println(arr.subsetSum(it)) }
-	println()
-	ints.forEach { println(arr.subsetSum2(it)) }
+//	ints.forEach { println(arr.subsetSum(it)) }
+//	println()
+//	ints.forEach { println(arr.subsetSum2(it)) }
+	ints.forEach {
+		println(arr.toOneArray().subsetSumRedo(it))
+	}
 }
 
 // O(size * n)
@@ -43,4 +51,49 @@ fun IntArray.subsetSum2(n: Int, idx: Int = 0): Boolean {
 	}
 
 	return subsetSum2(n, idx + 1) || subsetSum2(n - this[idx], idx + 1)
+}
+
+fun OneArray<Int>.subsetSumRedo(T: Int): Set<Int>? {
+	val A = this
+	val n = size
+
+	// dp[i, j]: a subset of A[1..i] that sums up to j
+	// note that empty set is a subset of any set that sums up to 0
+	// so we use null to represent the case of no such set exists
+	// memoization structure: 2d arr dp[0..n, 0..T]
+	val dp = Array(n + 1) { Array<HashSet<Int>?>(T + 1) { null } }
+	// note that each cell contains a subset of A, taking space O(n)
+	// space: O(Tn^2)
+
+	// base case:
+	// dp[i, 0] = { } for all i
+	for (i in 0..n) {
+		dp[i, 0] = HashSet()
+	}
+	// dp[0, j] = null for all j > 0
+	// dp[i, j] = null for all j < 0
+
+	// recursive case:
+	// dp[i, j] = NOT include A[i]: dp[i - 1, j] if any
+	//            include A[i]: find dp[i - 1, j - A[i]]
+	// dependency: dp[i, j] depends on dp[i - 1, j], dp[i - 1, j - A[i]]
+	//             that is entries above
+	// eval order: outer loop for i increasing from 1 to n
+	for (i in 1..n) {
+		// inner loop for j with no specific order, say 1..T
+		for (j in 1..T) {
+			if (dp[i - 1, j] != null) {
+				dp[i, j] = HashSet(dp[i - 1, j])
+			} else {
+				if (j - A[i] >= 0 && dp[i - 1, j - A[i]] != null) {
+					dp[i, j] = HashSet(dp[i - 1, j - A[i]])
+					dp[i, j]!!.add(A[i])
+				}
+				// o/w dp[i, j] = null as initialized
+			}
+		}
+	}
+
+	// we want to find the subset of A[1..n] that sums up to T
+	return dp[n, T]
 }
