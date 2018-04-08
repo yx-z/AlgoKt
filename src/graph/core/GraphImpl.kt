@@ -23,7 +23,7 @@ class CVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable<CVertex<
 // distinguishable vertex in the sense that we will assign a unique id (of type
 // Int) to distinguish vertices that possibly have the same data member stored
 class DVertex<V>(data: V) : Vertex<V>(data) {
-	val id = cId
+	private val id = cId
 
 	init {
 		cId++ // update identifier

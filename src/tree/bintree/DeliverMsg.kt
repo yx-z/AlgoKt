@@ -1,6 +1,5 @@
-package dp
+package tree.bintree
 
-import tree.bintree.BinTreeNode
 import util.*
 
 // given a binary tree, only the root knows a message at first,

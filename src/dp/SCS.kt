@@ -113,46 +113,51 @@ fun scs(X: OneArray<Char>, Y: OneArray<Char>, Z: OneArray<Char>): Int {
 			// innermost loop for k increasing from 1 to n
 			for (k in 1..n) {
 				dp[i, j, k] = when {
-					X[i] == Y[j] && Y[j] == Z[k] -> min(
-							dp[i - 1, j - 1, k - 1] + 1,
-							dp[i, j - 1, k - 1] + 1,
-							dp[i - 1, j, k - 1] + 1,
-							dp[i - 1, j - 1, k] + 1,
-							dp[i - 1, j, k] + 1,
-							dp[i, j - 1, k] + 1,
-							dp[i, j, k - 1] + 1)
-					X[i] == Y[j] && Y[j] != Z[k] -> min(
-							dp[i - 1, j - 1, k - 1] + 2,
-							dp[i, j - 1, k - 1] + 2,
-							dp[i - 1, j, k - 1] + 2,
-							dp[i - 1, j - 1, k] + 1,
-							dp[i - 1, j, k] + 1,
-							dp[i, j - 1, k] + 1,
-							dp[i, j, k - 1] + 1)
-					X[i] != Y[j] && Y[j] == Z[k] -> min(
-							dp[i - 1, j - 1, k - 1] + 2,
-							dp[i, j - 1, k - 1] + 1,
-							dp[i - 1, j, k - 1] + 2,
-							dp[i - 1, j - 1, k] + 2,
-							dp[i - 1, j, k] + 1,
-							dp[i, j - 1, k] + 1,
-							dp[i, j, k - 1] + 1)
-					X[i] == Z[k] && Z[k] != Y[j] -> min(
-							dp[i - 1, j - 1, k - 1] + 2,
-							dp[i, j - 1, k - 1] + 2,
-							dp[i - 1, j, k - 1] + 1,
-							dp[i - 1, j - 1, k] + 2,
-							dp[i - 1, j, k] + 1,
-							dp[i, j - 1, k] + 1,
-							dp[i, j, k - 1] + 1)
-					else -> /* X[i] != Y[j] != Z[k] */ min(
-							dp[i - 1, j - 1, k - 1] + 3,
-							dp[i, j - 1, k - 1] + 2,
-							dp[i - 1, j, k - 1] + 2,
-							dp[i - 1, j - 1, k] + 2,
-							dp[i - 1, j, k] + 1,
-							dp[i, j - 1, k] + 1,
-							dp[i, j, k - 1] + 1)
+					X[i] == Y[j] && Y[j] == Z[k] ->
+						min(
+								dp[i - 1, j - 1, k - 1] + 1,
+								dp[i, j - 1, k - 1] + 1,
+								dp[i - 1, j, k - 1] + 1,
+								dp[i - 1, j - 1, k] + 1,
+								dp[i - 1, j, k] + 1,
+								dp[i, j - 1, k] + 1,
+								dp[i, j, k - 1] + 1)
+					X[i] == Y[j] && Y[j] != Z[k] ->
+						min(
+								dp[i - 1, j - 1, k - 1] + 2,
+								dp[i, j - 1, k - 1] + 2,
+								dp[i - 1, j, k - 1] + 2,
+								dp[i - 1, j - 1, k] + 1,
+								dp[i - 1, j, k] + 1,
+								dp[i, j - 1, k] + 1,
+								dp[i, j, k - 1] + 1)
+					X[i] != Y[j] && Y[j] == Z[k] ->
+						min(
+								dp[i - 1, j - 1, k - 1] + 2,
+								dp[i, j - 1, k - 1] + 1,
+								dp[i - 1, j, k - 1] + 2,
+								dp[i - 1, j - 1, k] + 2,
+								dp[i - 1, j, k] + 1,
+								dp[i, j - 1, k] + 1,
+								dp[i, j, k - 1] + 1)
+					X[i] == Z[k] && Z[k] != Y[j] ->
+						min(
+								dp[i - 1, j - 1, k - 1] + 2,
+								dp[i, j - 1, k - 1] + 2,
+								dp[i - 1, j, k - 1] + 1,
+								dp[i - 1, j - 1, k] + 2,
+								dp[i - 1, j, k] + 1,
+								dp[i, j - 1, k] + 1,
+								dp[i, j, k - 1] + 1)
+					else -> // X[i] != Y[j] != Z[k]
+						min(
+								dp[i - 1, j - 1, k - 1] + 3,
+								dp[i, j - 1, k - 1] + 2,
+								dp[i - 1, j, k - 1] + 2,
+								dp[i - 1, j - 1, k] + 2,
+								dp[i - 1, j, k] + 1,
+								dp[i, j - 1, k] + 1,
+								dp[i, j, k - 1] + 1)
 				}
 			}
 		}

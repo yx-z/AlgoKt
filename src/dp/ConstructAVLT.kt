@@ -36,27 +36,27 @@ fun OneArray<Int>.avlCost(): Int {
 	// space complexity: O(n^3 log n)
 	val handler = { i: Int, k: Int, h: Int ->
 		when (h) {
-			0 -> if (i == k) f[i] else INF
-			-1 -> if (i == k + 1) 0 else INF
-			else -> INF
+			0 -> if (i == k) f[i] else tree.bintree.INF
+			-1 -> if (i == k + 1) 0 else tree.bintree.INF
+			else -> tree.bintree.INF
 		}
 	}
 
 	// we want min_h { dp(h, 1, n) }
-	var min = INF
+	var min = tree.bintree.INF
 
 	for (h in 1..H) {
 		for (i in 1..n) {
 			for (k in i..n) {
 				dp[i, k, h] = when {
 					h <= -1 && i > k -> 0
-					h != -1 && i > k -> INF
+					h != -1 && i > k -> tree.bintree.INF
 					else -> F[i, k] + ((i..k).map { r ->
 						min(
 								dp[i, r, h - 1, handler] + dp[r + 1, k, h - 2, handler],
 								dp[i, r - 1, h - 2, handler] + dp[r + 1, k, h - 1, handler],
 								dp[i, r - 1, h - 1, handler] + dp[r + 1, k, h - 1, handler])
-					}.min() ?: INF)
+					}.min() ?: tree.bintree.INF)
 				}
 
 				if (i == 1 && k == n) {

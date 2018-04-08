@@ -25,7 +25,7 @@ fun OneArray<Int>.ringDing(): Int {
 
 	// 1   2   3   4   5   6
 	// xdr drr rrr xrd rdd ddd
-	// dp[i, j]: max points i can get given A[1..i] and the last three words I
+	// dp[i, j]: max points i can get given A[1..i] and the last three words
 	// i have said (after the turn @ i) falls to the j-th category described above
 	// r for Ring, d for Ding, x for either Ring or Ding
 	val dp = OneArray(n) { OneArray(6) { 0 } }

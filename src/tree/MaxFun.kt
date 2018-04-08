@@ -1,6 +1,5 @@
-package dp
+package tree
 
-import tree.TreeNode
 import util.max
 
 // given a tree as a company hierarchy
