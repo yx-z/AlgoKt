@@ -10,20 +10,25 @@ import util.OneArray
 // routers from it, assuming k << |V|
 
 // 1. Suppose G is a DAG, find all safe vertices in G
-fun Graph<Int>.safeVertices(k: Int,
-                            checkIdentity: Boolean = true)
+fun Graph<Int>.safeVerticesDAG(k: Int,
+                               checkIdentity: Boolean = true)
 		: Collection<Vertex<Int>> {
-	val V = topoSort(checkIdentity)
-	// dp(i): # of routers V[i] can reach
-	val dp = OneArray(V.size) { V[it].data }
+	val V = topoSort(checkIdentity) // O(V + E)
 
+	// dp(i): list of indices of routers V[i] can reach
+	val dp = OneArray(V.size) { HashSet<Int>() }
+	// space: O(V)
+
+	V.indices
+			.filter { V[it].data == 1 }
+			.forEach { dp[it].add(it) }
 	for (i in V.size - 1 downTo 1) {
-		dp[i] += getEdgesFrom(V[i], checkIdentity)
-				.map { (_, w) -> dp[V.indexOf(w)] }
-				.sum()
+		getEdgesFrom(V[i], checkIdentity).forEach { (_, w) ->
+			dp[V.indexOf(w)].forEach { dp[i].add(it) }
+		}
 	}
 
-	return V.filterIndexed { i, _ -> dp[i] >= k }
+	return V.filterIndexed { i, _ -> dp[i].size >= k }
 }
 
 fun main(args: Array<String>) {
@@ -43,5 +48,5 @@ fun main(args: Array<String>) {
 			Edge(V[2], V[4], true),
 			Edge(V[3], V[4], true))
 	val G = Graph(V, E)
-	println(G.safeVertices(2))
+	println(G.safeVerticesDAG(2))
 }
