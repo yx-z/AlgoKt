@@ -8,7 +8,7 @@ import util.set
 // similar to MaxPlusMinus
 // but this time, the input array contains only numbers, +, and *
 // find the maximum value of expression by adding parenthesis
-// also with different constraints as the folowing
+// also with different constraints as the following
 
 // 1. all numbers are positive
 fun CharArray.maxPlusMult1(): Int {
