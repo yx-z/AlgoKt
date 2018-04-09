@@ -22,7 +22,7 @@ fun <V> WeightedGraph<V, Int>.dijkstra(s: Vertex<V>, checkIdentity: Boolean = tr
 	dist[s] = 0
 	parent[s] = s
 
-	val minHeap = PriorityQueue<Vertex<V>>()
+	val minHeap = PriorityQueue<Vertex<V>>(Comparator { u, v -> dist[u]!! - dist[v]!! })
 	minHeap.add(s)
 
 	while (minHeap.isNotEmpty()) {
@@ -119,13 +119,13 @@ fun <V> WeightedGraph<V, Int>.bellmanFord(s: Vertex<V>, t: Vertex<V>): Int {
 
 
 fun main(args: Array<String>) {
-	val vertices = (1..5).map { CVertex(it) }
+	val vertices = (0..4).map { Vertex('a' + it) }
 	val edges = setOf(
-			WeightedEdge(vertices[0], vertices[1], true, 1),
-			WeightedEdge(vertices[0], vertices[3], true, 3),
-			WeightedEdge(vertices[1], vertices[2], true, 1),
-			WeightedEdge(vertices[2], vertices[3], true, 2),
-			WeightedEdge(vertices[2], vertices[4], true, 3),
+			WeightedEdge(vertices[0], vertices[1], true, 10),
+			WeightedEdge(vertices[0], vertices[2], true, 2),
+			WeightedEdge(vertices[0], vertices[4], true, 100),
+			WeightedEdge(vertices[1], vertices[3], true, 2),
+			WeightedEdge(vertices[2], vertices[4], true, 10),
 			WeightedEdge(vertices[3], vertices[4], true, 1))
 	val graph = WeightedGraph(vertices, edges)
 	println(graph.dijkstra(vertices[0]).first[vertices[4]])

@@ -42,7 +42,7 @@ fun <V> WeightedGraph<V, Int>.numShortestPaths(s: Vertex<V>,
 }
 
 fun main(args: Array<String>) {
-	val V = (0..2).map { CVertex(it) }
+	val V = (0..2).map { Vertex(it) }
 	val E = setOf(
 			WeightedEdge(V[0], V[1], true, 1),
 			WeightedEdge(V[1], V[2], true, 2),

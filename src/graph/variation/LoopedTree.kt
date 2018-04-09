@@ -1,6 +1,5 @@
 package graph.variation
 
-import graph.core.CVertex
 import graph.core.Vertex
 import graph.core.WeightedEdge
 import graph.core.WeightedGraph
@@ -89,7 +88,7 @@ fun <V> WeightedGraph<V, Int>.getUp(root: Vertex<V>,
 }
 
 fun main(args: Array<String>) {
-	val vertices = (0..8).map { CVertex(it) }
+	val vertices = (0..8).map { Vertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], true, 5),
 			WeightedEdge(vertices[0], vertices[2], true, 8),

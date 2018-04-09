@@ -1,6 +1,9 @@
 package graph.variation
 
-import graph.core.*
+import graph.core.Vertex
+import graph.core.WeightedEdge
+import graph.core.WeightedGraph
+import graph.core.dijkstra
 import util.max
 
 // given an undirected weighted graph, a starting point s, and another starting
@@ -17,7 +20,7 @@ fun <V> WeightedGraph<V, Int>.shortestMidPoint(s: Vertex<V>, t: Vertex<V>): Int 
 }
 
 fun main(args: Array<String>) {
-	val vertices = (0..4).map { CVertex(it) }
+	val vertices = (0..4).map { Vertex(it) }
 	val edges = setOf(
 			WeightedEdge(vertices[0], vertices[1], weight = 3),
 			WeightedEdge(vertices[0], vertices[3], weight = 1),

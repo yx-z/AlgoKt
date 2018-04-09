@@ -1,8 +1,8 @@
 package graph.variation
 
-import graph.core.CVertex
 import graph.core.Edge
 import graph.core.Graph
+import graph.core.Vertex
 import util.INF
 import util.Tuple2
 import util.tu
@@ -18,10 +18,10 @@ import kotlin.collections.set
 
 // assume a solution always exists
 // report this path
-fun Graph<Int>.minAltPath(s: CVertex<Int>,
-                          t: CVertex<Int>,
+fun Graph<Int>.minAltPath(s: Vertex<Int>,
+                          t: Vertex<Int>,
                           checkIdentity: Boolean = true)
-		: List<CVertex<Int>> {
+		: List<Vertex<Int>> {
 	val newGraph = toDirectedGraph()
 
 	val (upCount, upPath) = newGraph.minUpPath(s, t, checkIdentity)
@@ -32,20 +32,20 @@ fun Graph<Int>.minAltPath(s: CVertex<Int>,
 	return if (upCount < downCount) upPath else downPath
 }
 
-fun Graph<Int>.minUpPath(s: CVertex<Int>,
-                         t: CVertex<Int>,
+fun Graph<Int>.minUpPath(s: Vertex<Int>,
+                         t: Vertex<Int>,
                          checkIdentity: Boolean = true,
-                         marked: HashMap<CVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, MutableList<CVertex<Int>>> {
+                         marked: HashMap<Vertex<Int>, Boolean> = HashMap())
+		: Tuple2<Int, MutableList<Vertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
 		return 0 tu mutableListOf()
 	}
 
 	var minCount = INF
-	val minPath: MutableList<CVertex<Int>> = ArrayList(vertices.size)
+	val minPath: MutableList<Vertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
-		val e = it.vertex2 as CVertex<Int>
+		val e = it.vertex2
 		if (!marked.containsKey(e) || marked[e] == false) {
 			if (e.data > s.data) {
 				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
@@ -71,20 +71,20 @@ fun Graph<Int>.minUpPath(s: CVertex<Int>,
 	return minCount tu minPath
 }
 
-fun Graph<Int>.minDownPath(s: CVertex<Int>,
-                           t: CVertex<Int>,
+fun Graph<Int>.minDownPath(s: Vertex<Int>,
+                           t: Vertex<Int>,
                            checkIdentity: Boolean = true,
-                           marked: HashMap<CVertex<Int>, Boolean> = HashMap())
-		: Tuple2<Int, MutableList<CVertex<Int>>> {
+                           marked: HashMap<Vertex<Int>, Boolean> = HashMap())
+		: Tuple2<Int, MutableList<Vertex<Int>>> {
 	marked[s] = true
 	if ((checkIdentity && s === t) || (!checkIdentity && s == t)) {
 		return 0 tu mutableListOf()
 	}
 
 	var minCount = INF
-	val minPath: MutableList<CVertex<Int>> = ArrayList(vertices.size)
+	val minPath: MutableList<Vertex<Int>> = ArrayList(vertices.size)
 	getEdgesFrom(s, checkIdentity).forEach {
-		val e = it.vertex2 as CVertex<Int>
+		val e = it.vertex2
 		if (!marked.containsKey(e) || marked[e] == false) {
 			if (e.data > s.data) {
 				val (upCount, upPath) = minUpPath(e, t, checkIdentity, marked)
@@ -125,18 +125,18 @@ fun <V> Graph<V>.toDirectedGraph(): Graph<V> {
 
 fun main(args: Array<String>) {
 	val vertices = setOf(
-			CVertex(5),
-			CVertex(2),
-			CVertex(7),
-			CVertex(3),
-			CVertex(10))
+			Vertex(5),
+			Vertex(2),
+			Vertex(7),
+			Vertex(3),
+			Vertex(10))
 	val edges = setOf(
-			Edge(CVertex(5), CVertex(2)),
-			Edge(CVertex(5), CVertex(7)),
-			Edge(CVertex(7), CVertex(3)),
-			Edge(CVertex(2), CVertex(3)),
-			Edge(CVertex(2), CVertex(10)),
-			Edge(CVertex(3), CVertex(10)))
+			Edge(Vertex(5), Vertex(2)),
+			Edge(Vertex(5), Vertex(7)),
+			Edge(Vertex(7), Vertex(3)),
+			Edge(Vertex(2), Vertex(3)),
+			Edge(Vertex(2), Vertex(10)),
+			Edge(Vertex(3), Vertex(10)))
 	val graph = Graph(vertices, edges)
-	println(graph.minAltPath(CVertex(5), CVertex(10), false))
+	println(graph.minAltPath(Vertex(5), Vertex(10), false))
 }

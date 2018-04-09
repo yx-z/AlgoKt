@@ -15,11 +15,6 @@ open class Vertex<V>(var data: V) {
 	override fun hashCode() = data?.hashCode() ?: 0
 }
 
-// comparable vertex in the sense that we can compare values between vertices
-class CVertex<V : Comparable<V>>(data: V) : Vertex<V>(data), Comparable<CVertex<V>> {
-	override fun compareTo(other: CVertex<V>) = data.compareTo(other.data)
-}
-
 // distinguishable vertex in the sense that we will assign a unique id (of type
 // Int) to distinguish vertices that possibly have the same data member stored
 class DVertex<V>(data: V) : Vertex<V>(data) {
