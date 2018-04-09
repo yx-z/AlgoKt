@@ -9,9 +9,9 @@ fun main(args: Array<String>) {
 //	println(a1 lcs a2) // [5, 12, 9] -> 3
 
 	// how about three arrays?
-	val A = oneArrayOf(1, 2, 3, 5, 4, 1)
-	val B = oneArrayOf(2, 5, 4, 7, 2, 3)
-	val C = oneArrayOf(3, 5, 4, 1, 3, 2)
+	val A = oneArrayOf(1, 1, 1, 2, 2, 2, 2, 2)
+	val B = oneArrayOf(2, 2, 2, 2, 1, 1, 1, 1)
+	val C = oneArrayOf(1, 1, 1, 3, 3, 3, 3, 3)
 	println(lcs3(A, B, C))
 }
 
