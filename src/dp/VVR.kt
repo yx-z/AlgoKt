@@ -16,13 +16,13 @@ import util.*
 // find the maximum number of points you can get in such vvr game
 fun main(args: Array<String>) {
 	// it's so fun to use these symbols instead of enums
-	val Arrows = "^^vv'<><>".toCharOneArray()
-//	println(Arrows.maxPoint1())
+	val Arrows = "^^vv<><>".toCharOneArray()
+//	println(Arrows.maxPoint())
 	println(Arrows.maxPoints())
 }
 
 fun OneArray<Char>.maxPoint(): Int {
-	val Arrows = asSequence().map { it.toArrow() }.toList().toOneArray()
+	val Arrows = map { it.toArrow() }.toOneArray()
 	val n = Arrows.size
 
 	// dp(i): given Arrows[1..i], (max point I can get, [set of possible ending position])
@@ -74,7 +74,7 @@ fun OneArray<Char>.maxPoint(): Int {
 
 // an alternative solution without set operation
 fun OneArray<Char>.maxPoints(): Int {
-	val Arrows = asSequence().map { it.toArrow().ordinal + 1 }.toList().toOneArray()
+	val Arrows = map { it.toArrow().ordinal + 1 }.toOneArray()
 	val n = size
 
 	// dp(i, p, q): max points I can get given A[1..i] standing on p, q in the end
@@ -92,7 +92,7 @@ fun OneArray<Char>.maxPoints(): Int {
 	// dp(i, p, q) = if either p or q = Arrows[i]
 	//                   if p = Arrows[i]
 	//                       max{ 1 + dp(i - 1, p, q), dp(i - 1, k, q : k != p) }
-	//                   else
+	//                   else // q = Arrows[i]
 	//                       max{ 1 + dp(i - 1, p, q), dp(i - 1, p, k : k != q) }
 	//               else if neither p nor q = Arrows[i]
 	//                   -inf
