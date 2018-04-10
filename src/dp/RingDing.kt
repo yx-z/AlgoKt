@@ -81,10 +81,6 @@ fun OneArray<Int>.ringDingRedo(): Int {
 	//                   c = 2 -> dp(i - 1, 2, 1)
 	//                   c = 3 -> dp(i - 1, 2, 2)
 	// dp(i, _, _) depends on dp(i - 1, _, _) so we will evaluate i increasingly
-
-	// we want max_{w, c} { dp(n, w, c) }
-	var max = abs(A[1])
-
 	for (i in 2..n) {
 		for (w in 1..2) {
 			for (c in 1..3) {
@@ -101,12 +97,12 @@ fun OneArray<Int>.ringDingRedo(): Int {
 						else -> dp[i - 1, 2, 2] // c == 3
 					}
 				}
-				max = max(max, dp[i, w, c])
 			}
 		}
 	}
 
-	return max
+	// we want max_{w, c} { dp(n, w, c) }
+	return dp[n].map { it.max()!! }.max()!!
 }
 
 fun main(args: Array<String>) {
