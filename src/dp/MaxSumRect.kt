@@ -12,21 +12,48 @@ subarray of the form M[i..i', j..j'].
 Try to solve it in O(n^3) time
 */
 
-fun OneArray<OneArray<Double>>.maxSumRect(): Int {
+fun OneArray<OneArray<Double>>.maxSumRect(): Double {
 	val M = this
 	val n = size // assuming M is n by n as the problem stated
 
-	// row(i, j): max entry sum starting @ (i, j) (and move right in the same row)
-
-
-	// dp(r, i, j): max rect sum in rectangles spanning r rows
-	//              with the top-left corner @ (i, j)
-	// defined for r, i, j in 1..n
+	// dp(i, j): an array of column sums from row i to row j
+	//           where i, j in 1..n and defined only for j >= i
 	val dp = OneArray(n) { OneArray(n) { OneArray(n) { 0.0 } } } // space: O(n^3)
-	// dp(1, i, j)
 
-	// we want max_{r, i, j} { dp(r, i, j) }
-	TODO()
+	// dp(i, j) = M[i] if i = j
+	//          = dp(i, j - 1) + M[j] o/w
+	//            where we are using python-like array addition w/ broadcasting
+	for (i in 1 until n) {
+		for (j in i..n) {
+			dp[i, j] = if (i == j) M[i].copy() else dp[i, j - 1] + M[j]
+		}
+	}
+	// O(n^3)
+
+	// now we do Kadane's Algorithm as in MaxSum and kep track of the max
+	var max = 0.0
+	for (i in 1 until n) {
+		for (j in i..n) {
+			val currMax = dp[i, j].maxSum()
+			max = max(max, currMax)
+		}
+	}
+	// O(n^3)
+
+	return max
+}
+
+operator fun OneArray<Double>.plus(that: OneArray<Double>) = indices.map { this[it] + that[it] }.toOneArray()
+
+fun OneArray<Double>.maxSum(): Double {
+	var maxEndingHere = 0.0
+	var maxSoFar = 0.0
+	forEach {
+		maxEndingHere += it
+		maxEndingHere = max(maxEndingHere, 0.0)
+		maxSoFar = max(maxSoFar, maxEndingHere)
+	}
+	return maxSoFar
 }
 
 fun main(args: Array<String>) {
