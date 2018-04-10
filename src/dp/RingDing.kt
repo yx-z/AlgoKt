@@ -54,6 +54,16 @@ fun OneArray<Int>.ringDing(): Int {
 	return dp[n].max()!!
 }
 
+// another solution with simpler recursive functions
+fun OneArray<Int>.ringDingRedo(): Int {
+	val A = this
+	val n = size // still assuming n > 3
+
+	// dp(i, w, n): max points i can get given A[1..i] with word w (being either
+	//              Ring or Ding) said exactly n times (n is 1, 2, 3)
+	TODO()
+}
+
 fun main(args: Array<String>) {
 	val A = oneArrayOf(-1, -2, -3, -100, 6)
 	println(A.ringDing())
