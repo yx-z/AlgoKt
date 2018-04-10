@@ -12,6 +12,7 @@ import kotlin.math.abs
 // actually lose -A[i] points
 // if you say Ding, you will lose A[i] points, and if A[i] is negative, you
 // actually gain -A[i] points
+
 // in other words, Ring for +A[i], Ding for -A[i]
 
 // but you cannot say the same word Ring/Ding more than three times in a row
@@ -48,7 +49,7 @@ fun OneArray<Int>.ringDing(): Int {
 		dp[i, 6] = -A[i] + dp[i - 1, 5]
 	}
 	// time: O(n)
-	dp.prettyPrintTable()
+//	dp.prettyPrintTable()
 
 	// we want max_j { dp[n, j] }
 	return dp[n].max()!!
@@ -57,14 +58,59 @@ fun OneArray<Int>.ringDing(): Int {
 // another solution with simpler recursive functions
 fun OneArray<Int>.ringDingRedo(): Int {
 	val A = this
-	val n = size // still assuming n > 3
+	val n = size
 
-	// dp(i, w, n): max points i can get given A[1..i] with word w (being either
-	//              Ring or Ding) said exactly n times (n is 1, 2, 3)
-	TODO()
+	// dp(i, w, c): max points i can get given A[1..i] with word w (being either
+	//              Ring/1 or Ding/2) said exactly c times (n is 1, 2, 3)
+	val dp = OneArray(n) { OneArray(2) { OneArray(3) { 0 } } }
+	// space: O(n)
+
+	// dp(1, 1, _) = A[1]
+	// dp(1, 2, _) = -A[1]
+	for (c in 1..3) {
+		dp[1, 1, c] = A[1]
+		dp[1, 2, c] = -A[1]
+	}
+
+	// dp(i, w, c) = if w = Ring/1: A[i] +
+	//                   c = 1 -> max{ dp(i - 1, 2, k) } k in 1..3
+	//                   c = 2 -> dp(i - 1, 1, 1)
+	//                   c = 3 -> dp(i - 1, 1, 2)
+	//               else w = Ding/2: -A[i] +
+	//                   c = 1 -> max{ dp(i - 1, 1, k) } k in 1..3
+	//                   c = 2 -> dp(i - 1, 2, 1)
+	//                   c = 3 -> dp(i - 1, 2, 2)
+	// dp(i, _, _) depends on dp(i - 1, _, _) so we will evaluate i increasingly
+
+	// we want max_{w, c} { dp(n, w, c) }
+	var max = abs(A[1])
+
+	for (i in 2..n) {
+		for (w in 1..2) {
+			for (c in 1..3) {
+				dp[i, w, c] = if (w == 1) {
+					A[i] + when (c) {
+						1 -> dp[i - 1, 2].max()!!
+						2 -> dp[i - 1, 1, 1]
+						else -> dp[i - 1, 1, 2] // c == 3
+					}
+				} else { // w = 2
+					-A[i] + when (c) {
+						1 -> dp[i - 1, 1].max()!!
+						2 -> dp[i - 1, 2, 1]
+						else -> dp[i - 1, 2, 2] // c == 3
+					}
+				}
+				max = max(max, dp[i, w, c])
+			}
+		}
+	}
+
+	return max
 }
 
 fun main(args: Array<String>) {
 	val A = oneArrayOf(-1, -2, -3, -100, 6)
 	println(A.ringDing())
+	println(A.ringDingRedo())
 }
