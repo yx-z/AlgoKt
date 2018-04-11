@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 }
 
 // here we partition based on pivot index 1
-// find a better privoting strategy in `momSelect` below
+// find a better pivoting strategy in `momSelect` below
 fun OneArray<Int>.quickSelect(k: Int): Int {
 	val A = this
 	val n = size
