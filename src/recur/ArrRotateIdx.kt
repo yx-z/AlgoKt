@@ -26,7 +26,10 @@ fun OneArray<Int>.arrRotateIdx(): Int {
 		return m
 	}
 
-	// O(log n) in total
+	// time analysis:
+	// T(n) = O(1) + T(n / 2) + T(n / 2), given such recursion tree
+	// with O(log n) such levels, each level doing O(1) work, we have
+	// O(log n) work done in total
 	val l = A[1 until m].arrRotateIdx()
 	val r = A[m + 1..n].arrRotateIdx()
 	if (l == -1 && r == -1) {
