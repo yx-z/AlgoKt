@@ -38,7 +38,16 @@ fun <V> Graph<V>.dagCutVertex(checkIdentity: Boolean = true): Boolean {
 }
 
 // 2. find a cut vertex in a general graph
+//    google articulation point (another name for cut vertex) would help
 fun <V> Graph<V>.cutVertex(checkIdentity: Boolean = true): Boolean {
+	// so the basic idea is, run a DFS for G, v in V is a cut vertex iff. either
+	// - v is the root of the DFS tree and has at least two children
+	//   OR
+	// - v is NOT the root of the DFS tree and there is no back edge from the
+	//   subtree of v to v's parent
+	// reference: https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+
+
 	TODO()
 }
 
