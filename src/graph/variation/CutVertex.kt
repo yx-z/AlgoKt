@@ -34,7 +34,7 @@ fun <V> Graph<V>.dagCutVertex(checkIdentity: Boolean = true): Boolean {
 //	dp.prettyPrintln()
 
 	// we want to find if there exists a vertex V[j] : dp(j - 1) <= j, j != 1 or V
-	return dp.any { it in 2 until V.size && dp[it - 1] <= it }
+	return V.indices.any { it in 2 until V.size && dp[it - 1] <= it }
 }
 
 // 2. find a cut vertex in a general graph
