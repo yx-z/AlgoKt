@@ -9,10 +9,10 @@ import kotlin.collections.set
 // given two arrays Pre[1..n] and In[1..n] representing the preorder and inorder
 // sequences for a binary tree, reconstruct such tree or throw exceptions
 
-// first we can preprocess in O(n) time : In[PreToIn[i]] = Pre[i], i.e.
+// first we can pre-process in O(n) time : In[PreToIn[i]] = Pre[i], i.e.
 // PreToIn[i] gives the index in the inorder array In that represents the same
 // element in the preorder array Pre
-fun <T> preprocess(Pre: OneArray<T>, In: OneArray<T>): OneArray<Int> {
+private fun <T> preprocess(Pre: OneArray<T>, In: OneArray<T>): OneArray<Int> {
 	val n = Pre.size
 	val dict = HashMap<T, Int>()
 	for (i in 1..n) {
