@@ -257,6 +257,10 @@ class OneArray<T>(val size: Int) {
 	fun count(predicate: (T) -> Boolean) = container.count(predicate)
 
 	fun distinct() = container.distinct()
+
+	fun any(predicate: (T) -> Boolean) = container.any(predicate)
+
+	fun all(predicate: (T) -> Boolean) = container.all(predicate)
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
