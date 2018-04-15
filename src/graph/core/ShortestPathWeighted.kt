@@ -117,6 +117,16 @@ fun <V> WeightedGraph<V, Int>.bellmanFord(s: Vertex<V>, t: Vertex<V>): Int {
 	return dist[t]!!
 }
 
+// note that i have also implemented an A* (A Star) algorithm in src/mat/ShortestPath.kt
+// it is a generalized dijkstra's algorithm for the single source shortest path
+// problem with heuristic functions for better performance
+// but it might not ALWAYS find the shortest path depending on the specific
+// heuristic function being used
+
+// since by convention, A* is used in a grid/table/bitmap/2d arr, with no explicit
+// graph structures (although it can be easily turned into so), i choose not to
+// put it under this graph package which mainly uses traditional G = (V, E) graph
+// representation/implementation here
 
 fun main(args: Array<String>) {
 	val vertices = (0..4).map { Vertex('a' + it) }
