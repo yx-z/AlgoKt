@@ -109,7 +109,7 @@ fun main(args: Array<String>) {
 	val G = oneArrayOf(
 			oneArrayOf(0, 0, 1, 0),
 			oneArrayOf(0, 0, 1, 0),
-			oneArrayOf(0, 1, 0, 0),
+			oneArrayOf(0, 1, 1, 0),
 			oneArrayOf(0, 0, 0, 1))
 	println(G.aStar(1 tu 1, 1 tu 4))
 }
