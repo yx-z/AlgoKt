@@ -2,7 +2,7 @@ package tree.bintree
 
 import util.PrintableBinTreeNode
 
-class BinTreeNode<T>(var data: T) : PrintableBinTreeNode {
+open class BinTreeNode<T>(var data: T) : PrintableBinTreeNode {
 	override val text: String
 		get() = data.toString()
 
