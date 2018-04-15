@@ -7,13 +7,26 @@ import kotlin.math.sqrt
 // finding the i-th fibonacci number
 
 fun main(args: Array<String>) {
+	// testing correctness
 //	println(6.thFibRec())
 //	println(6.thFibTailRec())
 //	println(6.thFibIter())
 //	println(6.thFibDP())
-	println(6.thFibMat())
-	println(6.thFibDoubling())
-	println(6.thFibFormula())
+//	println(6.thFibMat())
+//	println(6.thFibDoubling())
+//	println(6.thFibFormula())
+
+	// testing performance!
+	// sorry but you are TOO slow to be tested, i mean really, tooOOO slow
+//	println(time { 500.thFibRec() })
+	println(time { 500.thFibTailRec() })
+	println(time { 500.thFibIter() })
+	println(time { 500.thFibDP() })
+	println(time { 500.thFibMat() })
+	println(time { 500.thFibDoubling() })
+	// well, for sure you are the fastest, but don't be proud
+	// we haven't count the time to derive and prove this formula lol
+	println(time { 500.thFibFormula() })
 }
 
 // recursion uses exponential runtime
