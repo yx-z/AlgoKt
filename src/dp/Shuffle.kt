@@ -1,5 +1,6 @@
 package dp
 
+import util.OneArray
 import util.get
 import util.set
 
@@ -146,6 +147,81 @@ fun String.isSmoothShuffleOf(X: String, Y: String): Boolean {
 
 	// we want ss(m, n) != []
 	return dp[m][n].isNotEmpty()
+}
+
+// a solution w/o set operations
+fun OneArray<Char>.isSmoothShuffleOf(X: OneArray<Char>, Y: OneArray<Char>): Boolean {
+	// assuming Z has the length m + n
+	val Z = this
+	val m = X.size
+	val n = Y.size
+
+	X.getterIndexOutOfBoundsHandler = { 0.toChar() }
+	Y.getterIndexOutOfBoundsHandler = { 0.toChar() }
+
+	// dp[i, j, w, c]: whether Z[1..i + j] is a smooth shuffle of X[1..i] and
+	// Y[1..j] : the last c characters are from w (0 for X, 1 for Y), c = 1 or 2
+	val dp = Array(m + 1) { Array(n + 1) { Array(2) { Array(3) { false } } } }
+	// space: O(mn)
+
+	// dp[i, j, w, c] = true if i, j, c = 0 for all w
+	dp[0, 0, 1, 0] = true
+	dp[0, 0, 0, 0] = true
+
+	// dp[0, j, w, c] = true if Z[1..j] = Y[1..j], j <= 2, w = 1, and c = j
+	//                = false o/w
+	for (j in 1..2) {
+		if (Z[1..j] == Y[1..j]) {
+			dp[0, j, 1, j] = true
+		}
+	}
+	// dp[i, 0, w, c] = true if Z[1..i] = X[1..i], i <= 2, w = 0, and c = i
+	//                = false o/w
+	for (i in 1..2) {
+		if (Z[1..i] == X[1..i]) {
+			dp[i, 0, 0, i] = true
+		}
+	}
+
+	// dp[i, j, w, c] = false if Z[i + j] != either of X[i] or Y[j]
+	//                = dp[i - 1, j, 1, c] || dp[i - 1, j, 0, c - 1] if Z[i + j] = X[i] != Y[j]
+	//                = dp[i, j - 1, 0, c] || dp[i, j - 1, 1, c - 1] if Z[i + j] = Y[j] != X[i]
+	//                = || { previous two cases } if Z[i + j] = X[i] = Y[j]
+	// dependency: dp[i, j, w, c] depends on dp[i - 1, j, w, c], dp[i, j - 1, w, c]
+	// for some w and c, that is entries in the previous tables
+	// eval order: increasing i/j from 1 to m/n
+	for (i in 1..m) {
+		for (j in 1..n) {
+			for (w in 0..1) {
+				for (c in 1..2) {
+					if (Z[i + j] != X[i] && Z[i + j] != Y[j]) {
+						continue
+					}
+
+					// last character can be from X
+					if (Z[i + j] == X[i]) {
+						if (w == 1) {
+							continue
+						} else { // w = 0
+							dp[i, j, w, c] = dp[i - 1, j, 0, c - 1] || dp[i - 1, j, 1, 1] || dp[i - 1, j, 1, 2]
+						}
+					}
+
+					// last character can be from Y
+					if (Z[i + j] == Y[j]) {
+						if (w == 0) {
+							continue
+						} else { // w = 1
+							dp[i, j, w, c] = dp[i, j - 1, 1, c - 1] || dp[i, j - 1, 0, 1] || dp[i, j - 1, 0, 2]
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// we want to find if for some w and c, dp[m, n, w, c] = true
+	return dp[m, n].any { it.any { it } }
 }
 
 fun main(args: Array<String>) {
