@@ -261,6 +261,20 @@ class OneArray<T>(val size: Int) {
 	fun any(predicate: (T) -> Boolean) = container.any(predicate)
 
 	fun all(predicate: (T) -> Boolean) = container.all(predicate)
+
+	// comparing and hashing
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is OneArray<*>) return false
+
+		if (size != other.size) return false
+
+		return Arrays.deepEquals(container, other.container)
+	}
+
+	override fun hashCode(): Int {
+		return Arrays.deepHashCode(container)
+	}
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =

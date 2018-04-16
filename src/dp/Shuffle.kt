@@ -3,6 +3,7 @@ package dp
 import util.OneArray
 import util.get
 import util.set
+import util.toCharOneArray
 
 // given two strings X and Y, a shuffle of them is interspersing characters of X and Y
 // while keeping them in the same order
@@ -152,6 +153,7 @@ fun String.isSmoothShuffleOf(X: String, Y: String): Boolean {
 // a solution w/o set operations
 fun OneArray<Char>.isSmoothShuffleOf(X: OneArray<Char>, Y: OneArray<Char>): Boolean {
 	// assuming Z has the length m + n
+	// assuming m, n >= 2, o/w solve by brute force
 	val Z = this
 	val m = X.size
 	val n = Y.size
@@ -220,43 +222,15 @@ fun OneArray<Char>.isSmoothShuffleOf(X: OneArray<Char>, Y: OneArray<Char>): Bool
 		}
 	}
 
+
 	// we want to find if for some w and c, dp[m, n, w, c] = true
 	return dp[m, n].any { it.any { it } }
 }
 
 fun main(args: Array<String>) {
-	// regular tests for shuffle()
-	val A = "abc"
-	val B = "123"
-	val Cs = arrayOf(
-			"ab132c", // false
-			"ab123c", // true
-			"ab1c23") // true
-	Cs.forEach { println(it.isShuffleOf(A, B)) }
-
-	// regular tests for smoothShuffle()
-	val X = "abcd"
-	val Y = "12345"
-	val Zs = arrayOf(
-			"ab123cd45", // false
-			"ab12c34d5", // true
-			"1ab23c4d5" // true
-	)
-	Zs.forEach { println(it.isSmoothShuffleOf(X, Y)) }
-
-	// ex-treme example of X, Y, and Z
-	val exX = "xxxxxxxx"
-	val exY = "xxxxxxxxxxx"
-	val exZ = exX + exY
-	println(exZ.isShuffleOf(exX, exY)) // true
-	println(exZ.isSmoothShuffleOf(exX, exY)) // true
-
-	// a counterexample of smoothShuffle of X, Y, and Z
-	val exCounterX = "xxxx"
-	val exCounterY = "xxxxxxxxxxx"
-	val exCounterZ = exCounterX + exCounterY
-	println(exCounterZ.isShuffleOf(exCounterX, exCounterY)) // true
-	// length of two strings are too different to be separated properly in any shuffle
-	println(exCounterZ.isSmoothShuffleOf(exCounterX, exCounterY)) // false
+	val X = "12".toCharOneArray()
+	val Y = "ab".toCharOneArray()
+	val Z = "12ab".toCharOneArray()
+	println(Z.isSmoothShuffleOf(X, Y))
 }
 
