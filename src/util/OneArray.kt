@@ -233,11 +233,10 @@ class OneArray<T>(val size: Int) {
 	// one-indexed
 	inline fun filterIndexed(predicate: (Int, T) -> Boolean) = container.filterIndexed { i, t -> predicate(i + 1, t) }
 
-	operator fun contains(element: T): Boolean = indexOf(element) >= 0
+	operator fun contains(element: T) = indexOf(element) >= 0
 
 	// one-indexed
-	fun indexOf(element: T): Int =
-			indices.firstOrNull { this[it] == element } ?: -1
+	fun indexOf(element: T) = indices.firstOrNull { this[it] == element } ?: -1
 
 	// searching
 	fun last(predicate: (T) -> Boolean = { true }) = container.last(predicate)
@@ -264,17 +263,18 @@ class OneArray<T>(val size: Int) {
 
 	// comparing and hashing
 	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other !is OneArray<*>) return false
+		if (this === other) {
+			return true
+		}
 
-		if (size != other.size) return false
+		if (other !is OneArray<*>) {
+			return false
+		}
 
 		return Arrays.deepEquals(container, other.container)
 	}
 
-	override fun hashCode(): Int {
-		return Arrays.deepHashCode(container)
-	}
+	override fun hashCode() = Arrays.deepHashCode(container)
 }
 
 inline infix fun <reified T> OneArray<T>.append(that: OneArray<T>) =
@@ -486,4 +486,3 @@ operator fun <T> OneArray<OneArray<OneArray<OneArray<T>>>>.set(i1: Int, i2: Int,
 operator fun <T> OneArray<OneArray<OneArray<OneArray<OneArray<T>>>>>.set(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, v: T) {
 	this[i1][i2][i3][i4][i5] = v
 }
-
