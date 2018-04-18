@@ -124,6 +124,41 @@ infix fun <A, B> A.tu(second: B) = Tuple2(this, second)
 
 infix fun <A, B, C> Tuple2<A, B>.tu(third: C) = Tuple3(first, second, third)
 
-infix fun <A, B, C, D> Tuple3<A, B, C>.tu(fourth: D) = Tuple4(first, second, third, fourth)
+infix fun <A, B, C> A.tu(secondAndThird: Tuple2<B, C>) = Tuple3(this,
+		secondAndThird.first,
+		secondAndThird.second)
+
+infix fun <A, B, C, D> Tuple3<A, B, C>.tu(fourth: D) = Tuple4(first,
+		second,
+		third,
+		fourth)
+
+infix fun <A, B, C, D> Tuple2<A, B>.tu(thirdAndFourth: Tuple2<C, D>) = Tuple4(first,
+		second,
+		thirdAndFourth.first,
+		thirdAndFourth.second)
+
+infix fun <A, B, C, D> A.tu(secondAndThirdAndFourth: Tuple3<B, C, D>) = Tuple4(this,
+		secondAndThirdAndFourth.first,
+		secondAndThirdAndFourth.second,
+		secondAndThirdAndFourth.third)
 
 infix fun <A, B, C, D, E> Tuple4<A, B, C, D>.tu(fifth: E) = Tuple5(first, second, third, fourth, fifth)
+
+infix fun <A, B, C, D, E> Tuple3<A, B, C>.tu(fourthAndFifth: Tuple2<D, E>) = Tuple5(first,
+		second,
+		third,
+		fourthAndFifth.first,
+		fourthAndFifth.second)
+
+infix fun <A, B, C, D, E> Tuple2<A, B>.tu(thirdAndFourthAndFifth: Tuple3<C, D, E>) = Tuple5(first,
+		second,
+		thirdAndFourthAndFifth.first,
+		thirdAndFourthAndFifth.second,
+		thirdAndFourthAndFifth.third)
+
+infix fun <A, B, C, D, E> A.tu(secondAndThirdAndFourthAndFifth: Tuple4<B, C, D, E>) = Tuple5(this,
+		secondAndThirdAndFourthAndFifth.first,
+		secondAndThirdAndFourthAndFifth.second,
+		secondAndThirdAndFourthAndFifth.third,
+		secondAndThirdAndFourthAndFifth.fourth)
