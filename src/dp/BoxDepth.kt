@@ -1,4 +1,4 @@
-package tree.bintree
+package dp
 
 import util.*
 
@@ -37,7 +37,15 @@ private fun Tuple2<Int, Int>.toSquare() = this tu first + 10 tu second + 10
 
 private fun Tuple2<Int, Int>.overlap(s: Square): Square {
 	// O(1) comparing
-	TODO()
+	// r1 is the rectangle 1 that has smaller bottom right x coordinate
+	val (r1brx, r1bry, r1tlx, r1tly) = if (first < s.first) toSquare() else s
+	val (r2brx, r2bry, r2tlx, r2tly) = if (first < s.first) s else toSquare()
+
+	if (r1tlx < r2brx || r2tlx < r1brx || r1tly < r2bry || r2tly < r1bry) {
+		return 0 tu 0 tu 0 tu 0
+	}
+
+	return max(r1brx, r2brx) tu max(r1bry, r2bry) tu min(r1tlx, r2tlx) tu min(r1tly, r2tly)
 }
 
 private fun Square.isValid() = third > first && fourth > second
