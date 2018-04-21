@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
 fun OneArray<OneArray<String>>.sat() = any { !it.containsConflict() }
 
 fun OneArray<String>.containsConflict(): Boolean {
-	val (t, f) = asSequence().partition { it[0] == '!' }
+	val (t, f) = asSequence().partition { it[0] != '!' }
 	return f.any { t.contains(it.substring(1)) }
 }
 
