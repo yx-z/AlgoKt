@@ -14,9 +14,6 @@ import util.*
 // here we will use a graph algorithm (scc, strongly connected component)
 // to solve this problem (that's why we are in the graph package)
 fun OneArray<Tuple2<String, String>>.twoSat(): Boolean {
-	val B = this
-	val n = size
-
 	val literals = HashSet<String>()
 	forEach { (v1, v2) ->
 		if (v1[0] == '!') {
@@ -56,6 +53,7 @@ fun OneArray<Tuple2<String, String>>.twoSat(): Boolean {
 	val graph = Graph(vertices, edges)
 	val scc = graph.tarjan(false)
 //	println(scc.vertices)
+
 	return scc.vertices.none {
 		val component = it.data
 		return@none component.any {
