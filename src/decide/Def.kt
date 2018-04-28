@@ -5,6 +5,9 @@ typealias Input = String
 
 typealias TM /* Turing Machine */ = (Input) -> Boolean
 
+// a Turing Machine that can decides if a TM as input has some property
+typealias TMD = (TM) -> Boolean
+
 // useful definition in some problems, ex. halting problem
 // it is still a valid turing machine since we can transform the first parameter
 // TM, into a form of its proper encoding, which is still a string input
