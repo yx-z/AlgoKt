@@ -2,6 +2,7 @@
 
 // naming convention
 typealias Input = String
+typealias Encoding = Input
 
 // Turing Machine
 typealias TM = (Input) -> Boolean
